@@ -1,0 +1,75 @@
+[
+  {
+    "id": 1,
+    "title": "Introducción a Next.js: La guía para principiantes",
+    "author": "Pol",
+    "date": "2024-11-24",
+    "content": "Next.js es un framework de React que facilita la creación de aplicaciones web modernas. En este post, exploraremos las bases para empezar a usarlo.",
+    "content_extended": "Next.js es una solución todo en uno para desarrollar aplicaciones React con características como renderizado del lado del servidor (SSR), generación de sitios estáticos (SSG) y una experiencia de desarrollo optimizada. Esto lo convierte en una elección ideal tanto para principiantes como para desarrolladores avanzados. Además, proporciona herramientas integradas para optimización automática, enrutamiento simplificado y soporte para API integradas. Si buscas mejorar tu productividad en proyectos React, Next.js es el camino a seguir.",
+    "tags": ["Next.js", "React", "Desarrollo web"],
+    "comments": [
+      {
+        "author": "Juan",
+        "content": "¡Muy interesante! Espero la siguiente entrega.",
+        "date": "2024-11-24"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Cómo diseñar wireframes efectivos para tu proyecto",
+    "author": "Pol",
+    "date": "2024-11-23",
+    "content": "El diseño de wireframes es un paso fundamental en el desarrollo web. Aprende cómo crear wireframes que sean útiles y claros.",
+    "content_extended": "Los wireframes son representaciones visuales de las páginas de tu proyecto. Su propósito es delinear la estructura básica y el flujo de navegación antes de sumergirte en el diseño detallado. Un wireframe efectivo debe ser simple pero detallado, mostrando la ubicación de elementos clave como menús, imágenes y texto. Utilizar herramientas como Figma, Adobe XD o incluso papel y lápiz puede ayudarte a comunicar tus ideas de manera clara con tu equipo y stakeholders.",
+    "tags": ["Diseño", "Wireframes", "UX"],
+    "comments": []
+  },
+  {
+    "id": 3,
+    "title": "10 herramientas imprescindibles para desarrolladores web",
+    "author": "Pol",
+    "date": "2024-11-22",
+    "content": "Desde editores de código hasta gestores de paquetes, descubre las herramientas que facilitarán tu día a día como desarrollador.",
+    "content_extended": "Algunas herramientas esenciales incluyen editores de texto como Visual Studio Code, navegadores con herramientas para desarrolladores como Chrome y Firefox, y plataformas de colaboración como GitHub o GitLab. Además, gestores de paquetes como npm o Yarn simplifican la instalación y gestión de dependencias. También deberías considerar frameworks de diseño como Tailwind CSS y utilidades como Docker para entornos de desarrollo consistentes. Cada herramienta juega un papel crucial para optimizar tu flujo de trabajo y maximizar la eficiencia.",
+    "tags": ["Herramientas", "Desarrollo web", "Productividad"],
+    "comments": [
+      {
+        "author": "Laura",
+        "content": "¡Gran lista! Uso algunas de estas herramientas y son geniales.",
+        "date": "2024-11-22"
+      },
+      {
+        "author": "Carlos",
+        "content": "Recomiendo también Figma para el diseño.",
+        "date": "2024-11-23"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Por qué deberías aprender Laravel en 2024",
+    "author": "Pol",
+    "date": "2024-11-21",
+    "content": "Laravel sigue siendo uno de los frameworks PHP más populares. En este post, exploramos sus ventajas y por qué es una gran opción para desarrolladores.",
+    "content_extended": "Laravel destaca por su facilidad de uso, documentación clara y una comunidad vibrante que constantemente crea paquetes y recursos útiles. Su motor de plantillas Blade y la estructura modular lo hacen perfecto para proyectos pequeños y grandes. Además, con características como migraciones de bases de datos, Eloquent ORM y autenticación integrada, Laravel proporciona todas las herramientas necesarias para un desarrollo rápido y escalable.",
+    "tags": ["Laravel", "PHP", "Backend"],
+    "comments": [
+      {
+        "author": "María",
+        "content": "Laravel tiene una curva de aprendizaje inicial, pero vale la pena.",
+        "date": "2024-11-21"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Creando una API REST con Laravel: Paso a paso",
+    "author": "Pol",
+    "date": "2024-11-20",
+    "content": "En este tutorial, aprenderás a crear una API REST desde cero usando Laravel. Ideal para principiantes y proyectos pequeños.",
+    "content_extended": "Laravel facilita la creación de APIs RESTful con su estructura bien diseñada y características como rutas simplificadas y middleware personalizable. Este tutorial te guía a través de la instalación de Laravel, configuración del archivo `.env`, creación de modelos y controladores, y la implementación de rutas para manejar operaciones CRUD. Al final, tendrás una API funcional que podrá integrarse fácilmente con aplicaciones frontend o móviles.",
+    "tags": ["Laravel", "API REST", "Tutorial"],
+    "comments": []
+  }
+]
