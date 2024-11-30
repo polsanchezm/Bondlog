@@ -23,7 +23,7 @@ export async function Header() {
   const isLoggedIn = session?.userToken ? true : false;
 
   return (
-    <Navbar fluid rounded>
+    <Navbar fluid>
       <NavbarBrand href="/">
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
           Home

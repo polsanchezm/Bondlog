@@ -1,9 +1,12 @@
 import { JWTPayload } from "jose";
 
 interface Post {
+  id: string;
   title: string;
   subtitle: string;
   body: string;
+  author: string;
+  date: string;
 }
 
 interface Register {

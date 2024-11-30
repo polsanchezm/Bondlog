@@ -24,13 +24,13 @@ export default function Home() {
             {/* <Image src={item.image} alt={item.title} width={300} height={300} /> */}
             <Link
               href={`/blog/${item.id}`}
-              className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+              className="block max-w-sm p-6 bg-white rounded-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
             >
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {item.title}
               </h5>
               <p className="font-normal text-gray-700 dark:text-gray-400">
-                {item.content}
+                {item.subtitle}
               </p>
               <p className="font-normal text-gray-700 dark:text-gray-400">
                 {item.author}

@@ -1,7 +1,32 @@
+"use client";
+import { useEffect, useState } from "react";
 import { fetchPostDetail } from "@/lib/fetch-data";
 
-export default async function BlogPost({ params }: { params: { id: string } }) {
-  const post = await fetchPostDetail(params.id);
+export default function BlogPost({ params }: { params: { id: string } }) {
+  const [post, setPost] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const id = params.id;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const postData = await fetchPostDetail(id);
+        setPost(postData);
+      } catch (err) {
+        setError("Failed to load post data");
+        console.log("Error loading post data", err);  
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+  if (!post) return <div>No post found</div>;
 
   return (
     <div className="p-6">
@@ -11,16 +36,6 @@ export default async function BlogPost({ params }: { params: { id: string } }) {
       <p className="mt-4 text-sm text-gray-500">
         Written by {post.author} on {post.date}
       </p>
-      {/* <p className="mt-4 text-sm text-gray-500">Comentarios</p>
-      {post.comments.map((comment, index) => (
-        <div key={index}>
-          <p className="mt-4 text-sm text-gray-500">
-            {comment.author}
-            <p className="mt-2 text-gray-600">{comment.content}</p>
-            {comment.date}
-          </p>
-        </div>
-      ))} */}
     </div>
   );
 }
