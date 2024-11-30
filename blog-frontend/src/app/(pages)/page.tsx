@@ -3,21 +3,28 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Post } from "@/lib/interfaces";
 import { fetchPosts } from "@/lib/fetch-data";
+import PostsSkeleton from "@/components/skeletons/PostsSkeleton";
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadPosts = async () => {
       const data = await fetchPosts();
       setPosts(data);
+      setLoading(false);
     };
 
     loadPosts();
   }, []);
 
+  if (loading) {
+    return <PostsSkeleton />;
+  }
+
   return (
-    <div className="flex justify-center my-10 px-10">
+    <article className="flex justify-center my-10 px-10">
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl">
         {posts.map((item) => (
           <div key={item.id}>
@@ -29,7 +36,10 @@ export default function Home() {
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {item.title}
               </h5>
-              <p className="font-normal text-gray-700 dark:text-gray-400">
+              <p
+                style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}
+                className="font-normal text-gray-700 dark:text-gray-400"
+              >
                 {item.subtitle}
               </p>
               <p className="font-normal text-gray-700 dark:text-gray-400">
@@ -42,6 +52,6 @@ export default function Home() {
           </div>
         ))}
       </div>
-    </div>
+    </article>
   );
 }
