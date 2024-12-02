@@ -1,7 +1,7 @@
 "use server";
 import "server-only";
 import { SignJWT, jwtVerify } from "jose";
-import { SessionPayload } from "@/lib/interfaces";
+import { SessionPayload } from "./interfaces";
 import { cookies } from "next/headers";
 
 const secretKey = process.env.SESSION_SECRET;

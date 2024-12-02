@@ -17,6 +17,9 @@ export default function CreatePost() {
       title,
       subtitle,
       body,
+      id: "",
+      author: "",
+      date: "",
     };
 
     try {

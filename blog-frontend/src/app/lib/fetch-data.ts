@@ -1,7 +1,7 @@
 "use client";
-import axios from "@/utils/axios";
-import { Post, FormState, Register } from "@/lib/interfaces";
-import { deleteSession } from "@/lib/session";
+import axios from "../utils/axios";
+import { Post, FormState, Register } from "./interfaces";
+import { deleteSession } from "./session";
 
 const fetchPosts = async () => {
   const response = await axios.get("/posts");
