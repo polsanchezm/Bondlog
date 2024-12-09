@@ -1,5 +1,11 @@
 import { JWTPayload } from "jose";
 
+interface User {
+  name: string;
+  email: string;
+  created_at: string;
+}
+
 interface Post {
   id: string;
   title: string;
@@ -25,4 +31,4 @@ interface SessionPayload extends JWTPayload {
   expiresAt: Date;
 }
 
-export type { Post, Register, FormState, SessionPayload };
+export type { User, Post, Register, FormState, SessionPayload };
