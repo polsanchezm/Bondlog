@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
@@ -19,26 +20,44 @@ class PostsController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'body' => 'required'
-        ]);
+        if (Auth::check()) {
+            // El usuario está autenticado, proceder con la creación del post
+            $user = Auth::user();
+            try {
+                $userId = $user->id;
+                $userName = $user->name;
 
-        $post = Post::create([
-            'title' => $request->title,
-            'subtitle' => $request->subtitle,
-            'body' => $request->body,
-            'author' => "Pol",
-            // 'author' => $request->author,
-            // 'author' => auth()->user()->name,
-            'date' => date('Y-m-d')
-        ]);
+                $request->validate([
+                    'title' => 'required',
+                    'body' => 'required'
+                ]);
 
-        return response()->json([
-            'message' => 'Post created successfully',
-            'post' => $post
-        ], 200);
+                $post = Post::create([
+                    'title' => $request->title,
+                    'subtitle' => $request->subtitle,
+                    'body' => $request->body,
+                    'authorId' => $userId,
+                    'authorName' => $userName,
+                    'date' => date('Y-m-d')
+                ]);
+
+                return response()->json([
+                    'message' => 'Post created successfully',
+                    'post' => $post
+                ], 200);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => 'Failed to create post',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+        } else {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
+        }
     }
+
 
     public function update(Request $request, string $id)
     {
