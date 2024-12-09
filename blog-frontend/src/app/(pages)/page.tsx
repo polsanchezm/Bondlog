@@ -25,7 +25,7 @@ export default function Home() {
 
   return (
     <article className="flex justify-center my-10 px-10">
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
         {posts.map((item) => (
           <div key={item.id}>
             {/* <Image src={item.image} alt={item.title} width={300} height={300} /> */}
@@ -37,7 +37,11 @@ export default function Home() {
                 {item.title}
               </h5>
               <p
-                style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}
+                style={{
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                }}
                 className="font-normal text-gray-700 dark:text-gray-400"
               >
                 {item.subtitle}
