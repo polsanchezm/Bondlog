@@ -1,7 +1,8 @@
-"use client";
+"use server";
 import axios from "../utils/axios";
 import { Post, FormState, Register } from "./interfaces";
-import { deleteSession } from "./session";
+import { cookies } from "next/headers";
+import { decrypt, deleteSession } from "./session";
 
 const fetchPosts = async () => {
   const response = await axios.get("/posts");
@@ -34,6 +35,24 @@ const userLogout = async () => {
   return response.data;
 };
 
+const getSession = async () => {
+  const cookie = cookies().get("session")?.value;
+  const session = cookie ? await decrypt(cookie) : null;
+  return session;
+};
+
+const fetchUserData = async () => {
+  const session = await getSession();
+  console.log(session?.userToken);
+
+  const response = await axios.get("/auth/account", {
+    headers: {
+      Authorization: `Bearer ${session?.userToken}`,
+    },
+  });
+  return response.data;
+};
+
 export {
   fetchPosts,
   fetchPostDetail,
@@ -41,4 +60,6 @@ export {
   userLogin,
   userSignup,
   userLogout,
+  fetchUserData,
+  getSession,
 };
