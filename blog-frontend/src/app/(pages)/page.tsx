@@ -47,7 +47,7 @@ export default function Home() {
                 {item.subtitle}
               </p>
               <p className="font-normal text-gray-700 dark:text-gray-400">
-                {item.author}
+                {item.authorName}
               </p>
               <p className="font-normal text-gray-700 dark:text-gray-400">
                 {item.date}

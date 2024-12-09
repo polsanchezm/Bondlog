@@ -26,12 +26,18 @@ export default function BlogPost({ params }: { params: { id: string } }) {
 
   return (
     <article className="p-6 flex justify-center">
-      <div className="p-6 max-w-3xl w-full bg-white shadow-md rounded-lg">
-        <h1 className="text-4xl text-gray-600 font-bold mb-2">{post?.title}</h1>
-        <p className="text-xl text-gray-600 mb-4">{post?.subtitle}</p>
-        <p className="text-gray-600 mb-4">{post?.body}</p>
-        <p className="text-sm text-gray-500 mb-2">{post?.author}</p>
-        <p className="text-sm text-gray-500">{post?.date}</p>
+      <div className="p-6 max-w-3xl w-full bg-white dark:bg-gray-800 shadow-md rounded-lg">
+        <h1 className="text-4xl text-gray-800 dark:text-white font-bold mb-4">
+          {post?.title}
+        </h1>
+        <p className="text-xl text-gray-700 dark:text-gray-300 mb-4">
+          {post?.subtitle}
+        </p>
+        <p className="text-gray-600 dark:text-gray-400 mb-4">{post?.body}</p>
+        <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
+          <p>{post?.authorName}</p>
+          <p>{post?.date}</p>
+        </div>
       </div>
     </article>
   );

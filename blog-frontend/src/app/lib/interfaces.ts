@@ -11,7 +11,8 @@ interface Post {
   title: string;
   subtitle: string;
   body: string;
-  author: string;
+  authorId: string;
+  authorName: string;
   date: string;
 }
 

@@ -18,7 +18,8 @@ export default function CreatePost() {
       subtitle,
       body,
       id: "",
-      author: "",
+      authorName: "",
+      authorId: "",
       date: "",
     };
 
@@ -26,7 +27,7 @@ export default function CreatePost() {
       const response = await createPost(formData);
       router.push(`/blog/${response.post.id}`);
     } catch (error) {
-      console.log("error", error);
+      console.error("Error:", error.message);
     }
   }
 

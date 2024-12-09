@@ -4,6 +4,12 @@ import { Post, FormState, Register } from "./interfaces";
 import { cookies } from "next/headers";
 import { decrypt, deleteSession } from "./session";
 
+const getSession = async () => {
+  const cookie = cookies().get("session")?.value;
+  const session = cookie ? await decrypt(cookie) : null;
+  return session;
+};
+
 const fetchPosts = async () => {
   const response = await axios.get("/posts");
   return response.data;
@@ -15,7 +21,12 @@ const fetchPostDetail = async (id: string) => {
 };
 
 const createPost = async (formData: Post) => {
-  const response = await axios.post("/posts/create", formData);
+  const session = await getSession();
+  const response = await axios.post("/posts/create", formData, {
+    headers: {
+      Authorization: `Bearer ${session?.userToken}`,
+    },
+  });
   return response.data;
 };
 
@@ -35,16 +46,8 @@ const userLogout = async () => {
   return response.data;
 };
 
-const getSession = async () => {
-  const cookie = cookies().get("session")?.value;
-  const session = cookie ? await decrypt(cookie) : null;
-  return session;
-};
-
 const fetchUserData = async () => {
   const session = await getSession();
-  console.log(session?.userToken);
-
   const response = await axios.get("/auth/account", {
     headers: {
       Authorization: `Bearer ${session?.userToken}`,
