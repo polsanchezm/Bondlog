@@ -1,20 +1,13 @@
 "use client";
 import { FormEvent } from "react";
 import { useEffect, useState } from "react";
-import {
-  fetchPostDetail,
-  fetchUserData,
-  getSession,
-  updatePost,
-} from "@/lib/fetch-data";
-import { Post, User } from "@/lib/interfaces";
+import { fetchPostDetail, updatePost } from "@/lib/fetch-data";
+import { Post } from "@/lib/interfaces";
 import { useRouter } from "next/navigation";
 
 export default function EditPost({ params }: { params: { id: string } }) {
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userData, setUserData] = useState<User | null>(null);
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [body, setBody] = useState("");
@@ -42,6 +35,8 @@ export default function EditPost({ params }: { params: { id: string } }) {
       authorName: "",
       authorId: "",
       date: "",
+      created_at: "",
+      updated_at: "",
     };
 
     try {

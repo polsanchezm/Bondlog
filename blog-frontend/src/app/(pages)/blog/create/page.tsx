@@ -21,6 +21,8 @@ export default function CreatePost() {
       authorName: "",
       authorId: "",
       date: "",
+      created_at: "",
+      updated_at: "",
     };
 
     try {
