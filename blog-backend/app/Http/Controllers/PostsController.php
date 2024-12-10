@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PostsController extends Controller
 {
@@ -28,8 +29,9 @@ class PostsController extends Controller
                 $userName = $user->name;
 
                 $request->validate([
-                    'title' => 'required',
-                    'body' => 'required'
+                    'title' => 'required|string|max:255',
+                    'subtitle' => 'required|string|max:255',
+                    'body' => 'required|string',
                 ]);
 
                 $post = Post::create([
@@ -61,13 +63,20 @@ class PostsController extends Controller
 
     public function update(Request $request, string $id)
     {
+        Log::debug('Received request:', $request->all());
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'subtitle' => 'required|string|max:255',
+            'body' => 'required|string',
+        ]);
+
         $post = Post::find($id);
 
         if (!$post) {
             return response()->json(['message' => 'Post not found'], 404);
         }
-
-        $post->update($request->all());
+        Log::debug('Updating post:', ['post_id' => $id, 'data' => $validated]);
+        $post->update($validated);
 
         return response()->json([
             'message' => 'Post updated successfully',
