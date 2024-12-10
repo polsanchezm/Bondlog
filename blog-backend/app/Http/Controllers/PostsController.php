@@ -22,7 +22,6 @@ class PostsController extends Controller
     public function store(Request $request)
     {
         if (Auth::check()) {
-            // El usuario está autenticado, proceder con la creación del post
             $user = Auth::user();
             try {
                 $userId = $user->id;
