@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { userLogout, getSession } from "@/lib/fetch-data";
 import { Button, Navbar, NavbarBrand, DarkThemeToggle } from "flowbite-react";
 import { Icon } from "@iconify/react";
+import Image from "next/image";
 
 export function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,9 +20,7 @@ export function Header() {
   return (
     <Navbar fluid className="p-4 bg-gray-100 dark:bg-gray-700">
       <NavbarBrand href="/">
-        <span className="self-center whitespace-nowrap text-xl font-semibold text-gray-900 dark:text-white">
-          Home
-        </span>
+        <Image src="/logo.png" alt="logo" width={60} height={60}></Image>
       </NavbarBrand>
       <div className="flex md:order-2 gap-4">
         {!isLoggedIn && (
