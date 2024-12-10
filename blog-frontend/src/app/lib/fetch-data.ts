@@ -30,6 +30,26 @@ const createPost = async (formData: Post) => {
   return response.data;
 };
 
+const updatePost = async (formData: Post, id: string) => {
+  const session = await getSession();
+  const response = await axios.put(`/posts/update/${id}`, formData, {
+    headers: {
+      Authorization: `Bearer ${session?.userToken}`,
+    },
+  });
+  return response.data;
+};
+
+const deletePost = async (id: string) => {
+  const session = await getSession();
+  const response = await axios.delete(`/posts/delete/${id}`, {
+    headers: {
+      Authorization: `Bearer ${session?.userToken}`,
+    },
+  });
+  return response.data;
+};
+
 const userLogin = async (userData: FormState) => {
   const response = await axios.post("/auth/login", userData);
   return response.data;
@@ -60,6 +80,8 @@ export {
   fetchPosts,
   fetchPostDetail,
   createPost,
+  updatePost,
+  deletePost,
   userLogin,
   userSignup,
   userLogout,

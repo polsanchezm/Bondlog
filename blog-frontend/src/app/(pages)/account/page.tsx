@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { User } from "@/lib/interfaces";
 import { fetchUserData } from "@/lib/fetch-data";
 import AccountSkeleton from "@/components/skeletons/AccountSkeleton";
-
+import { formatDate, checkUpdatedAt } from "@/utils/utils";
 export default function Account() {
   const [userData, setUserData] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -21,15 +21,6 @@ export default function Account() {
   if (loading) {
     return <AccountSkeleton />;
   }
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    return date.toLocaleDateString("en-GB", options);
-  };
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -51,6 +42,9 @@ export default function Account() {
               </p>
               <p className="text-sm text-gray-400 dark:text-gray-400">
                 Joined on {formatDate(userData?.created_at || "")}
+              </p>
+              <p className="text-sm text-gray-400 dark:text-gray-400">
+                Last updated {checkUpdatedAt(userData!)}
               </p>
             </div>
           </div>

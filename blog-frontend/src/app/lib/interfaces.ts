@@ -1,9 +1,11 @@
 import { JWTPayload } from "jose";
 
 interface User {
+  id: string;
   name: string;
   email: string;
   created_at: string;
+  updated_at: string;
 }
 
 interface Post {
@@ -14,6 +16,8 @@ interface Post {
   authorId: string;
   authorName: string;
   date: string;
+  created_at: string;
+  updated_at: string;
 }
 
 interface Register {
