@@ -61,7 +61,12 @@ const userSignup = async (userData: Register) => {
 };
 
 const userLogout = async () => {
-  const response = await axios.post("/auth/logout");
+  const session = await getSession();
+  const response = await axios.post("/auth/logout", null, {
+    headers: {
+      Authorization: `Bearer ${session?.userToken}`,
+    },
+  });
   if (response.status === 200) deleteSession();
   return response.data;
 };
