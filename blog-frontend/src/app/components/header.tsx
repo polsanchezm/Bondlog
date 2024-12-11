@@ -1,4 +1,4 @@
-import { getSession } from "@/app/lib/fetch-data";
+import { getSession } from "@lib/fetch-data";
 import { Button, Navbar, NavbarBrand, DarkThemeToggle } from "flowbite-react";
 import { Icon } from "@iconify/react";
 import Image from "next/image";

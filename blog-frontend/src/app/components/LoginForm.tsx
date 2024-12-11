@@ -1,8 +1,8 @@
 "use client";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { userLogin } from "@/app/lib/fetch-data";
-import { createSession } from "@/app/lib/session";
+import { userLogin } from "@lib/fetch-data";
+import { createSession } from "@lib/session";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");

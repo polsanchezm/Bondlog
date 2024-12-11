@@ -1,7 +1,7 @@
 "use client";
 
-import { updateUserData } from "@/app/lib/fetch-data";
-import { Register } from "@/app/lib/interfaces";
+import { updateUserData } from "@lib/fetch-data";
+import { Register } from "@lib/interfaces";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 

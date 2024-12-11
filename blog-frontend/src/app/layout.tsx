@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { FooterPersonalized } from "@/app/components/Footer";
+import { FooterPersonalized } from "@components/Footer";
 import { ThemeModeScript } from "flowbite-react";
-import Header from "@/app/components/Header";
+import Header from "@components/Header";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

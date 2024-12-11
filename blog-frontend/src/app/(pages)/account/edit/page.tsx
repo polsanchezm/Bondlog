@@ -1,6 +1,6 @@
-import EditAccountForm from "@/app/components/EditAccountForm";
-import { fetchUserData } from "@/app/lib/fetch-data";
-import { Register } from "@/app/lib/interfaces";
+import EditAccountForm from "@components/EditAccountForm";
+import { fetchUserData } from "@lib/fetch-data";
+import { Register } from "@lib/interfaces";
 
 export default async function EditAccount() {
   const userData: Register = await fetchUserData();

@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@/app/lib/interfaces";
+import { User } from "@lib/interfaces";
 import { formatDate, checkUpdatedAt } from "@/app/utils/utils";
 import { Button } from "flowbite-react";
 

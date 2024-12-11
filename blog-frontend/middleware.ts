@@ -1,6 +1,6 @@
 "use server";
 import { NextRequest, NextResponse } from "next/server";
-import { decrypt } from "@/app/lib/session";
+import { decrypt } from "@lib/session";
 import { cookies } from "next/headers";
 
 // Define rutas protegidas y públicas

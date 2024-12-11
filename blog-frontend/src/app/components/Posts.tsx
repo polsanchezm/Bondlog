@@ -1,6 +1,6 @@
 "use client";
 
-import { Post } from "@/app/lib/interfaces";
+import { Post } from "@lib/interfaces";
 import { checkUpdatedAt } from "@/app/utils/utils";
 import Link from "next/link";
 
