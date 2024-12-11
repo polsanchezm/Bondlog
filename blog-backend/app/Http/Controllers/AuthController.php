@@ -6,60 +6,60 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        $user = \App\Models\User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['message' => 'Usuario registrado con éxito', 'user' => $user], 201);
+        Auth::login($user);
+
+        $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
+
+        $userId = Auth::user()->id;
+
+        return response()->json([
+            'message' => 'User registered and logged in successfully',
+            'user' => $user,
+            'token' => $token,
+        ], 201);
     }
+
 
     public function login(Request $request)
     {
-        // Validación de las credenciales
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
 
-        // Verificar las credenciales del usuario
         $user = User::where('email', $request->email)->first();
+        if (!empty($user)) {
+            if (Hash::check($request->password, $user->password)) {
+                $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            // Crear un token de Sanctum para el usuario
-            $token = $user->createToken('blogNext')->plainTextToken;
-
-            // Devolver el token de acceso
+                return response()->json([
+                    'message' => 'Login successful',
+                    'user' => $user,
+                    'token' => $token,
+                ], 200);
+            }
             return response()->json([
-                'message' => 'Login exitoso',
-                'token' => $token
-            ], 200);
+                'message' => 'Password didn\'t match',
+            ], 401);
         }
-
-        return response()->json(['message' => 'Credenciales inválidas'], 401);
+        return response()->json([
+            'message' => 'Invalid login details',
+        ], 404);
     }
+
 
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-        return response()->json(['message' => 'Cierre de sesión exitoso']);
-    }
-
-    public function user(Request $request)
-    {
-        return response()->json($request->user());
+        return response()->json([
+            'message' => 'User logged out',
+        ], 200);
     }
 }
