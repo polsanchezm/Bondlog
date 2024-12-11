@@ -1,19 +1,34 @@
 "use client";
-import { useState } from "react";
+import { FormEvent } from "react";
+import { useEffect, useState } from "react";
+import { fetchUserData, updateUserData } from "@/lib/fetch-data";
+import { Register } from "@/lib/interfaces";
 import { useRouter } from "next/navigation";
-import { userSignup } from "@/lib/fetch-data";
 
-export default function Register() {
+export default function EditPost({ params }: { params: { id: string } }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState<Register | null>(null);
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const router = useRouter();
+  const id = params.id;
 
-  async function handleRegister(e: React.FormEvent) {
-    e.preventDefault();
+  useEffect(() => {
+    const fetchData = async () => {
+      const userData: Register = await fetchUserData();
+      console.log(userData);
 
-    const userData = {
+      setUser(userData);
+    };
+
+    fetchData();
+  }, [id]);
+
+  async function handleUserUpdate(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = {
       name: name,
       email: email,
       password: password,
@@ -21,9 +36,9 @@ export default function Register() {
     };
 
     try {
-      const response = await userSignup(userData);
+      const response = await updateUserData(formData);
       console.log(response);
-      setTimeout(() => router.push("/login"), 2000);
+      router.push("/account");
     } catch (err) {
       console.log(err);
     }
@@ -35,10 +50,13 @@ export default function Register() {
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create an account
+              Edit your account
             </h1>
 
-            <form className="space-y-4 md:space-y-6" onSubmit={handleRegister}>
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={handleUserUpdate}
+            >
               <div>
                 <label
                   htmlFor="name"
@@ -47,7 +65,7 @@ export default function Register() {
                   Your name
                 </label>
                 <input
-                  value={name}
+                  defaultValue={user?.name}
                   onChange={(e) => setName(e.target.value)}
                   type="name"
                   name="name"
@@ -65,7 +83,7 @@ export default function Register() {
                   Your email
                 </label>
                 <input
-                  value={email}
+                  defaultValue={user?.email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
                   name="email"
@@ -83,7 +101,6 @@ export default function Register() {
                   Password
                 </label>
                 <input
-                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   type="password"
                   name="password"
@@ -101,7 +118,6 @@ export default function Register() {
                   Confirm password
                 </label>
                 <input
-                  value={passwordConfirmation}
                   onChange={(e) => setPasswordConfirmation(e.target.value)}
                   type="password"
                   name="confirm-password"
@@ -115,17 +131,8 @@ export default function Register() {
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                Create an account
+                Edit your account
               </button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?{" "}
-                <a
-                  href="#"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >
-                  Login here
-                </a>
-              </p>
             </form>
           </div>
         </div>

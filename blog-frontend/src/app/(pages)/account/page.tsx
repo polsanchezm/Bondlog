@@ -4,6 +4,7 @@ import { User } from "@/lib/interfaces";
 import { fetchUserData } from "@/lib/fetch-data";
 import AccountSkeleton from "@/components/skeletons/AccountSkeleton";
 import { formatDate, checkUpdatedAt } from "@/utils/utils";
+import { Button } from "flowbite-react";
 export default function Account() {
   const [userData, setUserData] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -49,9 +50,12 @@ export default function Account() {
             </div>
           </div>
         </div>
-        <button className="mt-6 w-full bg-blue-500 text-white font-medium py-2 rounded-md hover:bg-blue-600 transition-colors dark:bg-blue-700 dark:hover:bg-blue-600">
+        <Button
+          className="mt-6 w-full bg-blue-500 text-white font-medium py-2 rounded-md hover:bg-blue-600 transition-colors dark:bg-blue-700 dark:hover:bg-blue-600"
+          href="/account/edit"
+        >
           Edit Profile
-        </button>
+        </Button>
       </div>
     </div>
   );

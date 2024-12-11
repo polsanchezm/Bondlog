@@ -73,7 +73,27 @@ const userLogout = async () => {
 
 const fetchUserData = async () => {
   const session = await getSession();
-  const response = await axios.get("/auth/account", {
+  const response = await axios.get("/user/account", {
+    headers: {
+      Authorization: `Bearer ${session?.userToken}`,
+    },
+  });
+  return response.data;
+};
+
+const updateUserData = async (userData: Register) => {
+  const session = await getSession();
+  const response = await axios.put("/user/edit", userData, {
+    headers: {
+      Authorization: `Bearer ${session?.userToken}`,
+    },
+  });
+  return response.data;
+};
+
+const deleteUserData = async () => {
+  const session = await getSession();
+  const response = await axios.delete("/user/delete", {
     headers: {
       Authorization: `Bearer ${session?.userToken}`,
     },
@@ -85,7 +105,9 @@ export {
   fetchPosts,
   fetchPostDetail,
   createPost,
+  updateUserData,
   updatePost,
+  deleteUserData,
   deletePost,
   userLogin,
   userSignup,
