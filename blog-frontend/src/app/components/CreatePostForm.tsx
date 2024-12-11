@@ -27,8 +27,12 @@ export default function CreatePostForm() {
     try {
       const response = await createPost(formData);
       router.push(`/blog/${response.post.id}`);
-    } catch (error) {
-      console.error("Error:", error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error:", error.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
     }
   }
 
