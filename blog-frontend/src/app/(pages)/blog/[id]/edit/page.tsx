@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 
 export default function EditPost({ params }: { params: { id: string } }) {
   const [post, setPost] = useState<Post | null>(null);
-  const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [body, setBody] = useState("");
@@ -18,7 +17,6 @@ export default function EditPost({ params }: { params: { id: string } }) {
     const fetchData = async () => {
       const postData: Post = await fetchPostDetail(id);
       setPost(postData);
-      setLoading(false);
     };
 
     fetchData();
