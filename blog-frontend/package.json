@@ -11,16 +11,26 @@
   "dependencies": {
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
+    "@hookform/resolvers": "^3.9.1",
     "@mui/material": "^6.1.9",
     "@next/env": "^15.0.3",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
     "axios": "^1.7.7",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "cookie": "^1.0.2",
     "flowbite": "^2.5.2",
     "flowbite-react": "^0.10.2",
     "jose": "^5.9.6",
+    "lucide-react": "^0.468.0",
     "next": "14.2.18",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hook-form": "^7.54.0",
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@iconify/react": "^5.1.0",
