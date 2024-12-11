@@ -1,6 +1,6 @@
-import EditPostForm from "@/components/EditPostForm";
-import { fetchPostDetail } from "@/lib/fetch-data";
-import { Post } from "@/lib/interfaces";
+import EditPostForm from "@/app/components/EditPostForm";
+import { fetchPostDetail } from "@/app/lib/fetch-data";
+import { Post } from "@/app/lib/interfaces";
 
 async function getData(id: string) {
   const post: Post = await fetchPostDetail(id);

@@ -1,5 +1,5 @@
-import { checkUpdatedAt, formatDate } from "@/utils/utils";
-import { PostDetailProps } from "@/lib/interfaces";
+import { checkUpdatedAt, formatDate } from "@/app/utils/utils";
+import { PostDetailProps } from "@/app/lib/interfaces";
 import PostActions from "./PostActions";
 
 export default function PostDetail({

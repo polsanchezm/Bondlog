@@ -1,4 +1,4 @@
-import { Post, User } from "@/lib/interfaces";
+import { Post, User } from "@/app/lib/interfaces";
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);

@@ -1,7 +1,7 @@
 "use client";
 
-import { Post } from "@/lib/interfaces";
-import { checkUpdatedAt } from "@/utils/utils";
+import { Post } from "@/app/lib/interfaces";
+import { checkUpdatedAt } from "@/app/utils/utils";
 import Link from "next/link";
 
 export default function Posts({ posts }: { posts: Post[] }) {

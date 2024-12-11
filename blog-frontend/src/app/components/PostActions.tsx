@@ -3,8 +3,8 @@
 import { Button } from "flowbite-react";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
-import { deletePost } from "@/lib/fetch-data";
-import { PostActionsProps } from "@/lib/interfaces";
+import { deletePost } from "@/app/lib/fetch-data";
+import { PostActionsProps } from "@/app/lib/interfaces";
 
 export default function PostActions({ postId }: PostActionsProps) {
   const router = useRouter();

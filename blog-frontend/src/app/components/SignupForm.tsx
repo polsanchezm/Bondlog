@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { userSignup } from "@/lib/fetch-data";
+import { userSignup } from "@/app/lib/fetch-data";
 
 export default function SignupForm() {
   const [name, setName] = useState("");

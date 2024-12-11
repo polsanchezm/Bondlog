@@ -1,7 +1,7 @@
 "use client";
 
-import { User } from "@/lib/interfaces";
-import { formatDate, checkUpdatedAt } from "@/utils/utils";
+import { User } from "@/app/lib/interfaces";
+import { formatDate, checkUpdatedAt } from "@/app/utils/utils";
 import { Button } from "flowbite-react";
 
 export default function AccountDetails({ userData }: { userData: User }) {

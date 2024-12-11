@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { updatePost } from "@/lib/fetch-data";
+import { updatePost } from "@/app/lib/fetch-data";
 import { useRouter } from "next/navigation";
-import { Post } from "@/lib/interfaces";
+import { Post } from "@/app/lib/interfaces";
 
 export default function EditPostForm({ post }: { post: Post }) {
   const [title, setTitle] = useState(post.title);

@@ -1,6 +1,6 @@
-import { fetchPosts } from "@/lib/fetch-data";
-import Posts from "@/components/Posts";
-import { Post } from "@/lib/interfaces";
+import { fetchPosts } from "@/app/lib/fetch-data";
+import Posts from "@/app/components/Posts";
+import { Post } from "@/app/lib/interfaces";
 
 export default async function Home() {
   const posts: Post[] = await fetchPosts();
