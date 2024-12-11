@@ -17,8 +17,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Pol Sanchez's Blog",
-  description: "A blog by Pol Sanchez",
+  title: "BONDLOG",
+  description: "Stay updated with the latest from Bonded",
 };
 
 export default function RootLayout({
