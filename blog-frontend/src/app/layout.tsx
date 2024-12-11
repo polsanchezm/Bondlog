@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Header } from "@/components/header";
-import { FooterPersonalized } from "@/components/footer";
+import Header from "@/components/Header";
+import { FooterPersonalized } from "@/components/Footer";
 import { ThemeModeScript } from "flowbite-react";
 
 const geistSans = localFont({

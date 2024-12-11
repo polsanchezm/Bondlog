@@ -1,21 +1,12 @@
-"use client";
-import { useState, useEffect } from "react";
-import { userLogout, getSession } from "@/lib/fetch-data";
+import { getSession } from "@/lib/fetch-data";
 import { Button, Navbar, NavbarBrand, DarkThemeToggle } from "flowbite-react";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
+import LogoutAction from "./LogoutAction";
 
-export function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      const session = await getSession();
-      setIsLoggedIn(!!session?.userToken);
-    };
-
-    fetchSession();
-  }, []);
+export default async function Header() {
+  const session = await getSession();
+  const isLoggedIn = !!session?.userToken;
 
   return (
     <Navbar fluid className="p-4 bg-gray-100 dark:bg-gray-700">
@@ -69,15 +60,7 @@ export function Header() {
                 Account
               </span>
             </Button>
-            <Button
-              className="flex items-center gap-2 px-3 py-1.5 dark:bg-red-700 dark:text-white bg-red-700 text-white text-sm font-medium rounded dark:hover:bg-red-500 dark:hover:text-white hover:bg-red-500 hover:text-white"
-              onClick={() => userLogout()}
-            >
-              <Icon icon="lucide:log-out" className="w-4 h-4 flex-shrink-0" />
-              <span className="ml-2 text-ellipsis overflow-hidden whitespace-nowrap">
-                Log Out
-              </span>
-            </Button>
+            <LogoutAction />
           </div>
         )}
         <DarkThemeToggle />
