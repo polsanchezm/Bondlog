@@ -1,7 +1,7 @@
-import { fetchPostDetail, fetchUserData, getSession } from "@lib/fetch-data";
+import { fetchPostDetail, fetchUserData, getSession } from "@/actions/user";
 import { Post } from "@lib/interfaces";
 import BlogPostSkeleton from "@components/skeletons/PostDetailSkeleton";
-import PostDetail from "@components/PostDetail";
+import PostDetail from "@/components/posts/PostDetail";
 
 async function getData(id: string) {
   const post: Post = await fetchPostDetail(id);

@@ -1,5 +1,5 @@
-import { fetchPosts } from "@lib/fetch-data";
-import Posts from "@components/Posts";
+import { fetchPosts } from "@/actions/posts";
+import Posts from "@/components/posts/Posts";
 import { Post } from "@lib/interfaces";
 
 export default async function Home() {

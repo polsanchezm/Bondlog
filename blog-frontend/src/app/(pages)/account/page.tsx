@@ -1,6 +1,6 @@
-import AccountDetails from "@components/AccountDetails";
+import AccountDetails from "@/components/account/AccountDetails";
 import AccountSkeleton from "@components/skeletons/AccountSkeleton";
-import { fetchUserData } from "@lib/fetch-data";
+import { fetchUserData } from "@/actions/user";
 
 export default async function Account() {
   const userData = await fetchUserData();

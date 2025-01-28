@@ -1,6 +1,6 @@
 "use client";
 
-import { userLogout } from "@lib/fetch-data";
+import { userLogout } from "@/actions/auth";
 import { Icon } from "@iconify/react";
 import { Button } from "flowbite-react";
 

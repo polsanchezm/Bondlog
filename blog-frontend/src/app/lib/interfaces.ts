@@ -39,7 +39,7 @@ interface Register {
   name: string;
   email: string;
   password: string;
-  password_confirmation: string;
+  passwordConfirmation: string;
 }
 
 interface FormState {

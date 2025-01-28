@@ -1,6 +1,6 @@
 "use client";
 
-import { createPost } from "@lib/fetch-data";
+import { createPost } from "@/actions/user";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 

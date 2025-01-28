@@ -1,33 +1,54 @@
 "use client";
 
-import { updateUserData } from "@lib/fetch-data";
-import { Register } from "@lib/interfaces";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { userSignup } from "@/actions/auth";
+import { SignupFormSchema } from "@/lib/form-schema";
+import { createSession } from "@lib/session";
 
-export default function EditAccountForm({ userData }: { userData: Register }) {
-  const [name, setName] = useState(userData.name);
-  const [email, setEmail] = useState(userData.email);
+export default function SignupForm() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
   const router = useRouter();
 
-  async function handleUserUpdate(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function handleRegister(e: React.FormEvent) {
+    e.preventDefault();
 
-    const formData = {
-      name: name,
-      email: email,
-      password: password,
-      password_confirmation: passwordConfirmation,
+    const userData = {
+      name,
+      email,
+      password,
+      passwordConfirmation,
     };
 
+    const result = SignupFormSchema.safeParse(userData);
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors as Record<
+        string,
+        string[]
+      >;
+      setErrors(
+        Object.keys(fieldErrors).reduce((acc, key) => {
+          acc[key] = fieldErrors[key]?.[0] || "";
+          return acc;
+        }, {} as { [key: string]: string })
+      );
+      return;
+    }
+
+    setErrors({});
+
     try {
-      const response = await updateUserData(formData);
-      console.log(response);
-      router.push("/account");
+      const response = await userSignup(userData);
+      await createSession(response.token);
+      router.push("/");
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -37,13 +58,10 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Edit your account
+              Create an account
             </h1>
 
-            <form
-              className="space-y-4 md:space-y-6"
-              onSubmit={handleUserUpdate}
-            >
+            <form className="space-y-4 md:space-y-6" onSubmit={handleRegister}>
               <div>
                 <label
                   htmlFor="name"
@@ -52,7 +70,7 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                   Your name
                 </label>
                 <input
-                  defaultValue={name}
+                  value={name}
                   onChange={(e) => setName(e.target.value)}
                   type="name"
                   name="name"
@@ -62,6 +80,9 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                   required
                 />
               </div>
+              {errors.name && (
+                <p className="text-red-500 text-sm">{errors.name}</p>
+              )}
               <div>
                 <label
                   htmlFor="email"
@@ -70,7 +91,7 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                   Your email
                 </label>
                 <input
-                  defaultValue={email}
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
                   name="email"
@@ -80,6 +101,9 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                   required
                 />
               </div>
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              )}
               <div>
                 <label
                   htmlFor="password"
@@ -88,6 +112,7 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                   Password
                 </label>
                 <input
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   type="password"
                   name="password"
@@ -97,6 +122,9 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                   required
                 />
               </div>
+              {errors.password && (
+                <p className="text-red-500 text-sm">{errors.password}</p>
+              )}
               <div>
                 <label
                   htmlFor="confirm-password"
@@ -105,6 +133,7 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                   Confirm password
                 </label>
                 <input
+                  value={passwordConfirmation}
                   onChange={(e) => setPasswordConfirmation(e.target.value)}
                   type="password"
                   name="confirm-password"
@@ -114,12 +143,26 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                   required
                 />
               </div>
+              {errors.passwordConfirmation && (
+                <p className="text-red-500 text-sm">
+                  {errors.passwordConfirmation}
+                </p>
+              )}
               <button
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                Edit your account
+                Create an account
               </button>
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                Already have an account?{" "}
+                <a
+                  href="/login"
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                >
+                  Login here
+                </a>
+              </p>
             </form>
           </div>
         </div>

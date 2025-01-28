@@ -1,8 +1,8 @@
-import { getSession } from "@lib/fetch-data";
+import { getSession } from "@/actions/auth";
 import { Button, Navbar, NavbarBrand, DarkThemeToggle } from "flowbite-react";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import LogoutAction from "./LogoutAction";
+import LogoutAction from "../authentication/LogoutAction";
 
 export default async function Header() {
   const session = await getSession();
@@ -11,7 +11,13 @@ export default async function Header() {
   return (
     <Navbar fluid className="p-4 bg-gray-100 dark:bg-gray-700">
       <NavbarBrand href="/">
-        <Image src="/images/logo.png" alt="logo" width={40} height={40} className="dark:invert my-4 mx-2"/>
+        <Image
+          src="/images/logo.png"
+          alt="logo"
+          width={40}
+          height={40}
+          className="dark:invert my-4 mx-2"
+        />
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white ml-4">
           Home
         </span>

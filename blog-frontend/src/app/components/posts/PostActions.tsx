@@ -3,7 +3,7 @@
 import { Button } from "flowbite-react";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
-import { deletePost } from "@lib/fetch-data";
+import { deletePost } from "@/actions/user";
 import { PostActionsProps } from "@lib/interfaces";
 
 export default function PostActions({ postId }: PostActionsProps) {
