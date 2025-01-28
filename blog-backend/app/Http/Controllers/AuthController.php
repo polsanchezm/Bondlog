@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,57 +11,65 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $user = User::create([
+        $existingUser = User::where(column: 'email', operator: $request->email)->first();
+
+        if ($existingUser) {
+            return response()->json(data: [
+                'message' => 'User already exists.',
+            ], status: 400);
+        }
+
+        $user = User::create(attributes: [
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make(value: $request->password),
         ]);
 
-        Auth::login($user);
+        Auth::login(user: $user);
 
-        $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
+        $token = $user->createToken(name: $user->name . '-AuthToken')->plainTextToken;
 
         $userId = Auth::user()->id;
 
-        return response()->json([
+        return response()->json(data: [
             'message' => 'User registered and logged in successfully',
             'user' => $user,
             'token' => $token,
-        ], 201);
+        ], status: 201);
     }
 
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where(column: 'email', operator: $request->email)->first();
         if (!empty($user)) {
-            if (Hash::check($request->password, $user->password)) {
-                $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
+            if (Hash::check(value: $request->password, hashedValue: $user->password)) {
+                $token = $user->createToken(name: $user->name . '-AuthToken')->plainTextToken;
 
-                return response()->json([
+                return response()->json(data: [
                     'message' => 'Login successful',
                     'user' => $user,
                     'token' => $token,
-                ], 200);
+                ], status: 200);
             }
-            return response()->json([
+            return response()->json(data: [
                 'message' => 'Password didn\'t match',
-            ], 401);
+            ], status: 401);
         }
-        return response()->json([
+        return response()->json(data: [
             'message' => 'Invalid login details',
-        ], 404);
+        ], status: 404);
     }
 
 
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-        return response()->json([
+        return response()->json(data: [
             'message' => 'User logged out',
-        ], 200);
+        ], status: 200);
     }
 }
