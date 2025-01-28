@@ -5,25 +5,51 @@ import { useRouter } from "next/navigation";
 import { userSignup } from "@/actions/auth";
 import { SignupFormSchema } from "@/lib/form-schema";
 import { createSession } from "@lib/session";
+import { useToast } from "@/components/hooks/use-toast";
 
 export default function SignupForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [password_confirmation, setPasswordConfirmation] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const router = useRouter();
+  const { toast } = useToast();
+
+  type ToastVariant = "default" | "destructive" | null;
+
+  const toastMessages: Record<
+    string,
+    { variant?: ToastVariant; title: string; description: string }
+  > = {
+    success: {
+      title: "Success",
+      description: "Account created successfully!",
+    },
+    userExists: {
+      variant: "destructive",
+      title: "Uh oh! Something went wrong.",
+      description: "User already exists. Please login instead.",
+    },
+    genericError: {
+      variant: "destructive",
+      title: "Uh oh! Something went wrong.",
+      description: "There was a problem with your request. Please try again.",
+    },
+    validationError: {
+      variant: "destructive",
+      title: "Validation Error",
+      description: "Please check your input and try again.",
+    },
+  };
+
+  const showToast = (type: string) =>
+    toast(toastMessages[type] || toastMessages.genericError);
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
-
-    const userData = {
-      name,
-      email,
-      password,
-      passwordConfirmation,
-    };
+    const userData = { name, email, password, password_confirmation };
 
     const result = SignupFormSchema.safeParse(userData);
 
@@ -32,12 +58,14 @@ export default function SignupForm() {
         string,
         string[]
       >;
+
       setErrors(
-        Object.keys(fieldErrors).reduce((acc, key) => {
+        Object.keys(fieldErrors).reduce<Record<string, string>>((acc, key) => {
           acc[key] = fieldErrors[key]?.[0] || "";
           return acc;
-        }, {} as { [key: string]: string })
+        }, {})
       );
+      showToast("validationError");
       return;
     }
 
@@ -46,9 +74,17 @@ export default function SignupForm() {
     try {
       const response = await userSignup(userData);
       await createSession(response.token);
+
+      showToast("success");
       router.push("/");
     } catch (err) {
-      console.error(err);
+      if (err instanceof Error) {
+        const messageType = err.message.includes("400")
+          ? "userExists"
+          : "genericError";
+        showToast(messageType);
+        console.error(err);
+      }
     }
   }
 
@@ -133,7 +169,7 @@ export default function SignupForm() {
                   Confirm password
                 </label>
                 <input
-                  value={passwordConfirmation}
+                  value={password_confirmation}
                   onChange={(e) => setPasswordConfirmation(e.target.value)}
                   type="password"
                   name="confirm-password"
@@ -143,9 +179,9 @@ export default function SignupForm() {
                   required
                 />
               </div>
-              {errors.passwordConfirmation && (
+              {errors.password_confirmation && (
                 <p className="text-red-500 text-sm">
-                  {errors.passwordConfirmation}
+                  {errors.password_confirmation}
                 </p>
               )}
               <button

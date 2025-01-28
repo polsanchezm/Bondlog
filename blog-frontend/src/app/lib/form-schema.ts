@@ -29,9 +29,9 @@ const SignupFormSchema = z
         message: "Contain at least one special character.",
       })
       .trim(),
-    passwordConfirmation: z.string().trim(),
+    password_confirmation: z.string().trim(),
   })
-  .refine((data) => data.password === data.passwordConfirmation, {
+  .refine((data) => data.password === data.password_confirmation, {
     message: "Passwords must match.",
     path: ["passwordConfirmation"],
   });

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { updatePost } from "@/actions/user";
+import { updatePost } from "@actions/posts";
 import { useRouter } from "next/navigation";
 import { Post } from "@lib/interfaces";
 

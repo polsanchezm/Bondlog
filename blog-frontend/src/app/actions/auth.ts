@@ -5,7 +5,7 @@ import { decrypt, deleteSession } from "@/lib/session";
 import { FormState, Register } from "@/lib/interfaces";
 
 const getSession = async () => {
-  const cookie = cookies().get("session")?.value;
+  const cookie = (await cookies()).get("session")?.value;
   const session = cookie ? await decrypt(cookie) : null;
   return session;
 };
@@ -31,4 +31,11 @@ const userLogout = async () => {
   return response.data;
 };
 
-export { getSession, userLogin, userSignup, userLogout };
+const isAuthenticated = async () => {
+  const session = await getSession();
+  console.log("is authenticated?", !!session);
+
+  return !!session;
+}
+
+export { getSession, userLogin, userSignup, userLogout, isAuthenticated };

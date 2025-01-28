@@ -24,7 +24,7 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
 
     try {
       const response = await updateUserData(formData);
-      console.log(response);
+      console.log("user update", response);
       router.push("/account");
     } catch (err) {
       console.log(err);

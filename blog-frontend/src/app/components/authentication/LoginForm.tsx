@@ -4,12 +4,14 @@ import { useRouter } from "next/navigation";
 import { userLogin } from "@/actions/auth";
 import { createSession } from "@lib/session";
 import { LoginFormSchema } from "@/lib/form-schema";
+import { useToast } from "@/components/hooks/use-toast";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
+  const { toast } = useToast();
 
   async function handleLogin(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -35,8 +37,19 @@ export default function LoginForm() {
     try {
       const response = await userLogin(userData);
       await createSession(response.token);
+
+      toast({
+        title: "Success",
+        description: "Logged in successfully!",
+      });
+
       router.push("/");
     } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request. Please try again.",
+      });
       console.log("error", error);
     }
   }

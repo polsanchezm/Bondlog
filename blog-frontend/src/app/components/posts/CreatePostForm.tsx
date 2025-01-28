@@ -1,6 +1,6 @@
 "use client";
 
-import { createPost } from "@/actions/user";
+import { createPost } from "@actions/posts";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
