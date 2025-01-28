@@ -1,35 +1,22 @@
-"use server";
-import { NextRequest, NextResponse } from "next/server";
-import { decrypt } from "@lib/session";
-import { cookies } from "next/headers";
+import { NextResponse, NextRequest } from 'next/server';
+import { isAuthenticated } from "@/actions/auth"; // La misma función de autenticación
 
-// Define rutas protegidas y públicas
-const protectedRoutes = ["/account"];
-const publicRoutes = ["/login", "/signup"];
+export async function middleware(request: NextRequest) {
+  const authCheck = await isAuthenticated();
+  console.log("authCheck", authCheck);
 
-export default async function middleware(req: NextRequest) {
-  const path = req.nextUrl.pathname;
-  const isProtectedRoute = protectedRoutes.includes(path);
-  const isPublicRoute = publicRoutes.includes(path);
 
-  const cookie = cookies().get("session")?.value;
-
-  if (!cookie) {
-    console.log("Cookie 'session' no encontrada.");
+  // Si el usuario no está autenticado y está intentando acceder a una página protegida
+  if (!authCheck && request.nextUrl.pathname !== '/login') {
+    // Redirigir a la página de login
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  const session = cookie ? await decrypt(cookie) : null;
-  if (isProtectedRoute && !session?.userToken) {
-    return NextResponse.redirect(new URL("/login", req.nextUrl));
-  }
-
-  if (isPublicRoute && session?.userToken) {
-    return NextResponse.redirect(new URL("/", req.nextUrl));
-  }
+  // Si el usuario está autenticado o está accediendo a la página de login, continuar con la solicitud
   return NextResponse.next();
 }
 
-// Configuración para el middleware
+// Si solo quieres que esto se aplique a rutas específicas, puedes configurar las rutas que quieres proteger
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
+  matcher: ['/account', '/dashboard', '/settings'], // Las rutas que necesitas proteger
 };
