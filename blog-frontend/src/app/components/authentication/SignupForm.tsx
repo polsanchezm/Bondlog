@@ -77,13 +77,13 @@ export default function SignupForm() {
 
       showToast("success");
       router.push("/");
-    } catch (err) {
-      if (err instanceof Error) {
-        const messageType = err.message.includes("400")
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        const messageType = error.message.includes("400")
           ? "userExists"
           : "genericError";
         showToast(messageType);
-        console.error(err);
+        console.error("Error:", error);
       }
     }
   }

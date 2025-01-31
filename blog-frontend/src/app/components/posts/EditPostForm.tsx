@@ -9,11 +9,13 @@ export default function EditPostForm({ post }: { post: Post }) {
   const [title, setTitle] = useState(post.title);
   const [subtitle, setSubtitle] = useState(post.subtitle);
   const [body, setBody] = useState(post.body);
+  const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
 
   async function handlePostUpdate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setError(null);
 
     const formData = {
       title,
@@ -28,15 +30,35 @@ export default function EditPostForm({ post }: { post: Post }) {
     };
 
     try {
-      const response = await updatePost(formData, post.id);
-      router.push(`/blog/${response.post.id}`);
-    } catch (error) {
-      console.error("Error:", error);
+      const { data, error } = await updatePost(formData, post.id);
+
+      if (error) {
+        throw new Error(
+          error.message ||
+            "An error occurred while creating the post. Please try again later."
+        );
+      }
+
+      router.push(`/blog/${data.post.id}`);
+    } catch (error: unknown) {
+      setError(
+        "An error occurred while creating the post. Please try again later."
+      );
+      if (error instanceof Error) {
+        console.error("Error:", error);
+      } else {
+        console.error("An unknown error occurred", error);
+      }
     }
   }
 
   return (
     <form onSubmit={handlePostUpdate}>
+      {error && (
+        <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
+          {error}
+        </div>
+      )}
       <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
         <div className="sm:col-span-2">
           <label

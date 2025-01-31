@@ -9,8 +9,11 @@ export default function CreatePostForm() {
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [body, setBody] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
   async function handlePostCreation(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setError(null);
 
     const formData = {
       title,
@@ -25,13 +28,24 @@ export default function CreatePostForm() {
     };
 
     try {
-      const response = await createPost(formData);
-      router.push(`/blog/${response.post.id}`);
+      const { data, error } = await createPost(formData);
+
+      if (error) {
+        throw new Error(
+          error.message ||
+            "An error occurred while creating the post. Please try again later."
+        );
+      }
+
+      router.push(`/blog/${data.post.id}`);
     } catch (error: unknown) {
+      setError(
+        "An error occurred while creating the post. Please try again later."
+      );
       if (error instanceof Error) {
-        console.error("Error:", error.message);
+        console.error("Error:", error);
       } else {
-        console.error("An unknown error occurred");
+        console.error("An unknown error occurred", error);
       }
     }
   }
@@ -42,6 +56,13 @@ export default function CreatePostForm() {
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
           New post
         </h2>
+
+        {error && (
+          <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handlePostCreation}>
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
             <div className="sm:col-span-2">

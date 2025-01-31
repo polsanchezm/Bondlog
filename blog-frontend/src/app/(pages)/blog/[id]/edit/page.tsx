@@ -1,12 +1,14 @@
 import EditPostForm from "@components/posts/EditPostForm";
 import { fetchPostDetail } from "@actions/posts";
-import { Post } from "@lib/interfaces";
 import { isAuthenticated } from "@actions/auth";
 import { redirect } from "next/navigation";
 
 async function getData(id: string) {
-  const post: Post = await fetchPostDetail(id);
-  return post;
+  const { data: post, error } = await fetchPostDetail(id);
+  if (error) {
+    return { post: null, userData: null, error };
+  }
+  return { post, error: null };
 }
 
 export default async function EditPost({ params }: { params: { id: string } }) {
@@ -14,8 +16,27 @@ export default async function EditPost({ params }: { params: { id: string } }) {
   if (!authCheck) {
     redirect("/login");
   } else {
-    const post = await getData(params.id);
+    const { post, error } = await getData(params.id);
 
+    if (error || !post) {
+      const isServerError = error?.status === 500;
+      return (
+        <article className="flex justify-center items-center min-h-screen">
+          <div className="flex justify-center items-center w-full px-4 sm:px-6 lg:px-8">
+            <div className="w-full max-w-md rounded-lg shadow-lg p-8 bg-white dark:bg-gray-800">
+              <h5 className="mb-4 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white text-center">
+                {isServerError ? "Server Error" : "Post not found"}
+              </h5>
+              <p className="text-lg text-gray-600 dark:text-gray-300 text-center">
+                {isServerError
+                  ? "There was an issue fetching the posts. Please try again later."
+                  : "It looks like this post is not available at the moment. Please check back later or create new content."}
+              </p>
+            </div>
+          </div>
+        </article>
+      );
+    }
     return (
       <section className="bg-white dark:bg-gray-900">
         <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">

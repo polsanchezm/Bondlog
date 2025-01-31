@@ -44,13 +44,13 @@ export default function LoginForm() {
       });
 
       router.push("/");
-    } catch (error) {
+    } catch (error: unknown) {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
         description: "There was a problem with your request. Please try again.",
       });
-      console.log("error", error);
+      console.log("Error", error);
     }
   }
 

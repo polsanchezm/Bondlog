@@ -10,10 +10,12 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
   const [email, setEmail] = useState(userData.email);
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   async function handleUserUpdate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setError(null);
 
     const formData = {
       name: name,
@@ -23,11 +25,24 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
     };
 
     try {
-      const response = await updateUserData(formData);
-      console.log("user update", response);
-      router.push("/account");
-    } catch (err) {
-      console.log(err);
+      const { data, error } = await updateUserData(formData);
+      if (error) {
+        throw new Error(
+          error.message ||
+            "An error occurred while updating your account. Please try again later."
+        );
+      }
+      console.log("user update", data);
+      // router.push("/account");
+    } catch (error: unknown) {
+      setError(
+        "An error occurred while updating your account. Please try again later."
+      );
+      if (error instanceof Error) {
+        console.error("Error:", error);
+      } else {
+        console.error("An unknown error occurred", error);
+      }
     }
   }
 
@@ -39,7 +54,11 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Edit your account
             </h1>
-
+            {error && (
+              <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
+                {error}
+              </div>
+            )}
             <form
               className="space-y-4 md:space-y-6"
               onSubmit={handleUserUpdate}
