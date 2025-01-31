@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     libpq-dev \
-    netcat-openbsd \ 
+    netcat-openbsd \
     && docker-php-ext-configure gd \
     && docker-php-ext-install gd pdo pdo_pgsql \  
     && a2enmod rewrite
