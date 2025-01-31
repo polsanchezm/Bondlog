@@ -2,9 +2,9 @@
 
 # Esperar a que la base de datos esté disponible
 echo "Esperando a la base de datos..."
-while ! nc $DB_HOST $DB_PORT; do
-  sleep 1
-done
+# while ! nc $DB_HOST $DB_PORT; do
+#   sleep 1
+# done
 echo "¡Base de datos disponible!"
 
 # Limpiar cachés de Laravel
