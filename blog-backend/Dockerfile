@@ -3,10 +3,14 @@ FROM php:8.2-apache
 
 # Instala dependencias y extensiones de PHP
 RUN apt-get update && apt-get install -y \
-    libpq-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     unzip \
     git \
-    && docker-php-ext-install pdo pdo_pgsql \
+    libpq-dev \                     
+    && docker-php-ext-configure gd \
+    && docker-php-ext-install gd pdo pdo_pgsql \  
     && a2enmod rewrite
 
 # Instala Composer
@@ -29,8 +33,12 @@ WORKDIR /var/www/html
 # Ejecuta Composer para instalar dependencias
 RUN composer install --no-dev --optimize-autoloader
 
+# Copia el script de inicio
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Expone el puerto 80 para Apache
 EXPOSE 80
 
 # Comando de inicio del contenedor
-CMD ["apache2-foreground"]
+CMD ["sh", "/usr/local/bin/docker-entrypoint.sh"]
