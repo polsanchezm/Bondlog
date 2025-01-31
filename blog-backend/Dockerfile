@@ -8,8 +8,9 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     unzip \
     git \
+    libpq-dev \                     
     && docker-php-ext-configure gd \
-    && docker-php-ext-install gd pdo pdo_mysql \
+    && docker-php-ext-install gd pdo pdo_pgsql \  
     && a2enmod rewrite
 
 # Instala Composer
@@ -31,6 +32,11 @@ WORKDIR /var/www/html
 
 # Ejecuta Composer para instalar dependencias (si ya están en el contenedor)
 RUN composer install --no-dev --optimize-autoloader
+
+# Ejecuta migraciones en el arranque (opcional)
+RUN php artisan config:clear
+RUN php artisan cache:clear
+RUN php artisan migrate --force
 
 # Expone el puerto 80 para Apache
 EXPOSE 80
