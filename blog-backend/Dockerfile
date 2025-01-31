@@ -3,14 +3,10 @@ FROM php:8.2-apache
 
 # Instala dependencias y extensiones de PHP
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
+    libpq-dev \
     unzip \
     git \
-    libpq-dev \                     
-    && docker-php-ext-configure gd \
-    && docker-php-ext-install gd pdo pdo_pgsql \  
+    && docker-php-ext-install pdo pdo_pgsql \
     && a2enmod rewrite
 
 # Instala Composer
@@ -30,13 +26,8 @@ RUN chown -R www-data:www-data /var/www/html \
 # Establece el directorio de trabajo en la raíz del proyecto
 WORKDIR /var/www/html
 
-# Ejecuta Composer para instalar dependencias (si ya están en el contenedor)
+# Ejecuta Composer para instalar dependencias
 RUN composer install --no-dev --optimize-autoloader
-
-# Ejecuta migraciones en el arranque (opcional)
-RUN php artisan config:clear
-RUN php artisan cache:clear
-RUN php artisan migrate --force
 
 # Expone el puerto 80 para Apache
 EXPOSE 80
