@@ -19,6 +19,12 @@ use App\Http\Controllers\UserController;
 
 
 Route::prefix('app')->name('app.')->group(function () {
+    Route::get('/', function () {
+        return response()->json([
+            'message' => 'Welcome to the Blog API',
+            'status' => 'Connected',
+        ]);
+    });
     Route::prefix('auth')->name('auth.')->group(function () {
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/login', [AuthController::class, 'login']);
