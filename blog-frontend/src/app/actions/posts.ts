@@ -1,19 +1,20 @@
 import axios from "@utils/axios";
-import { Post } from "@lib/interfaces";
+import { APIError, Post } from "@lib/interfaces";
 import { getSession } from "./auth";
+import { ApiError } from "next/dist/server/api-utils";
 
 const fetchPosts = async () => {
   try {
     const response = await axios.get("/posts");
     return { data: response.data, error: null };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching posts:", error);
 
     return {
       data: null,
       error: {
-        message: error.message || "Something went wrong",
-        status: error.response?.status || 500,
+        message: (error as APIError).message || "Something went wrong",
+        status: (error as APIError).response?.status || 500,
       },
     };
   }
@@ -23,14 +24,14 @@ const fetchPostDetail = async (id: string) => {
   try {
     const response = await axios.get(`/posts/detail/${id}`);
     return { data: response.data, error: null };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching post detail:", error);
 
     return {
       data: null,
       error: {
-        message: error.message || "Something went wrong",
-        status: error.response?.status || 500,
+        message: (error as APIError).message || "Something went wrong",
+        status: (error as APIError).response?.status || 500,
       },
     };
   }
@@ -45,14 +46,14 @@ const createPost = async (formData: Post) => {
       },
     });
     return { data: response.data, error: null };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error creating the post:", error);
 
     return {
       data: null,
       error: {
-        message: error.message || "Something went wrong",
-        status: error.response?.status || 500,
+        message: (error as ApiError).message || "Something went wrong",
+        status: (error as APIError).response?.status || 500,
       },
     };
   }
@@ -67,14 +68,14 @@ const updatePost = async (formData: Post, id: string) => {
       },
     });
     return { data: response.data, error: null };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error updating the post:", error);
 
     return {
       data: null,
       error: {
-        message: error.message || "Something went wrong",
-        status: error.response?.status || 500,
+        message: (error as ApiError).message || "Something went wrong",
+        status: (error as APIError).response?.status || 500,
       },
     };
   }
@@ -89,14 +90,14 @@ const deletePost = async (id: string) => {
       },
     });
     return { data: response.data, error: null };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error deleting the post:", error);
 
     return {
       data: null,
       error: {
-        message: error.message || "Something went wrong",
-        status: error.response?.status || 500,
+        message: (error as ApiError).message || "Something went wrong",
+        status: (error as APIError).response?.status || 500,
       },
     };
   }

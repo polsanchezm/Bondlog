@@ -1,7 +1,7 @@
 "use server";
 
 import axios from "@utils/axios";
-import { Register } from "@/lib/interfaces";
+import { APIError, Register } from "@/lib/interfaces";
 import { getSession } from "@/actions/auth";
 
 const fetchUserData = async () => {
@@ -13,14 +13,14 @@ const fetchUserData = async () => {
       },
     });
     return { data: response.data, error: null };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching user data:", error);
 
     return {
       data: null,
       error: {
-        message: error.message || "Something went wrong",
-        status: error.response?.status || 500,
+        message: (error as APIError).message || "Something went wrong",
+        status: (error as APIError).response?.status || 500,
       },
     };
   }
@@ -35,14 +35,14 @@ const updateUserData = async (userData: Register) => {
       },
     });
     return { data: response.data, error: null };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error updating user data:", error);
 
     return {
       data: null,
       error: {
-        message: error.message || "Something went wrong",
-        status: error.response?.status || 500,
+        message: (error as APIError).message || "Something went wrong",
+        status: (error as APIError).response?.status || 500,
       },
     };
   }
@@ -57,14 +57,14 @@ const deleteUserData = async () => {
       },
     });
     return { data: response.data, error: null };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error deleting user data:", error);
 
     return {
       data: null,
       error: {
-        message: error.message || "Something went wrong",
-        status: error.response?.status || 500,
+        message: (error as APIError).message || "Something went wrong",
+        status: (error as APIError).response?.status || 500,
       },
     };
   }

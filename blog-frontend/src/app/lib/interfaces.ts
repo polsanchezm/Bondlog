@@ -47,6 +47,13 @@ interface FormState {
   password: string;
 }
 
+interface APIError {
+  message?: string;
+  response?: {
+    status?: number;
+  };
+}
+
 export type {
   User,
   Post,
@@ -55,4 +62,5 @@ export type {
   SessionPayload,
   PostDetailProps,
   PostActionsProps,
+  APIError,
 };

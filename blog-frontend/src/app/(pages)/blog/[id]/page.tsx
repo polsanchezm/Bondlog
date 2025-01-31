@@ -1,38 +1,37 @@
 import { fetchUserData } from "@actions/user";
 import { fetchPostDetail } from "@actions/posts";
-import { Post } from "@lib/interfaces";
-import BlogPostSkeleton from "@components/skeletons/PostDetailSkeleton";
 import PostDetail from "@/components/posts/PostDetail";
 import { getSession } from "@actions/auth";
+import { APIError } from "@/lib/interfaces";
 
 async function getData(id: string, isLoggedIn: boolean) {
-  const { data: post, error } = await fetchPostDetail(id);
-
-  if (error) {
+  try {
+    const { data: post } = await fetchPostDetail(id);
+    let userData = null;
+    if (isLoggedIn) {
+      userData = await fetchUserData();
+    }
+    return { post, userData };
+  } catch (error: unknown) {
     return { post: null, userData: null, error };
   }
-
-  let userData = null;
-  if (isLoggedIn) {
-    userData = await fetchUserData();
-  }
-
-  return { post, userData, error: null };
 }
 
-export default async function BlogPost({ params }: { params: { id: string } }) {
+type Params = Promise<{ id: string }>;
+
+export default async function BlogPost({ params }: { params: Params }) {
   const { id } = await params;
+
   if (!id) {
     return <div>Post not found</div>;
   }
 
   const session = await getSession();
-
   const isLoggedIn = !!session?.userToken;
   const { post, userData, error } = await getData(id, isLoggedIn);
 
   if (error || !post) {
-    const isServerError = error?.status === 500;
+    const isServerError = (error as APIError)?.response?.status === 500;
     return (
       <article className="flex justify-center items-center min-h-screen">
         <div className="flex justify-center items-center w-full px-4 sm:px-6 lg:px-8">

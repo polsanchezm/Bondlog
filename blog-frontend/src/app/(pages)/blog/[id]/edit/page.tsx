@@ -11,12 +11,15 @@ async function getData(id: string) {
   return { post, error: null };
 }
 
-export default async function EditPost({ params }: { params: { id: string } }) {
+type Params = Promise<{ id: string }>;
+
+export default async function EditPost({ params }: { params: Params }) {
   const authCheck = await isAuthenticated();
   if (!authCheck) {
     redirect("/login");
   } else {
-    const { post, error } = await getData(params.id);
+    const { id } = await params;
+    const { post, error } = await getData(id);
 
     if (error || !post) {
       const isServerError = error?.status === 500;

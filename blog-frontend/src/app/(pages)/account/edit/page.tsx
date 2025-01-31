@@ -1,6 +1,5 @@
 import EditAccountForm from "@/components/account/EditAccountForm";
 import { fetchUserData } from "@/actions/user";
-import { Register } from "@lib/interfaces";
 import { isAuthenticated } from "@/actions/auth";
 import { redirect } from "next/navigation";
 

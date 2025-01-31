@@ -82,7 +82,12 @@ const toastMessages: Record<
   },
 };
 
-const showToast = (type: string, toast: any) =>
-  toast(toastMessages[type] || toastMessages.genericError);
+const showToast = (type: string, toast: unknown) => {
+  if (typeof toast === "function") {
+    toast(toastMessages[type] || toastMessages.genericError);
+  } else {
+    console.error("Toast is not a function:", toast);
+  }
+};
 
 export { formatDate, checkUpdatedAt, showToast };

@@ -51,7 +51,7 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
     setErrors({});
 
     try {
-      const { data, error } = await updateUserData(formData);
+      const { error } = await updateUserData(formData);
 
       if (error) {
         throw new Error(

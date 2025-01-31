@@ -1,6 +1,5 @@
 import { fetchPosts } from "@/actions/posts";
 import Posts from "@/components/posts/Posts";
-import { Post } from "@lib/interfaces";
 
 export default async function Home() {
   const { data: posts, error } = await fetchPosts();
