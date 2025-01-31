@@ -32,8 +32,7 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
             "An error occurred while updating your account. Please try again later."
         );
       }
-      console.log("user update", data);
-      // router.push("/account");
+      router.push("/account");
     } catch (error: unknown) {
       setError(
         "An error occurred while updating your account. Please try again later."
