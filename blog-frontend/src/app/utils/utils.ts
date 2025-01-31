@@ -41,9 +41,17 @@ const toastMessages: Record<
   string,
   { variant?: ToastVariant; title: string; description: string }
 > = {
-  success: {
+  successSignup: {
     title: "Success",
     description: "Account created successfully!",
+  },
+  successLogin: {
+    title: "Success",
+    description: "Logged in successfully!",
+  },
+  successLogout: {
+    title: "Success",
+    description: "Logged out successfully!",
   },
   successPost: {
     title: "Success",
