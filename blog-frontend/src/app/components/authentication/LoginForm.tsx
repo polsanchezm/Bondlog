@@ -50,7 +50,7 @@ export default function LoginForm() {
         title: "Uh oh! Something went wrong.",
         description: "There was a problem with your request. Please try again.",
       });
-      console.log("Error", error);
+      console.error("Error", error);
     }
   }
 
