@@ -4,6 +4,9 @@ import { updateUserData } from "@/actions/user";
 import { Register } from "@lib/interfaces";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { SignupFormSchema } from "@/lib/form-schema";
+import { showToast } from "@/utils/utils";
+import { useToast } from "../hooks/use-toast";
 
 export default function EditAccountForm({ userData }: { userData: Register }) {
   const [name, setName] = useState(userData.name);
@@ -11,7 +14,10 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
   const router = useRouter();
+  const { toast } = useToast();
 
   async function handleUserUpdate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -24,20 +30,47 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
       password_confirmation: passwordConfirmation,
     };
 
+    const result = SignupFormSchema.safeParse(formData);
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors as Record<
+        string,
+        string[]
+      >;
+
+      setErrors(
+        Object.keys(fieldErrors).reduce<Record<string, string>>((acc, key) => {
+          acc[key] = fieldErrors[key]?.[0] || "";
+          return acc;
+        }, {})
+      );
+      showToast("validationError", toast);
+      return;
+    }
+
+    setErrors({});
+
     try {
       const { data, error } = await updateUserData(formData);
+
       if (error) {
         throw new Error(
           error.message ||
             "An error occurred while updating your account. Please try again later."
         );
       }
+      showToast("success", toast);
+
       router.push("/account");
     } catch (error: unknown) {
       setError(
         "An error occurred while updating your account. Please try again later."
       );
       if (error instanceof Error) {
+        const messageType = error.message.includes("400")
+          ? "userExists"
+          : "genericError";
+        showToast(messageType, toast);
         console.error("Error:", error);
       } else {
         console.error("An unknown error occurred", error);
@@ -80,6 +113,9 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                   required
                 />
               </div>
+              {errors.name && (
+                <p className="text-red-500 text-sm">{errors.name}</p>
+              )}
               <div>
                 <label
                   htmlFor="email"
@@ -98,6 +134,9 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                   required
                 />
               </div>
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              )}
               <div>
                 <label
                   htmlFor="password"
@@ -115,6 +154,9 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                   required
                 />
               </div>
+              {errors.password && (
+                <p className="text-red-500 text-sm">{errors.password}</p>
+              )}
               <div>
                 <label
                   htmlFor="confirm-password"
@@ -132,6 +174,11 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                   required
                 />
               </div>
+              {errors.password_confirmation && (
+                <p className="text-red-500 text-sm">
+                  {errors.password_confirmation}
+                </p>
+              )}
               <button
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"

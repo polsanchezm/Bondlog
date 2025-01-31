@@ -4,12 +4,17 @@ import { useState, FormEvent } from "react";
 import { updatePost } from "@actions/posts";
 import { useRouter } from "next/navigation";
 import { Post } from "@lib/interfaces";
+import { useToast } from "@/components/hooks/use-toast";
+import { showToast } from "@/utils/utils";
+import { PostSchema } from "@/lib/form-schema";
 
 export default function EditPostForm({ post }: { post: Post }) {
   const [title, setTitle] = useState(post.title);
   const [subtitle, setSubtitle] = useState(post.subtitle);
   const [body, setBody] = useState(post.body);
   const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const { toast } = useToast();
 
   const router = useRouter();
 
@@ -28,6 +33,25 @@ export default function EditPostForm({ post }: { post: Post }) {
       created_at: post.created_at,
       updated_at: post.updated_at,
     };
+    const result = PostSchema.safeParse(formData);
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors as Record<
+        string,
+        string[]
+      >;
+
+      setErrors(
+        Object.keys(fieldErrors).reduce<Record<string, string>>((acc, key) => {
+          acc[key] = fieldErrors[key]?.[0] || "";
+          return acc;
+        }, {})
+      );
+      showToast("validationError", toast);
+      return;
+    }
+
+    setErrors({});
 
     try {
       const { data, error } = await updatePost(formData, post.id);
@@ -38,6 +62,7 @@ export default function EditPostForm({ post }: { post: Post }) {
             "An error occurred while creating the post. Please try again later."
         );
       }
+      showToast("successPostEdit", toast);
 
       router.push(`/blog/${data.post.id}`);
     } catch (error: unknown) {
@@ -45,6 +70,7 @@ export default function EditPostForm({ post }: { post: Post }) {
         "An error occurred while creating the post. Please try again later."
       );
       if (error instanceof Error) {
+        showToast("genericError", toast);
         console.error("Error:", error);
       } else {
         console.error("An unknown error occurred", error);
@@ -78,6 +104,7 @@ export default function EditPostForm({ post }: { post: Post }) {
             required
           />
         </div>
+        {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
         <div className="sm:col-span-2">
           <label
             htmlFor="subtitle"
@@ -96,6 +123,9 @@ export default function EditPostForm({ post }: { post: Post }) {
             required
           />
         </div>
+        {errors.subtitle && (
+          <p className="text-red-500 text-sm">{errors.subtitle}</p>
+        )}
         <div className="sm:col-span-2">
           <label
             htmlFor="body"
@@ -112,6 +142,7 @@ export default function EditPostForm({ post }: { post: Post }) {
             value={body}
           ></textarea>
         </div>
+        {errors.body && <p className="text-red-500 text-sm">{errors.body}</p>}
       </div>
       <button
         type="submit"

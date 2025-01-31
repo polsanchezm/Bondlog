@@ -6,21 +6,26 @@ import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 import { deletePost } from "@actions/posts";
 import { PostActionsProps } from "@lib/interfaces";
+import { useToast } from "@/components/hooks/use-toast";
+import { showToast } from "@/utils/utils";
 
 export default function PostActions({ postId }: PostActionsProps) {
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const router = useRouter();
   const handleDelete = async () => {
     setError(null);
     try {
       await deletePost(postId);
+      showToast("successPostDetele", toast);
       router.push("/");
     } catch (error) {
       setError(
         "An error occurred while creating the post. Please try again later."
       );
       if (error instanceof Error) {
+        showToast("genericError", toast);
         console.error("Error:", error);
       } else {
         console.error("An unknown error occurred", error);

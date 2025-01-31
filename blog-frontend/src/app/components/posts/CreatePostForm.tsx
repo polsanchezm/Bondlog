@@ -3,6 +3,9 @@
 import { createPost } from "@actions/posts";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { useToast } from "@/components/hooks/use-toast";
+import { showToast } from "@/utils/utils";
+import { PostSchema } from "@/lib/form-schema";
 
 export default function CreatePostForm() {
   const router = useRouter();
@@ -10,6 +13,8 @@ export default function CreatePostForm() {
   const [subtitle, setSubtitle] = useState("");
   const [body, setBody] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const { toast } = useToast();
 
   async function handlePostCreation(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,6 +32,26 @@ export default function CreatePostForm() {
       updated_at: "",
     };
 
+    const result = PostSchema.safeParse(formData);
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors as Record<
+        string,
+        string[]
+      >;
+
+      setErrors(
+        Object.keys(fieldErrors).reduce<Record<string, string>>((acc, key) => {
+          acc[key] = fieldErrors[key]?.[0] || "";
+          return acc;
+        }, {})
+      );
+      showToast("validationError", toast);
+      return;
+    }
+
+    setErrors({});
+
     try {
       const { data, error } = await createPost(formData);
 
@@ -37,12 +62,16 @@ export default function CreatePostForm() {
         );
       }
 
+      showToast("successPost", toast);
+
       router.push(`/blog/${data.post.id}`);
     } catch (error: unknown) {
       setError(
         "An error occurred while creating the post. Please try again later."
       );
+
       if (error instanceof Error) {
+        showToast("genericError", toast);
         console.error("Error:", error);
       } else {
         console.error("An unknown error occurred", error);
@@ -82,6 +111,9 @@ export default function CreatePostForm() {
                 required
               />
             </div>
+            {errors.title && (
+              <p className="text-red-500 text-sm">{errors.title}</p>
+            )}
             <div className="sm:col-span-2">
               <label
                 htmlFor="subtitle"
@@ -99,6 +131,9 @@ export default function CreatePostForm() {
                 required
               />
             </div>
+            {errors.subtitle && (
+              <p className="text-red-500 text-sm">{errors.subtitle}</p>
+            )}
             <div className="sm:col-span-2">
               <label
                 htmlFor="body"
@@ -114,6 +149,9 @@ export default function CreatePostForm() {
                 onChange={(e) => setBody(e.target.value)}
               ></textarea>
             </div>
+            {errors.body && (
+              <p className="text-red-500 text-sm">{errors.body}</p>
+            )}
           </div>
           <button
             type="submit"
