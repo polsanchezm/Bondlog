@@ -6,6 +6,7 @@ import { userSignup } from "@/actions/auth";
 import { SignupFormSchema } from "@/lib/form-schema";
 import { createSession } from "@lib/session";
 import { useToast } from "@/components/hooks/use-toast";
+import { showToast } from "@/utils/utils";
 
 export default function SignupForm() {
   const [name, setName] = useState("");
@@ -16,36 +17,6 @@ export default function SignupForm() {
 
   const router = useRouter();
   const { toast } = useToast();
-
-  type ToastVariant = "default" | "destructive" | null;
-
-  const toastMessages: Record<
-    string,
-    { variant?: ToastVariant; title: string; description: string }
-  > = {
-    success: {
-      title: "Success",
-      description: "Account created successfully!",
-    },
-    userExists: {
-      variant: "destructive",
-      title: "Uh oh! Something went wrong.",
-      description: "User already exists. Please login instead.",
-    },
-    genericError: {
-      variant: "destructive",
-      title: "Uh oh! Something went wrong.",
-      description: "There was a problem with your request. Please try again.",
-    },
-    validationError: {
-      variant: "destructive",
-      title: "Validation Error",
-      description: "Please check your input and try again.",
-    },
-  };
-
-  const showToast = (type: string) =>
-    toast(toastMessages[type] || toastMessages.genericError);
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
@@ -65,7 +36,7 @@ export default function SignupForm() {
           return acc;
         }, {})
       );
-      showToast("validationError");
+      showToast("validationError", toast);
       return;
     }
 
@@ -75,14 +46,14 @@ export default function SignupForm() {
       const response = await userSignup(userData);
       await createSession(response.token);
 
-      showToast("success");
+      showToast("success", toast);
       router.push("/");
     } catch (error: unknown) {
       if (error instanceof Error) {
         const messageType = error.message.includes("400")
           ? "userExists"
           : "genericError";
-        showToast(messageType);
+        showToast(messageType, toast);
         console.error("Error:", error);
       }
     }

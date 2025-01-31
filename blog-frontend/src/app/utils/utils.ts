@@ -35,4 +35,46 @@ const checkUpdatedAt = (object: Post | User) => {
   }
 };
 
-export { formatDate, checkUpdatedAt };
+type ToastVariant = "default" | "destructive" | null;
+
+const toastMessages: Record<
+  string,
+  { variant?: ToastVariant; title: string; description: string }
+> = {
+  success: {
+    title: "Success",
+    description: "Account created successfully!",
+  },
+  successPost: {
+    title: "Success",
+    description: "Post created successfully!",
+  },
+  successPostEdit: {
+    title: "Success",
+    description: "Post updated successfully!",
+  },
+  successPostDetele: {
+    title: "Success",
+    description: "Post deleted successfully!",
+  },
+  userExists: {
+    variant: "destructive",
+    title: "Uh oh! Something went wrong.",
+    description: "User already exists. Please login instead.",
+  },
+  genericError: {
+    variant: "destructive",
+    title: "Uh oh! Something went wrong.",
+    description: "There was a problem with your request. Please try again.",
+  },
+  validationError: {
+    variant: "destructive",
+    title: "Validation Error",
+    description: "Please check your input and try again.",
+  },
+};
+
+const showToast = (type: string, toast: any) =>
+  toast(toastMessages[type] || toastMessages.genericError);
+
+export { formatDate, checkUpdatedAt, showToast };
