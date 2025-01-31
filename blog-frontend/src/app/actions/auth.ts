@@ -33,8 +33,6 @@ const userLogout = async () => {
 
 const isAuthenticated = async () => {
   const session = await getSession();
-  console.log("is authenticated?", !!session);
-
   return !!session;
 }
 

@@ -3,8 +3,6 @@ import { isAuthenticated } from "@/actions/auth"; // La misma función de autent
 
 export async function middleware(request: NextRequest) {
   const authCheck = await isAuthenticated();
-  console.log("authCheck", authCheck);
-
 
   // Si el usuario no está autenticado y está intentando acceder a una página protegida
   if (!authCheck && request.nextUrl.pathname !== '/login') {
