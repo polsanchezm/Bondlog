@@ -18,15 +18,15 @@ export async function encrypt(payload: SessionPayload) {
 export async function decrypt(session: string | undefined = "") {
   try {
     if (!session) {
-      console.log("No session token provided.");
+      console.error("No session token provided.");
       return null;
     }
     const { payload } = await jwtVerify(session, encodedKey, {
       algorithms: ["HS256"],
     });
     return payload;
-  } catch (error) {
-    console.log("Failed to verify session", error);
+  } catch (error: unknown) {
+    console.error("Failed to verify session", error);
     return null;
   }
 }
