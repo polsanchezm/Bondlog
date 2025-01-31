@@ -13,10 +13,12 @@ export default async function Header() {
       <NavbarBrand href="/">
         <Image
           src="/images/logo.png"
+          priority={true}
           alt="logo"
           width={40}
           height={40}
           className="dark:invert my-4 mx-2"
+          style={{ width: "auto", height: "auto" }}
         />
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white ml-4">
           Home
