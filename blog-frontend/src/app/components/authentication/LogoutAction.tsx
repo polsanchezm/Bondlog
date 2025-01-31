@@ -4,12 +4,21 @@ import { userLogout } from "@/actions/auth";
 import { Icon } from "@iconify/react";
 import { Button } from "flowbite-react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/hooks/use-toast";
+import { showToast } from "@/utils/utils";
 
 export default function LogoutAction() {
+  const { toast } = useToast();
   const router = useRouter();
   async function handleLogout() {
-    await userLogout();
-    router.push("/");
+    try {
+      await userLogout();
+      showToast("successLogout", toast);
+      router.push("/");
+    } catch (error: unknown) {
+      showToast("genericError", toast);
+      console.error("Error:", error);
+    }
   }
 
   return (

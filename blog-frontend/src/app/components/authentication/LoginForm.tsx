@@ -5,6 +5,7 @@ import { userLogin } from "@/actions/auth";
 import { createSession } from "@lib/session";
 import { LoginFormSchema } from "@/lib/form-schema";
 import { useToast } from "@/components/hooks/use-toast";
+import { showToast } from "@/utils/utils";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -37,20 +38,11 @@ export default function LoginForm() {
     try {
       const response = await userLogin(userData);
       await createSession(response.token);
-
-      toast({
-        title: "Success",
-        description: "Logged in successfully!",
-      });
-
+      showToast("successSignup", toast);
       router.push("/");
     } catch (error: unknown) {
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with your request. Please try again.",
-      });
-      console.error("Error", error);
+      showToast("genericError", toast);
+      console.error("Error:", error);
     }
   }
 
