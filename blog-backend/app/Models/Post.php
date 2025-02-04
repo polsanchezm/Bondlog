@@ -13,7 +13,7 @@ class Post extends Model
     protected $fillable = ['title', 'subtitle', 'body', 'author_id', 'author_name'];
     protected $keyType = 'string';  // UUID se almacena como string
     public $incrementing = false;
-    
+
     /**
      * El modelo se inicializa.
      */
@@ -27,8 +27,9 @@ class Post extends Model
         });
     }
 
+
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'author_id', 'id');
     }
 }
