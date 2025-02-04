@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchPosts } from "@/actions/posts";
@@ -7,7 +8,7 @@ import Posts from "@/components/posts/Posts";
 import { APIError, PaginationProps } from "@/lib/interfaces";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function Home() {
+function HomeContent() {
   const searchParams = useSearchParams();
   const currentPage = searchParams.get("page")
     ? parseInt(searchParams.get("page")!, 10)
@@ -72,5 +73,13 @@ export default function Home() {
         pagination || { current_page: 1, next_page_url: "", prev_page_url: "" }
       }
     />
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }
