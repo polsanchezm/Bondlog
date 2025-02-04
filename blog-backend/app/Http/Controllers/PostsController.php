@@ -10,10 +10,21 @@ use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
+
+
+
     function index()
     {
-        $posts = Post::all()->simplePaginate(5);
-        return response()->json(PostsResource::collection($posts));
+        $posts = Post::orderBy('created_at', 'asc')->simplePaginate(9);
+
+        return response()->json([
+            'data' => PostsResource::collection($posts),
+            'pagination' => [
+                'current_page' => $posts->currentPage(),
+                'next_page_url' => $posts->nextPageUrl(),
+                'prev_page_url' => $posts->previousPageUrl(),
+            ],
+        ]);
     }
 
     public function show(string $id)
@@ -28,15 +39,12 @@ class PostsController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             try {
-                $user_id = $user->id;
-                $user_username = $user->username;
-
                 $post = Post::create([
                     'title' => $request->title,
                     'subtitle' => $request->subtitle,
                     'body' => $request->body,
-                    'author_id' => $user_id,
-                    'author_username' => $user_username,
+                    'author_id' => $user->id,
+                    'author_username' => $user->username,
                 ]);
 
                 return response()->json([

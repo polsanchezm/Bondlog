@@ -3,15 +3,16 @@ import { APIError, Post } from "@lib/interfaces";
 import { getSession } from "./auth";
 import { ApiError } from "next/dist/server/api-utils";
 
-const fetchPosts = async () => {
+const fetchPosts = async (page = 1) => {
   try {
-    const response = await axios.get("/posts");
-    return { data: response.data, error: null };
+    const response = await axios.get(`/posts?page=${page}`);
+    return { data: response.data.data, pagination: response.data.pagination, error: null };
   } catch (error: unknown) {
     console.error("Error fetching posts:", error);
 
     return {
       data: null,
+      pagination: null,
       error: {
         message: (error as APIError).message || "Something went wrong",
         status: (error as APIError).response?.status || 500,

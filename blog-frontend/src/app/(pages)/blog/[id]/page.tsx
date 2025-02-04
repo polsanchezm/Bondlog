@@ -21,7 +21,7 @@ type Params = Promise<{ id: string }>;
 
 export default async function BlogPost({ params }: { params: Params }) {
   const { id } = await params;
-  
+
   if (!id) {
     return <div>Post not found</div>;
   }
