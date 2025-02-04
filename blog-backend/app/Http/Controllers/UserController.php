@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,30 +13,37 @@ class UserController extends Controller
 {
     function index()
     {
-        return response()->json(User::all(), 200);
+        $user = Auth::user();
+        $this->authorize('viewAny', $user);
+        $users = User::all();
+        return response()->json(UserResource::collection($users));
     }
 
     public function show()
     {
-        return response()->json(auth()->user(), 200);
+        $user = Auth::user();
+        $this->authorize('view', $user);
+        return response()->json(new UserResource($user));
     }
 
-    public function update(Request $request)
+    public function update(UpdateUserRequest $request)
     {
         $user = Auth::user();
+        $this->authorize('update', $user);
 
-        $user->update([
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+        ];
+
+        $user->update($data);
 
         return response()->json([
             'message' => 'User updated successfully',
             'user' => $user
         ], 200);
     }
-
 
     public function destroy()
     {

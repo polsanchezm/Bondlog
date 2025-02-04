@@ -2,44 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdatePostRequest;
+use App\Http\Resources\PostsResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class PostsController extends Controller
 {
     function index()
     {
-        return response()->json(Post::all(), 200);
+        $posts = Post::all();
+        return response()->json(PostsResource::collection($posts));
     }
 
     public function show(string $id)
     {
-        return response()->json(Post::find($id), 200);
+        $post = Post::find($id);
+        return response()->json(new PostsResource($post));
     }
 
-    public function store(Request $request)
+    public function store(CreatePostRequest $request)
     {
+        $this->authorize('create', Post::class);
         if (Auth::check()) {
             $user = Auth::user();
             try {
-                $userId = $user->id;
-                $userName = $user->name;
-
-                $request->validate([
-                    'title' => 'required|string|max:255',
-                    'subtitle' => 'required|string|max:255',
-                    'body' => 'required|string',
-                ]);
+                $user_id = $user->id;
+                $user_name = $user->name;
 
                 $post = Post::create([
                     'title' => $request->title,
                     'subtitle' => $request->subtitle,
                     'body' => $request->body,
-                    'authorId' => $userId,
-                    'authorName' => $userName,
-                    'date' => date('Y-m-d')
+                    'author_id' => $user_id,
+                    'author_name' => $user_name,
                 ]);
 
                 return response()->json([
@@ -60,20 +58,17 @@ class PostsController extends Controller
     }
 
 
-    public function update(Request $request, string $id)
+    public function update(UpdatePostRequest $request, string $id)
     {
-        $validated = $request->validate([
-            'title' => 'string|max:255',
-            'subtitle' => 'string|max:255',
-            'body' => 'string',
-        ]);
-
         $post = Post::find($id);
+
+        $this->authorize('update', $post);
 
         if (!$post) {
             return response()->json(['message' => 'Post not found'], 404);
         }
-        $post->update($validated);
+
+        $post->update($request->all());
 
         return response()->json([
             'message' => 'Post updated successfully',
@@ -88,6 +83,8 @@ class PostsController extends Controller
         if (!$post) {
             return response()->json(['message' => 'Post not found'], 404);
         }
+
+        $this->authorize('delete', $post);
 
         $post->delete();
 
