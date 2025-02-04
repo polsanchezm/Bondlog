@@ -45,7 +45,6 @@ export default function SignupForm() {
     try {
       const response = await userSignup(userData);
       await createSession(response.token);
-
       showToast("successSignup", toast);
       router.push("/");
     } catch (error: unknown) {
