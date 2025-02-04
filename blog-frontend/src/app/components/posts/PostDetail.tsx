@@ -1,4 +1,4 @@
-import { checkUpdatedAt, formatDate } from "@utils/utils";
+import { checkUpdatedAt, formatDate, formatText } from "@utils/utils";
 import { PostDetailProps } from "@lib/interfaces";
 import PostActions from "./PostActions";
 
@@ -25,7 +25,10 @@ export default function PostDetail({
           {post?.subtitle}
         </p>
 
-        <p className="text-gray-600 dark:text-gray-400 mb-6">{post?.body}</p>
+        <p
+          className="text-gray-600 dark:text-gray-400 mb-6"
+          dangerouslySetInnerHTML={{ __html: formatText(post?.body) }}
+        ></p>
 
         <div className="flex flex-col sm:flex-row justify-between text-sm text-gray-500 dark:text-gray-400 mb-6">
           <p className="sm:text-left">{post?.author_name}</p>

@@ -90,4 +90,10 @@ const showToast = (type: string, toast: unknown) => {
   }
 };
 
-export { formatDate, checkUpdatedAt, showToast };
+function formatText(body: string) {
+  const lines = body.split("\n").filter(line => line.trim() !== "");
+  const formattedLines = lines.map((line, index) => `<p key=${index} class="my-2">${line}</p>`);
+  return formattedLines.join("");
+}
+
+export { formatDate, checkUpdatedAt, showToast, formatText };
