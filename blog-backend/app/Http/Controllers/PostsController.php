@@ -6,14 +6,13 @@ use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostsResource;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
     function index()
     {
-        $posts = Post::all();
+        $posts = Post::all()->simplePaginate(5);
         return response()->json(PostsResource::collection($posts));
     }
 
