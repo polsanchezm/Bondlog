@@ -5,8 +5,11 @@ import { redirect } from "next/navigation";
 
 export default async function EditAccount() {
   const authCheck = await isAuthenticated();
+  const userData = await fetchUserData();
   if (!authCheck) {
     redirect("/login");
+  } else if (userData.data.role == "admin") {
+    redirect("/account");
   } else {
     const { data, error } = await fetchUserData();
     if (error) {

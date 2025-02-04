@@ -32,12 +32,14 @@ export default function AccountDetails({ userData }: { userData: User }) {
             </div>
           </div>
         </div>
-        <Button
-          className="mt-6 w-full bg-blue-500 text-white font-medium py-2 rounded-md hover:bg-blue-600 transition-colors dark:bg-blue-700 dark:hover:bg-blue-600"
-          href="/account/edit"
-        >
-          Edit Profile
-        </Button>
+        {userData?.role !== "admin" && (
+          <Button
+            className="mt-6 w-full bg-blue-500 text-white font-medium py-2 rounded-md hover:bg-blue-600 transition-colors dark:bg-blue-700 dark:hover:bg-blue-600"
+            href="/account/edit"
+          >
+            Edit Profile
+          </Button>
+        )}
       </div>
     </div>
   );
