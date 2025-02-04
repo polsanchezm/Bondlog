@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,7 +15,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('subtitle');
             $table->string('body');
-            $table->string('author_id');
+            $table->foreignUuid('author_id')->references('id')->on('users');
             $table->string('author_name');
             $table->timestamps();
         });
