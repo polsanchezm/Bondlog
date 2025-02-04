@@ -30,19 +30,23 @@ Route::prefix('app')->name('app.')->group(function () {
         Route::post('/login', [AuthController::class, 'login'])->name('login');
         Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
     });
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::prefix('user')->name('user.')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/account', [UserController::class, 'show'])->name('account');
+            Route::put('/edit', [UserController::class, 'update'])->name('edit');
+            Route::delete('/delete', [UserController::class, 'destroy'])->name('delete');
+        });
 
-    Route::prefix('user')->name('user.')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->middleware('auth:sanctum')->name('users');
-        Route::get('/account', [UserController::class, 'show'])->middleware('auth:sanctum')->name('account');
-        Route::put('/edit', [UserController::class, 'update'])->middleware('auth:sanctum')->name('edit');
-        Route::delete('/delete', [UserController::class, 'destroy'])->middleware('auth:sanctum')->name('delete');
+        Route::prefix('posts')->name('posts.')->group(function () {
+            Route::post('create', [PostsController::class, 'store'])->name('store');
+            Route::put('update/{id}', [PostsController::class, 'update'])->name('update');
+            Route::delete('delete/{id}', [PostsController::class, 'destroy'])->name('destroy');
+        });
     });
 
     Route::prefix('posts')->name('posts.')->group(function () {
-        Route::get('/', [PostsController::class, 'index'])->name('index')->name('posts');
-        Route::post('create/', [PostsController::class, 'store'])->name('store')->middleware('auth:sanctum')->name('create');
-        Route::get('detail/{id}', [PostsController::class, 'show'])->name('show')->name('detail');
-        Route::put('update/{id}', [PostsController::class, 'update'])->name('update')->middleware('auth:sanctum')->name('edit');
-        Route::delete('delete/{id}', [PostsController::class, 'destroy'])->name('destroy')->middleware('auth:sanctum')->name('delete');
+        Route::get('/', [PostsController::class, 'index'])->name('index');
+        Route::get('detail/{id}', [PostsController::class, 'show'])->name('show');
     });
 });
