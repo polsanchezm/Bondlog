@@ -26,7 +26,7 @@ export default function PostDetail({
         </p>
 
         <p
-          className="text-gray-600 dark:text-gray-400 mb-6"
+          className="text-gray-600 dark:text-gray-400 mb-6 overflow-x-auto break-words"
           dangerouslySetInnerHTML={{ __html: formatText(post?.body) }}
         ></p>
 
