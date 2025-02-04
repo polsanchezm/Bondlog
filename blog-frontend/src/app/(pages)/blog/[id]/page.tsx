@@ -21,7 +21,7 @@ type Params = Promise<{ id: string }>;
 
 export default async function BlogPost({ params }: { params: Params }) {
   const { id } = await params;
-
+  
   if (!id) {
     return <div>Post not found</div>;
   }
@@ -52,5 +52,12 @@ export default async function BlogPost({ params }: { params: Params }) {
 
   const userId = isLoggedIn && userData?.data ? userData.data.id : "";
 
-  return <PostDetail post={post} userId={userId} isLoggedIn={isLoggedIn} />;
+  return (
+    <PostDetail
+      post={post}
+      userRole={userData?.data?.role}
+      userId={userId}
+      isLoggedIn={isLoggedIn}
+    />
+  );
 }

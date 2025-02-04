@@ -15,6 +15,7 @@ interface User {
 
 interface PostDetailProps {
   post: Post;
+  userRole: string;
   isLoggedIn: boolean;
   userId: string;
 }
