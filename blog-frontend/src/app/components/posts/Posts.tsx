@@ -35,7 +35,7 @@ export default function Posts({ posts }: { posts: Post[] }) {
                 {item.subtitle}
               </p>
               <p className="font-normal text-gray-700 dark:text-gray-400 mb-4 text-lg">
-                {item.authorName}
+                {item.author_name}
               </p>
               <p className="font-normal text-gray-700 dark:text-gray-400 text-lg">
                 <span className="font-bold">Last update:</span>{" "}
