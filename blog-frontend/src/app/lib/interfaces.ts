@@ -28,8 +28,8 @@ interface Post {
   title: string;
   subtitle: string;
   body: string;
-  authorId: string;
-  authorName: string;
+  author_id: string;
+  author_name: string;
   date: string;
   created_at: string;
   updated_at: string;

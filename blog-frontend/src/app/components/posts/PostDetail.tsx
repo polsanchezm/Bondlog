@@ -28,11 +28,11 @@ export default function PostDetail({
         <p className="text-gray-600 dark:text-gray-400 mb-6">{post?.body}</p>
 
         <div className="flex flex-col sm:flex-row justify-between text-sm text-gray-500 dark:text-gray-400 mb-6">
-          <p className="sm:text-left">{post?.authorName}</p>
+          <p className="sm:text-left">{post?.author_name}</p>
           <p className="sm:text-right">{formatDate(post?.created_at || "")}</p>
         </div>
 
-        {isLoggedIn && userId == post?.authorId && (
+        {isLoggedIn && userId == post?.author_id && (
           <div className="flex flex-col sm:flex-row gap-4 w-full">
             <PostActions postId={post?.id} />{" "}
           </div>
