@@ -38,7 +38,12 @@ export default function PostDetail({
 
         {userRole == "admin" || (isLoggedIn && userId == post?.author_id) ? (
           <div className="flex flex-col sm:flex-row gap-4 w-full">
-            <PostActions postId={post?.id} userRole={userRole} />
+            <PostActions
+              postId={post?.id}
+              userRole={userRole}
+              userId={userId}
+              post={post}
+            />
           </div>
         ) : (
           <div></div>

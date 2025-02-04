@@ -9,7 +9,12 @@ import { PostActionsProps } from "@lib/interfaces";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/utils/utils";
 
-export default function PostActions({ postId, userRole }: PostActionsProps) {
+export default function PostActions({
+  postId,
+  userRole,
+  userId,
+  post,
+}: PostActionsProps) {
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
@@ -43,7 +48,7 @@ export default function PostActions({ postId, userRole }: PostActionsProps) {
         </div>
       )}
       <div className="flex flex-col sm:flex-row gap-4 w-full">
-        {userRole !== "admin" && (
+        {userId === post?.author_id && (
           <Button
             className="w-full sm:w-1/2 flex items-center px-3 py-1.5 mt-4 sm:mt-0 dark:bg-black dark:text-white bg-black text-white text-sm font-medium rounded dark:hover:bg-gray-700 dark:hover:text-white hover:bg-gray-700 hover:text-white"
             href={`/blog/${postId}/edit`}
