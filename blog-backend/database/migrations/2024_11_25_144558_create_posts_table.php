@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->uuid('id');
             $table->string('title');
             $table->string('subtitle');
-            $table->string('body');
+            $table->text('body');
             $table->foreignUuid('author_id')->references('id')->on('users');
             $table->string('author_name');
             $table->timestamps();
