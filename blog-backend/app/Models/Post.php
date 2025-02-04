@@ -10,7 +10,7 @@ class Post extends Model
 {
     use HasFactory;
     protected $table = 'posts';
-    protected $fillable = ['title', 'subtitle', 'body', 'author_id', 'author_name'];
+    protected $fillable = ['title', 'subtitle', 'body', 'author_id', 'author_username'];
     protected $keyType = 'string';  // UUID se almacena como string
     public $incrementing = false;
 
