@@ -13,7 +13,7 @@ class PostPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role === 'admin' || $user->role === 'user';
+        return in_array($user->role, ['user', 'admin']);
     }
 
     /**
@@ -21,7 +21,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
-        return $user->id === $post->author_id;
+        return $user->id == $post->author_id;
     }
 
     /**
@@ -29,6 +29,6 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
-        return $user->id === $post->author_id;
+        return $user->id === $post->author_id || $user->role === 'admin';
     }
 }
