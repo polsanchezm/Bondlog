@@ -1,9 +1,9 @@
 import Axios from "axios";
 
-// const localURL = "http://localhost:8000/api/app";
-const renderURL = "https://bondlog.onrender.com/api/app";
+// const baseURL = "http://localhost:8000/api/app";
+const baseURL = "https://bondlog.onrender.com/api/app";
 const axios = Axios.create({
-  baseURL: renderURL,
+  baseURL: baseURL,
   headers: {
     "Content-Type": "application/json",
     "X-Requested-With": "XMLHttpRequest",
