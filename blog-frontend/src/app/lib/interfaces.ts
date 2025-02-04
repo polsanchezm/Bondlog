@@ -22,6 +22,7 @@ interface PostDetailProps {
 
 interface PostActionsProps {
   postId: string;
+  userRole?: string;
 }
 
 interface Post {
