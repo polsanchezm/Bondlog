@@ -22,6 +22,8 @@ interface PostDetailProps {
 
 interface PostActionsProps {
   postId: string;
+  userId: string;
+  post: Post;
   userRole?: string;
 }
 
@@ -56,6 +58,13 @@ interface APIError {
   };
 }
 
+
+interface PaginationProps {
+  current_page: number;
+  next_page_url: string;
+  prev_page_url: string;
+}
+
 export type {
   User,
   Post,
@@ -65,4 +74,5 @@ export type {
   PostDetailProps,
   PostActionsProps,
   APIError,
+  PaginationProps,
 };
