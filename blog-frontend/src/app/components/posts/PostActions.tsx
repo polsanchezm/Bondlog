@@ -11,7 +11,6 @@ import { showToast } from "@/utils/utils";
 
 export default function PostActions({
   postId,
-  userRole,
   userId,
   post,
 }: PostActionsProps) {

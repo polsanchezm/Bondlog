@@ -40,7 +40,6 @@ export default function PostDetail({
           <div className="flex flex-col sm:flex-row gap-4 w-full">
             <PostActions
               postId={post?.id}
-              userRole={userRole}
               userId={userId}
               post={post}
             />
