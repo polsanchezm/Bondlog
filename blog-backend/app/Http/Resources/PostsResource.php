@@ -20,7 +20,7 @@ class PostsResource extends JsonResource
             'subtitle' => $this->subtitle,
             'body' => $this->body,
             'author_id' => $this->author_id,
-            'author_name' => $this->author_name,
+            'author_username' => $this->author_username,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

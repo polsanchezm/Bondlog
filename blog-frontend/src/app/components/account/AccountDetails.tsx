@@ -14,11 +14,11 @@ export default function AccountDetails({ userData }: { userData: User }) {
         <div className="space-y-4">
           <div className="flex items-center space-x-4">
             <div className="h-16 w-16 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold text-2xl">
-              {userData?.name?.charAt(0).toUpperCase()}
+              {userData?.username?.charAt(0).toUpperCase()}
             </div>
             <div>
               <p className="text-lg font-medium text-gray-800 dark:text-white">
-                {userData?.name}
+                {userData?.username}
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-300">
                 {userData?.email}

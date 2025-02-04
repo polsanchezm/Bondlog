@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     {
 
         User::create([
-            'name'     => 'Admin',
+            'username'     => 'Admin',
             'email'    => 'admin@bondlog.com',
             'role'     => 'admin',
             'password' => bcrypt('1qazZAQ!'),

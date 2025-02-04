@@ -9,7 +9,7 @@ import { showToast } from "@/utils/utils";
 import { useToast } from "../hooks/use-toast";
 
 export default function EditAccountForm({ userData }: { userData: Register }) {
-  const [name, setName] = useState(userData.name);
+  const [username, setUsername] = useState(userData.username);
   const [email, setEmail] = useState(userData.email);
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
@@ -24,7 +24,7 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
     setError(null);
 
     const formData = {
-      name: name,
+      username: username,
       email: email,
       password: password,
       password_confirmation: passwordConfirmation,
@@ -103,8 +103,8 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                   Your name
                 </label>
                 <input
-                  defaultValue={name}
-                  onChange={(e) => setName(e.target.value)}
+                  defaultValue={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   type="name"
                   name="name"
                   id="name"
@@ -114,7 +114,7 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
                 />
               </div>
               {errors.name && (
-                <p className="text-red-500 text-sm">{errors.name}</p>
+                <p className="text-red-500 text-sm">{errors.username}</p>
               )}
               <div>
                 <label

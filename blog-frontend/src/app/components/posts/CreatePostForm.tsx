@@ -25,7 +25,7 @@ export default function CreatePostForm() {
       subtitle,
       body,
       id: "",
-      author_name: "",
+      author_username: "",
       author_id: "",
       date: "",
       created_at: "",

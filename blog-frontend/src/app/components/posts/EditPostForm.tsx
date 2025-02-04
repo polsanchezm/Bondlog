@@ -27,7 +27,7 @@ export default function EditPostForm({ post }: { post: Post }) {
       subtitle,
       body,
       id: post.id,
-      author_name: post.author_name,
+      author_username: post.author_username,
       author_id: post.author_id,
       date: post.date,
       created_at: post.created_at,

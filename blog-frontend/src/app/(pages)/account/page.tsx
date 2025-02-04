@@ -1,5 +1,4 @@
 import AccountDetails from "@/components/account/AccountDetails";
-import AccountSkeleton from "@components/skeletons/AccountSkeleton";
 import { fetchUserData } from "@/actions/user";
 import { isAuthenticated } from "@/actions/auth";
 import { redirect } from "next/navigation";
@@ -25,9 +24,6 @@ export default async function Account() {
           </div>
         </div>
       );
-    }
-    if (!data) {
-      return <AccountSkeleton />;
     }
 
     return <AccountDetails userData={data} />;

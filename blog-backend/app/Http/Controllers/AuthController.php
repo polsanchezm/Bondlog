@@ -22,7 +22,7 @@ class AuthController extends Controller
         }
 
         $user = User::create(attributes: [
-            'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'role' => 'user',
             'password' => Hash::make(value: $request->password),
@@ -30,9 +30,7 @@ class AuthController extends Controller
 
         Auth::login(user: $user);
 
-        $token = $user->createToken(name: $user->name . '-AuthToken')->plainTextToken;
-
-        $userId = Auth::user()->id;
+        $token = $user->createToken(name: $user->username . '-AuthToken')->plainTextToken;
 
         return response()->json(data: [
             'message' => 'User registered and logged in successfully',
@@ -48,7 +46,7 @@ class AuthController extends Controller
         $user = User::where(column: 'email', operator: $request->email)->first();
         if (!empty($user)) {
             if (Hash::check(value: $request->password, hashedValue: $user->password)) {
-                $token = $user->createToken(name: $user->name . '-AuthToken')->plainTextToken;
+                $token = $user->createToken(name: $user->username . '-AuthToken')->plainTextToken;
 
                 return response()->json(data: [
                     'message' => 'Login successful',

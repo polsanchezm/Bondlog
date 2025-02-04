@@ -29,14 +29,14 @@ class PostsController extends Controller
             $user = Auth::user();
             try {
                 $user_id = $user->id;
-                $user_name = $user->name;
+                $user_username = $user->username;
 
                 $post = Post::create([
                     'title' => $request->title,
                     'subtitle' => $request->subtitle,
                     'body' => $request->body,
                     'author_id' => $user_id,
-                    'author_name' => $user_name,
+                    'author_username' => $user_username,
                 ]);
 
                 return response()->json([

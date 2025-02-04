@@ -32,7 +32,7 @@ class UserController extends Controller
         $this->authorize('update', $user);
 
         $data = [
-            'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ];

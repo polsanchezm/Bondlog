@@ -7,7 +7,7 @@ interface SessionPayload extends JWTPayload {
 
 interface User {
   id: string;
-  name: string;
+  username: string;
   email: string;
   created_at: string;
   updated_at: string;
@@ -31,14 +31,14 @@ interface Post {
   subtitle: string;
   body: string;
   author_id: string;
-  author_name: string;
+  author_username: string;
   date: string;
   created_at: string;
   updated_at: string;
 }
 
 interface Register {
-  name: string;
+  username: string;
   email: string;
   password: string;
   password_confirmation: string;

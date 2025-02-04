@@ -9,7 +9,7 @@ import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/utils/utils";
 
 export default function SignupForm() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password_confirmation, setPasswordConfirmation] = useState("");
@@ -20,7 +20,7 @@ export default function SignupForm() {
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
-    const userData = { name, email, password, password_confirmation };
+    const userData = { username, email, password, password_confirmation };
 
     const result = SignupFormSchema.safeParse(userData);
 
@@ -76,8 +76,8 @@ export default function SignupForm() {
                   Your name
                 </label>
                 <input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   type="name"
                   name="name"
                   id="name"

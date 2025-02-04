@@ -32,7 +32,7 @@ export default function PostDetail({
         ></p>
 
         <div className="flex flex-col sm:flex-row justify-between text-sm text-gray-500 dark:text-gray-400 mb-6">
-          <p className="sm:text-left">{post?.author_name}</p>
+          <p className="sm:text-left">{post?.author_username}</p>
           <p className="sm:text-right">{formatDate(post?.created_at || "")}</p>
         </div>
 
