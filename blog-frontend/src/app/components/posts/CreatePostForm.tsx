@@ -79,7 +79,7 @@ export default function CreatePostForm() {
   }
 
   return (
-    <section className="bg-white dark:bg-gray-900 p-6 max-w-3xl mx-auto">
+    <section className="p-6 max-w-3xl mx-auto">
       <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white text-center">
         Create a New Post
       </h2>
