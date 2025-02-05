@@ -9,7 +9,7 @@ export default function PostDetail({
   userId,
 }: PostDetailProps) {
   return (
-    <article className="p-6 flex justify-center">
+    <article className="p-6 flex justify-center mb-20">
       <div className="p-6 max-w-3xl w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
           <h1 className="text-3xl sm:text-4xl text-gray-800 dark:text-white font-bold mb-2 sm:mb-0">
