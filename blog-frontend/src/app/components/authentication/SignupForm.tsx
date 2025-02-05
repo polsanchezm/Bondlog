@@ -7,6 +7,8 @@ import { SignupFormSchema } from "@/lib/form-schema";
 import { createSession } from "@lib/session";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/utils/utils";
+import { FormField } from "@/components/ui/field";
+import { Icon } from "@iconify/react";
 
 export default function SignupForm() {
   const [username, setUsername] = useState("");
@@ -21,6 +23,7 @@ export default function SignupForm() {
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     const userData = { username, email, password, password_confirmation };
+    console.log(userData);
 
     const result = SignupFormSchema.safeParse(userData);
 
@@ -59,120 +62,67 @@ export default function SignupForm() {
   }
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create an account
-            </h1>
+    <section className="dark:bg-gray-900 p-6 max-w-3xl mx-auto">
+      <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white text-center">
+        Create an account{" "}
+      </h2>
 
-            <form className="space-y-4 md:space-y-6" onSubmit={handleRegister}>
-              <div>
-                <label
-                  htmlFor="username"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Your username
-                </label>
-                <input
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  type="name"
-                  name="username"
-                  id="username"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="JhonDoe45"
-                  required
-                />
-              </div>
-              {errors.name && (
-                <p className="text-red-500 text-sm">{errors.name}</p>
-              )}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Your email
-                </label>
-                <input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  name="email"
-                  id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="name@company.com"
-                  required
-                />
-              </div>
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email}</p>
-              )}
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Password
-                </label>
-                <input
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                />
-              </div>
-              {errors.password && (
-                <p className="text-red-500 text-sm">{errors.password}</p>
-              )}
-              <div>
-                <label
-                  htmlFor="confirm-password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Confirm password
-                </label>
-                <input
-                  value={password_confirmation}
-                  onChange={(e) => setPasswordConfirmation(e.target.value)}
-                  type="password"
-                  name="confirm-password"
-                  id="confirm-password"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                />
-              </div>
-              {errors.password_confirmation && (
-                <p className="text-red-500 text-sm">
-                  {errors.password_confirmation}
-                </p>
-              )}
-              <button
-                type="submit"
-                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                Create an account
-              </button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?{" "}
-                <a
-                  href="/login"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >
-                  Login here
-                </a>
-              </p>
-            </form>
-          </div>
-        </div>
-      </div>
+      <form
+        onSubmit={handleRegister}
+        className="max-w-3xl mx-auto bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-md space-y-6"
+      >
+        <FormField
+          label="Your username"
+          id="username"
+          label_type="text"
+          value={username}
+          setValue={setUsername}
+          error={errors.username}
+        />
+
+        <FormField
+          label="Your email"
+          id="email"
+          label_type="email"
+          value={email}
+          setValue={setEmail}
+          error={errors.email}
+        />
+
+        <FormField
+          label="Your password"
+          id="password"
+          label_type="password"
+          value={password}
+          setValue={setPassword}
+          error={errors.password}
+        />
+
+        <FormField
+          label="Confirm your password"
+          id="confirm-password"
+          label_type="password"
+          value={password_confirmation}
+          setValue={setPasswordConfirmation}
+          error={errors.passwordConfirmation}
+        />
+
+        <button
+          type="submit"
+          className="w-full flex justify-center items-center h-16 px-5 py-3 text-white font-medium text-sm rounded-lg bg-green-600 hover:bg-green-800 transition"
+        >
+          <Icon icon="ion:person-add-outline" className="w-9 h-9" />
+        </button>
+        <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+          Already have an account?{" "}
+          <a
+            href="/login"
+            className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+          >
+            Login here
+          </a>
+        </p>
+      </form>
     </section>
   );
 }

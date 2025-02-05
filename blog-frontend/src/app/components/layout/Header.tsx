@@ -9,73 +9,81 @@ export default async function Header() {
   const isLoggedIn = !!session?.userToken;
 
   return (
-    <Navbar fluid className="p-4 bg-gray-100 dark:bg-gray-700">
-      <NavbarBrand href="/">
-        <Image
-          src="/images/logo.png"
-          priority={true}
-          alt="logo"
-          width={40}
-          height={40}
-          className="dark:invert my-4 mx-2"
-          style={{ width: "auto", height: "auto" }}
-        />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white ml-4">
-          Home
-        </span>
-      </NavbarBrand>
-      <div className="flex md:order-2 gap-4">
-        {!isLoggedIn && (
-          <div className="flex items-center gap-3">
-            <Button
-              className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800"
-              href="/login"
-            >
-              <Icon icon="lucide:log-in" className="w-4 h-4 flex-shrink-0" />
-              <span className="ml-2 text-ellipsis overflow-hidden whitespace-nowrap">
-                Log In
-              </span>
-            </Button>
-            <Button
-              className="flex items-center gap-2 px-3 py-1.5 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700 dark:bg-green-700 dark:text-white dark:hover:bg-green-800"
-              href="/signup"
-            >
-              <Icon
-                icon="ion:person-add-outline"
-                className="w-4 h-4 flex-shrink-0"
-              />
-              <span className="ml-2 text-ellipsis overflow-hidden whitespace-nowrap">
-                Sign Up
-              </span>
-            </Button>
-          </div>
-        )}
+    <Navbar
+      fluid
+      className="z-50 fixed bottom-0 left-0 w-full bg-gray-100 shadow-md dark:bg-gray-700 transition-all md:relative md:top-0 md:shadow-none"
+    >
+      <div className="flex w-full justify-around md:justify-between items-center px-4 py-2">
+        <NavbarBrand href="/" className="flex items-center">
+          <Image
+            src="/images/logo.png"
+            priority
+            alt="logo"
+            width={32}
+            height={32}
+            className="dark:invert"
+          />
+        </NavbarBrand>
 
-        {isLoggedIn && (
-          <div className="flex items-center gap-3">
-            <Button
-              className="flex items-center gap-2 px-3 py-1.5 dark:bg-black dark:text-white bg-black text-white text-sm font-medium rounded dark:hover:bg-gray-800 dark:hover:text-white hover:bg-gray-800 hover:text-white"
-              href="/blog/create"
-            >
-              <Icon icon="lucide:plus" className="w-4 h-4 flex-shrink-0" />
-              <span className="ml-2 text-ellipsis overflow-hidden whitespace-nowrap">
-                Create a Post
-              </span>
-            </Button>
-            <Button
-              className="flex items-center gap-2 px-3 py-1.5 dark:bg-black dark:text-white bg-black text-white text-sm font-medium rounded dark:hover:bg-gray-800 dark:hover:text-white hover:bg-gray-800 hover:text-white"
-              href="/account"
-            >
-              <Icon icon="lucide:user" className="w-4 h-4 flex-shrink-0" />
-              <span className="ml-2 text-ellipsis overflow-hidden whitespace-nowrap">
-                Account
-              </span>
-            </Button>
-            <LogoutAction />
-          </div>
-        )}
-        <DarkThemeToggle />
+        <div className="flex items-center gap-4 md:ml-auto">
+          {!isLoggedIn ? (
+            <div className="flex items-center gap-3">
+              <NavButton
+                href="/login"
+                icon="lucide:log-in"
+                label="Log In"
+                color="blue"
+              />
+              <NavButton
+                href="/signup"
+                icon="ion:person-add-outline"
+                label="Sign Up"
+                color="green"
+              />
+            </div>
+          ) : (
+            <div className="flex items-center gap-3">
+              <NavButton
+                href="/blog/create"
+                icon="lucide:plus"
+                label="Create a Post"
+              />
+              <NavButton href="/account" icon="lucide:user" label="Account" />
+              <LogoutAction />
+            </div>
+          )}
+          <DarkThemeToggle />
+        </div>
       </div>
     </Navbar>
   );
 }
+
+const NavButton = ({
+  href,
+  icon,
+  label,
+  color = "black",
+}: {
+  href: string;
+  icon: string;
+  label: string;
+  color?: string;
+}) => {
+  const baseColor =
+    color === "blue"
+      ? "bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+      : color === "green"
+      ? "bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800"
+      : "bg-gray-900 hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-600";
+
+  return (
+    <Button
+      href={href}
+      className={`flex flex-col w-16 md:w-auto xl:w-auto items-center px-4 py-2 text-white text-xs font-medium rounded transition-all md:flex-row md:text-sm ${baseColor}`}
+      aria-label={label}
+    >
+      <Icon icon={icon} className="w-4 h-4 md:w-5 md:h-5 xl:w-5 xl:h-5" />
+    </Button>
+  );
+};

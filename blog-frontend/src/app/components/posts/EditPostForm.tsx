@@ -7,6 +7,8 @@ import { Post } from "@lib/interfaces";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/utils/utils";
 import { PostSchema } from "@/lib/form-schema";
+import { Icon } from "@iconify/react";
+import { FormField } from "@/components/ui/field";
 
 export default function EditPostForm({ post }: { post: Post }) {
   const [title, setTitle] = useState(post.title);
@@ -14,13 +16,15 @@ export default function EditPostForm({ post }: { post: Post }) {
   const [body, setBody] = useState(post.body);
   const [error, setError] = useState<string | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
+  const { toast } = useToast();
   const router = useRouter();
 
   async function handlePostUpdate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
+    setLoading(true);
 
     const formData = {
       title,
@@ -33,14 +37,13 @@ export default function EditPostForm({ post }: { post: Post }) {
       created_at: post.created_at,
       updated_at: post.updated_at,
     };
-    const result = PostSchema.safeParse(formData);
 
+    const result = PostSchema.safeParse(formData);
     if (!result.success) {
       const fieldErrors = result.error.flatten().fieldErrors as Record<
         string,
         string[]
       >;
-
       setErrors(
         Object.keys(fieldErrors).reduce<Record<string, string>>((acc, key) => {
           acc[key] = fieldErrors[key]?.[0] || "";
@@ -48,6 +51,7 @@ export default function EditPostForm({ post }: { post: Post }) {
         }, {})
       );
       showToast("validationError", toast);
+      setLoading(false);
       return;
     }
 
@@ -55,101 +59,93 @@ export default function EditPostForm({ post }: { post: Post }) {
 
     try {
       const { data, error } = await updatePost(formData, post.id);
-
-      if (error) {
+      if (error)
         throw new Error(
-          error.message ||
-            "An error occurred while creating the post. Please try again later."
+          error.message || "An error occurred while updating the post."
         );
-      }
-      showToast("successPostEdit", toast);
 
+      showToast("successPostEdit", toast);
       router.push(`/blog/${data.post.id}`);
-    } catch (error: unknown) {
+    } catch (error) {
       setError(
-        "An error occurred while creating the post. Please try again later."
+        "An error occurred while updating the post. Please try again later."
       );
-      if (error instanceof Error) {
-        showToast("genericError", toast);
-        console.error("Error:", error);
-      } else {
-        console.error("An unknown error occurred", error);
-      }
+      showToast("genericError", toast);
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <form onSubmit={handlePostUpdate}>
-      {error && (
-        <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
-          {error}
-        </div>
-      )}
-      <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-        <div className="sm:col-span-2">
-          <label
-            htmlFor="title"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Post title
-          </label>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-            placeholder="Type post title"
-            onChange={(e) => setTitle(e.target.value)}
-            value={title}
-            required
-          />
-        </div>
-        {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
-        <div className="sm:col-span-2">
-          <label
-            htmlFor="subtitle"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Post subtitle
-          </label>
-          <input
-            type="text"
-            name="subtitle"
-            id="subtitle"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-            placeholder="Type post subtitle"
-            onChange={(e) => setSubtitle(e.target.value)}
-            value={subtitle}
-            required
-          />
-        </div>
-        {errors.subtitle && (
-          <p className="text-red-500 text-sm">{errors.subtitle}</p>
+    <section className="dark:bg-gray-900 p-6 max-w-3xl mx-auto">
+      <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white text-center">
+        Edit Post
+      </h2>
+      <form
+        onSubmit={handlePostUpdate}
+        className="max-w-3xl mx-auto bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-md space-y-6"
+      >
+        {error && (
+          <div className="p-3 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
+            {error}
+          </div>
         )}
-        <div className="sm:col-span-2">
+
+        {/* Title */}
+        <FormField
+          label="Post Title"
+          id="title"
+          label_type="text"
+          value={title}
+          setValue={setTitle}
+          error={errors.title}
+        />
+
+        {/* Subtitle */}
+        <FormField
+          label="Post Subtitle"
+          id="subtitle"
+          label_type="text"
+          value={subtitle}
+          setValue={setSubtitle}
+          error={errors.subtitle}
+        />
+
+        {/* Body */}
+        <div>
           <label
             htmlFor="body"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block text-sm font-medium text-gray-900 dark:text-white"
           >
-            Post body
+            Post Body
           </label>
           <textarea
             id="body"
-            rows={8}
-            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-            placeholder="Type post body"
+            rows={6}
+            className="w-full p-3 mt-1 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500"
+            placeholder="Write your post content..."
             onChange={(e) => setBody(e.target.value)}
             value={body}
           ></textarea>
+          {errors.body && (
+            <p className="mt-1 text-red-500 text-sm">{errors.body}</p>
+          )}
         </div>
-        {errors.body && <p className="text-red-500 text-sm">{errors.body}</p>}
-      </div>
-      <button
-        type="submit"
-        className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
-      >
-        Edit post
-      </button>
-    </form>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full flex justify-center items-center h-16 px-5 py-3 text-white font-medium text-sm rounded-lg bg-green-600 hover:bg-green-800 transition"
+        >
+          {loading ? (
+            <Icon icon="line-md:loading-loop" className="w-6 h-6" />
+          ) : (
+            <Icon icon="material-symbols:check-rounded" className="w-9 h-9" />
+          )}
+        </button>
+      </form>
+    </section>
   );
 }

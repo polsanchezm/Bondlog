@@ -6,6 +6,8 @@ import { FormEvent, useState } from "react";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/utils/utils";
 import { PostSchema } from "@/lib/form-schema";
+import { Icon } from "@iconify/react";
+import { FormField } from "@/components/ui/field";
 
 export default function CreatePostForm() {
   const router = useRouter();
@@ -14,11 +16,14 @@ export default function CreatePostForm() {
   const [body, setBody] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [loading, setLoading] = useState(false);
+
   const { toast } = useToast();
 
   async function handlePostCreation(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
+    setLoading(true);
 
     const formData = {
       title,
@@ -39,7 +44,6 @@ export default function CreatePostForm() {
         string,
         string[]
       >;
-
       setErrors(
         Object.keys(fieldErrors).reduce<Record<string, string>>((acc, key) => {
           acc[key] = fieldErrors[key]?.[0] || "";
@@ -47,6 +51,7 @@ export default function CreatePostForm() {
         }, {})
       );
       showToast("validationError", toast);
+      setLoading(false);
       return;
     }
 
@@ -55,112 +60,94 @@ export default function CreatePostForm() {
     try {
       const { data, error } = await createPost(formData);
 
-      if (error) {
+      if (error)
         throw new Error(
-          error.message ||
-            "An error occurred while creating the post. Please try again later."
+          error.message || "An error occurred while creating the post."
         );
-      }
 
       showToast("successPost", toast);
-
       router.push(`/blog/${data.post.id}`);
-    } catch (error: unknown) {
+    } catch (error) {
       setError(
         "An error occurred while creating the post. Please try again later."
       );
-
-      if (error instanceof Error) {
-        showToast("genericError", toast);
-        console.error("Error:", error);
-      } else {
-        console.error("An unknown error occurred", error);
-      }
+      showToast("genericError", toast);
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <section className="bg-white dark:bg-gray-900">
-      <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-        <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-          New post
-        </h2>
+    <section className="bg-white dark:bg-gray-900 p-6 max-w-3xl mx-auto">
+      <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white text-center">
+        Create a New Post
+      </h2>
 
-        {error && (
-          <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
-            {error}
-          </div>
-        )}
+      {error && (
+        <div className="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
+          {error}
+        </div>
+      )}
 
-        <form onSubmit={handlePostCreation}>
-          <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="title"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Post title
-              </label>
-              <input
-                type="text"
-                name="title"
-                id="title"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Type post title"
-                onChange={(e) => setTitle(e.target.value)}
-                required
-              />
-            </div>
-            {errors.title && (
-              <p className="text-red-500 text-sm">{errors.title}</p>
-            )}
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="subtitle"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Post subtitle
-              </label>
-              <input
-                type="text"
-                name="subtitle"
-                id="subtitle"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Type post subtitle"
-                onChange={(e) => setSubtitle(e.target.value)}
-                required
-              />
-            </div>
-            {errors.subtitle && (
-              <p className="text-red-500 text-sm">{errors.subtitle}</p>
-            )}
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="body"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Post body
-              </label>
-              <textarea
-                id="body"
-                rows={8}
-                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Type post body"
-                onChange={(e) => setBody(e.target.value)}
-              ></textarea>
-            </div>
-            {errors.body && (
-              <p className="text-red-500 text-sm">{errors.body}</p>
-            )}
-          </div>
-          <button
-            type="submit"
-            className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+      <form
+        onSubmit={handlePostCreation}
+        className="max-w-3xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md space-y-6"
+      >
+        {/* Title */}
+        <FormField
+          label="Post Title"
+          id="title"
+          label_type="text"
+          value={title}
+          setValue={setTitle}
+          error={errors.title}
+        />
+
+        {/* Subtitle */}
+        <FormField
+          label="Post Subtitle"
+          id="subtitle"
+          label_type="text"
+          value={subtitle}
+          setValue={setSubtitle}
+          error={errors.subtitle}
+        />
+
+        {/* Body */}
+        <div>
+          <label
+            htmlFor="body"
+            className="block text-sm font-medium text-gray-900 dark:text-white"
           >
-            Create post
-          </button>
-        </form>
-      </div>
+            Post Body
+          </label>
+          <textarea
+            id="body"
+            rows={6}
+            className="w-full p-3 mt-1 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500"
+            placeholder="Write your post content..."
+            onChange={(e) => setBody(e.target.value)}
+            value={body}
+          ></textarea>
+          {errors.body && (
+            <p className="mt-1 text-red-500 text-sm">{errors.body}</p>
+          )}
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full flex justify-center items-center h-16 px-5 py-3 text-white font-medium text-sm rounded-lg bg-green-600 hover:bg-green-800 transition"
+        >
+          {loading ? (
+            <Icon icon="line-md:loading-loop" className="w-6 h-6" />
+          ) : (
+            <Icon icon="material-symbols:check-rounded" className="w-9 h-9" />
+          )}
+        </button>
+      </form>
     </section>
   );
 }

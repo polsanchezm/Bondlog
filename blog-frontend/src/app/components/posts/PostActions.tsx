@@ -49,23 +49,17 @@ export default function PostActions({
       <div className="flex flex-col sm:flex-row gap-4 w-full">
         {userId === post?.author_id && (
           <Button
-            className="w-full sm:w-1/2 flex items-center px-3 py-1.5 mt-4 sm:mt-0 dark:bg-black dark:text-white bg-black text-white text-sm font-medium rounded dark:hover:bg-gray-700 dark:hover:text-white hover:bg-gray-700 hover:text-white"
+            className="w-full sm:w-1/2 flex items-center px-3 py-1.5 mt-4 sm:mt-0 rounded bg-green-600 hover:bg-green-800 dark:bg-green-600 dark:hover:bg-green-800"
             href={`/blog/${postId}/edit`}
           >
-            <Icon icon="mynaui:pencil" className="w-4 h-4 flex-shrink-0" />
-            <span className="ml-2 text-ellipsis overflow-hidden whitespace-nowrap">
-              Edit Post
-            </span>
+            <Icon icon="mynaui:pencil" className="w-6 h-6 flex-shrink-0" />
           </Button>
         )}
         <Button
           className="w-full sm:w-1/2 flex items-center px-3 py-1.5 mt-4 sm:mt-0 dark:bg-red-700 dark:text-white bg-red-700 text-white text-sm font-medium rounded dark:hover:bg-red-500 dark:hover:text-white hover:bg-red-500 hover:text-white"
           onClick={handleDelete}
         >
-          <Icon icon="mynaui:trash" className="w-4 h-4 flex-shrink-0" />
-          <span className="ml-2 text-ellipsis overflow-hidden whitespace-nowrap">
-            Delete Post
-          </span>
+          <Icon icon="mynaui:trash" className="w-6 h-6 flex-shrink-0" />
         </Button>
       </div>
     </div>

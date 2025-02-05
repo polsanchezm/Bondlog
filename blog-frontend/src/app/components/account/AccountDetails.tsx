@@ -1,16 +1,17 @@
 "use client";
 
+import { Icon } from "@iconify/react";
 import { User } from "@lib/interfaces";
 import { formatDate, checkUpdatedAt } from "@utils/utils";
 import { Button } from "flowbite-react";
 
 export default function AccountDetails({ userData }: { userData: User }) {
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center p-6">
+      <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white text-center">
+        User Profile
+      </h2>
       <div className="max-w-lg w-full p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4 text-center">
-          User Profile
-        </h2>
         <div className="space-y-4">
           <div className="flex items-center space-x-4">
             <div className="h-16 w-16 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold text-2xl">
@@ -34,10 +35,10 @@ export default function AccountDetails({ userData }: { userData: User }) {
         </div>
         {userData?.role !== "admin" && (
           <Button
-            className="mt-6 w-full bg-blue-500 text-white font-medium py-2 rounded-md hover:bg-blue-600 transition-colors dark:bg-blue-700 dark:hover:bg-blue-600"
+            className="mt-6 w-full py-3 flex items-center rounded bg-green-600 hover:bg-green-800 dark:bg-green-600 dark:hover:bg-green-800"
             href="/account/edit"
           >
-            Edit Profile
+            <Icon icon="mynaui:pencil" className="w-7 h-7" />
           </Button>
         )}
       </div>
