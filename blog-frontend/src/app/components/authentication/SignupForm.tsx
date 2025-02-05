@@ -23,8 +23,6 @@ export default function SignupForm() {
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     const userData = { username, email, password, password_confirmation };
-    console.log(userData);
-
     const result = SignupFormSchema.safeParse(userData);
 
     if (!result.success) {
