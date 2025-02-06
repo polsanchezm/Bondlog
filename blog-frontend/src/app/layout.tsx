@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeModeScript } from "flowbite-react";
 import Header from "@/components/layout/Header";
 import { Toaster } from "@/components/ui/toaster";
+import { Analytics } from "@vercel/analytics/react";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -28,6 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <Analytics />
         <ThemeModeScript mode="dark" />
       </head>
       <body
