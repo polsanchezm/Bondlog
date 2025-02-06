@@ -15,7 +15,7 @@ class PostsController extends Controller
 
     function index()
     {
-        $posts = Post::orderBy('created_at', 'asc')->simplePaginate(9);
+        $posts = Post::orderBy('created_at', 'desc')->simplePaginate(9);
 
         return response()->json([
             'data' => PostsResource::collection($posts),
