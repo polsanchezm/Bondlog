@@ -11,6 +11,11 @@ const config: Config = {
   darkMode: ["class"],
   theme: {
     extend: {
+      typography: ({ theme }: { theme: (path: string) => string }) => ({
+        pink: {
+          css: { "--tw-prose-invert-links": theme("colors.white") },
+        },
+      }),
       colors: {
         primary: {
           "50": "#eff6ff",
@@ -107,6 +112,10 @@ const config: Config = {
       ],
     },
   },
-  plugins: [flowbite.plugin(), require("tailwindcss-animate")],
+  plugins: [
+    flowbite.plugin(),
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+  ],
 };
 export default config;
