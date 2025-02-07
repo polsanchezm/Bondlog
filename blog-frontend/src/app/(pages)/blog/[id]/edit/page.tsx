@@ -40,6 +40,6 @@ export default async function EditPost({ params }: { params: Params }) {
         </article>
       );
     }
-    return <EditPostForm post={post} />;
+    return <EditPostForm post={post} authCheck={authCheck} />;
   }
 }

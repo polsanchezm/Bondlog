@@ -17,8 +17,13 @@ const BodyEditor = dynamic(() => import("@/components/tiptap/BodyEditor"), {
   ssr: false,
 });
 
-export default async function EditPostForm({ post }: { post: Post }) {
-  const authCheck = await isAuthenticated();
+export default function EditPostForm({
+  post,
+  authCheck,
+}: {
+  post: Post;
+  authCheck: boolean;
+}) {
   if (!authCheck) {
     redirect("/login");
   } else {
