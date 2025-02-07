@@ -51,7 +51,7 @@ export default function Posts({
         </Link>
       </article>
     ),
-    [posts]
+    [user, isLoggedIn]
   );
 
   return (

@@ -30,20 +30,25 @@ export function DeletePost({ postId }: { postId: string }) {
   }, [postId, router, toast]);
 
   return (
-    <button
-      className="flex justify-center items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all"
-      onClick={handleDelete}
-      disabled={loading}
-      aria-label="Delete Post"
-    >
-      {loading ? (
-        <Icon icon="line-md:loading-loop" className="w-6 h-6 animate-spin" />
-      ) : (
-        <>
-          <Icon icon="mynaui:trash" className="w-6 h-6" />
-          <span>Delete</span>
-        </>
+    <div>
+      <button
+        className="flex justify-center items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all"
+        onClick={handleDelete}
+        disabled={loading}
+        aria-label="Delete Post"
+      >
+        {loading ? (
+          <Icon icon="line-md:loading-loop" className="w-6 h-6 animate-spin" />
+        ) : (
+          <>
+            <Icon icon="mynaui:trash" className="w-6 h-6" />
+            <span>Delete</span>
+          </>
+        )}
+      </button>
+      {errorMessage && (
+        <p className="mt-2 text-sm text-red-600">{errorMessage}</p>
       )}
-    </button>
+    </div>
   );
 }

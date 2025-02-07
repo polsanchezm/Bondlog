@@ -75,7 +75,7 @@ export default function CreatePostForm() {
         showToast("successPost", toast);
         router.replace(`/blog/${data.post.id}`);
       } catch (error) {
-        setErrorMessage((error as any)?.message);
+        setErrorMessage((error as Error)?.message);
         showToast("genericError", toast);
         console.error("Error:", error);
       } finally {

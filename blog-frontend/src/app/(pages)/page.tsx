@@ -25,9 +25,7 @@ function HomeContent() {
   const [error, setError] = useState<APIError | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [userError, setUserError] = useState<APIError | null>(null);
-
-  const [session, setSession] = useState<SessionPayload | null>(null); // 🔹 Tipado correctamente
-  const [sessionError, setSessionError] = useState<APIError | null>(null);
+  const [session, setSession] = useState<SessionPayload | null>(null);
 
   useEffect(() => {
     async function loadUserData() {
@@ -89,7 +87,7 @@ function HomeContent() {
     );
   }
 
-  if (error) {
+  if (error || userError) {
     return (
       <article className="flex justify-center items-center min-h-screen">
         <div className="w-full max-w-md rounded-lg shadow-lg p-8 bg-white dark:bg-gray-800">

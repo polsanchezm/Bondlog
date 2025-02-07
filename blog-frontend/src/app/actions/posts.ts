@@ -1,7 +1,6 @@
 import axios from "@utils/axios";
 import { APIError, Post } from "@lib/interfaces";
 import { getSession } from "./auth";
-import useSWR, { mutate } from "swr";
 
 const fetchPosts = async (page = 1) => {
   try {
@@ -113,7 +112,7 @@ const deletePost = async (id: string) => {
   }
 };
 
-const togglePin = async (postId: string, isPinned: boolean) => {
+const togglePin = async (postId: string) => {
   try {
     const session = await getSession();
     const response = await axios.patch(

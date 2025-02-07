@@ -37,9 +37,9 @@ export function PostDropdown({
   const userId = user.id;
   const userRole = user.role;
 
-  const handleTogglePin = async (postId: string, currentIsPinned: boolean) => {
+  const handleTogglePin = async (postId: string) => {
     try {
-      const response = await togglePin(postId, !currentIsPinned);
+      const response = await togglePin(postId);
       setIsPinned(response?.data.is_pinned);
     } catch (error) {
       console.error("Error toggling pin:", error);

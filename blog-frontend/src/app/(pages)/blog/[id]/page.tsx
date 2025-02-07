@@ -50,8 +50,6 @@ export default async function BlogPost({ params }: { params: Params }) {
     );
   }
 
-  const userId = isLoggedIn && userData?.data ? userData.data.id : "";
-
   return (
     <PostDetail post={post} user={userData?.data} isLoggedIn={isLoggedIn} />
   );

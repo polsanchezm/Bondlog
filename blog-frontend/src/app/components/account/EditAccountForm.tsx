@@ -3,7 +3,7 @@
 import { updateUserData } from "@/actions/user";
 import { Register } from "@lib/interfaces";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState, useCallback, useMemo } from "react";
+import { FormEvent, useState, useCallback } from "react";
 import { SignupFormSchema } from "@/lib/form-schema";
 import { showToast } from "@/utils/utils";
 import { useToast } from "../hooks/use-toast";
