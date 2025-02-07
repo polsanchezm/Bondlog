@@ -11,7 +11,6 @@ import { PostSchema } from "@/lib/form-schema";
 import { Icon } from "@iconify/react";
 import { FormField } from "@/components/ui/field";
 import { redirect } from "next/navigation";
-import { isAuthenticated } from "@/actions/auth";
 
 const BodyEditor = dynamic(() => import("@/components/tiptap/BodyEditor"), {
   ssr: false,
