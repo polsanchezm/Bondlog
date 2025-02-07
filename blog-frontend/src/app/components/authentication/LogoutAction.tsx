@@ -2,49 +2,43 @@
 
 import { userLogout } from "@/actions/auth";
 import { Icon } from "@iconify/react";
-import { Button } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/utils/utils";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 export default function LogoutAction() {
   const { toast } = useToast();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  async function handleLogout() {
+  const handleLogout = useCallback(async () => {
     setLoading(true);
     try {
       await userLogout();
       showToast("successLogout", toast);
-      router.push("/");
+      router.replace("/");
     } catch (error) {
       showToast("genericError", toast);
       console.error("Logout error:", error);
     } finally {
       setLoading(false);
     }
-  }
+  }, [router, toast]);
 
   return (
-    <Button
+    <button
       onClick={handleLogout}
       disabled={loading}
-      className="flex w-16 md:w-auto xl:w-auto items-center gap-2 px-4 py-2 text-white text-sm font-medium rounded transition-all bg-red-600 hover:bg-red-500 dark:bg-red-700 dark:hover:bg-red-500 disabled:bg-gray-400 dark:disabled:bg-gray-600"
+      className="flex items-center px-6 py-4 md:w-auto xl:w-auto gap-2 text-white text-sm font-medium rounded transition-all 
+                 bg-red-600 hover:bg-red-500 dark:bg-red-700 dark:hover:bg-red-500 
+                 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed 
+                 focus:ring focus:ring-red-300 dark:focus:ring-red-600 active:scale-95"
       aria-label="Log Out"
+      aria-live="polite"
     >
-      {loading ? (
-        <Icon
-          icon="eos-icons:loading"
-          className="w-3 h-3 md:w-5 md:h-5 xl:w-5 xl:h-5 animate-spin"
-        />
-      ) : (
-        <Icon
-          icon="lucide:log-out"
-          className="w-4 h-4 md:w-5 md:h-5 xl:w-5 xl:h-5"
-        />
-      )}
-    </Button>
+      <Icon icon="lucide:log-out" className="w-5 h-5 md:w-6 md:h-6" />
+      <span className="hidden md:inline ml-2">Log Out</span>
+    </button>
   );
 }

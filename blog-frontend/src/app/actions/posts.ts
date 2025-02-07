@@ -1,12 +1,16 @@
 import axios from "@utils/axios";
 import { APIError, Post } from "@lib/interfaces";
 import { getSession } from "./auth";
-import { ApiError } from "next/dist/server/api-utils";
+import useSWR, { mutate } from "swr";
 
 const fetchPosts = async (page = 1) => {
   try {
     const response = await axios.get(`/posts?page=${page}`);
-    return { data: response.data.data, pagination: response.data.pagination, error: null };
+    return {
+      data: response.data.data,
+      pagination: response.data.pagination,
+      error: null,
+    };
   } catch (error: unknown) {
     console.error("Error fetching posts:", error);
 
@@ -15,6 +19,7 @@ const fetchPosts = async (page = 1) => {
       pagination: null,
       error: {
         message: (error as APIError).message || "Something went wrong",
+        data: (error as APIError).response?.data?.message,
         status: (error as APIError).response?.status || 500,
       },
     };
@@ -32,6 +37,7 @@ const fetchPostDetail = async (id: string) => {
       data: null,
       error: {
         message: (error as APIError).message || "Something went wrong",
+        data: (error as APIError).response?.data?.message,
         status: (error as APIError).response?.status || 500,
       },
     };
@@ -53,7 +59,8 @@ const createPost = async (formData: Post) => {
     return {
       data: null,
       error: {
-        message: (error as ApiError).message || "Something went wrong",
+        message: (error as APIError).message || "Something went wrong",
+        data: (error as APIError).response?.data?.message,
         status: (error as APIError).response?.status || 500,
       },
     };
@@ -75,7 +82,8 @@ const updatePost = async (formData: Post, id: string) => {
     return {
       data: null,
       error: {
-        message: (error as ApiError).message || "Something went wrong",
+        message: (error as APIError).message || "Something went wrong",
+        data: (error as APIError).response?.data?.message,
         status: (error as APIError).response?.status || 500,
       },
     };
@@ -97,11 +105,38 @@ const deletePost = async (id: string) => {
     return {
       data: null,
       error: {
-        message: (error as ApiError).message || "Something went wrong",
+        message: (error as APIError).message || "Something went wrong",
+        data: (error as APIError).response?.data?.message,
         status: (error as APIError).response?.status || 500,
       },
     };
   }
 };
 
-export { fetchPosts, fetchPostDetail, createPost, updatePost, deletePost };
+const togglePin = async (postId: string, isPinned: boolean) => {
+  try {
+    const session = await getSession();
+    const response = await axios.patch(
+      `/posts/pin/${postId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${session?.userToken}`,
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error al fijar/desfijar el post:", error);
+  }
+};
+
+export {
+  fetchPosts,
+  fetchPostDetail,
+  createPost,
+  updatePost,
+  deletePost,
+  togglePin,
+};

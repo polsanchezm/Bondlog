@@ -1,8 +1,9 @@
 import { getSession } from "@/actions/auth";
-import { Button, Navbar, NavbarBrand, DarkThemeToggle } from "flowbite-react";
+import { Navbar, NavbarBrand, DarkThemeToggle } from "flowbite-react";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 import LogoutAction from "../authentication/LogoutAction";
+import Link from "next/link";
 
 export default async function Header() {
   const session = await getSession();
@@ -26,38 +27,33 @@ export default async function Header() {
         </NavbarBrand>
 
         <div className="flex items-center gap-4 md:ml-auto">
-          {!isLoggedIn ? (
-            <div className="flex items-center gap-3">
-              <NavButton
-                href="/login"
-                icon="lucide:log-in"
-                label="Log In"
-                color="blue"
-              />
-              <NavButton
-                href="/signup"
-                icon="ion:person-add-outline"
-                label="Sign Up"
-                color="green"
-              />
-            </div>
-          ) : (
-            <div className="flex items-center gap-3">
-              <NavButton
-                href="/blog/create"
-                icon="lucide:plus"
-                label="Create a Post"
-              />
-              <NavButton href="/account" icon="lucide:user" label="Account" />
-              <LogoutAction />
-            </div>
-          )}
+          {isLoggedIn ? renderUserButtons() : renderAuthButtons()}
           <DarkThemeToggle />
         </div>
       </div>
     </Navbar>
   );
 }
+
+const renderAuthButtons = () => (
+  <div className="flex items-center gap-3">
+    <NavButton href="/login" icon="lucide:log-in" label="Log In" color="blue" />
+    <NavButton
+      href="/signup"
+      icon="ion:person-add-outline"
+      label="Sign Up"
+      color="green"
+    />
+  </div>
+);
+
+const renderUserButtons = () => (
+  <div className="flex items-center gap-3">
+    <NavButton href="/blog/create" icon="lucide:plus" label="Create a Post" />
+    <NavButton href="/account" icon="lucide:user" label="Account" />
+    <LogoutAction />
+  </div>
+);
 
 const NavButton = ({
   href,
@@ -78,12 +74,14 @@ const NavButton = ({
       : "bg-gray-900 hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-600";
 
   return (
-    <Button
-      href={href}
-      className={`flex flex-col w-16 md:w-auto xl:w-auto items-center px-4 py-2 text-white text-xs font-medium rounded transition-all md:flex-row md:text-sm ${baseColor}`}
-      aria-label={label}
-    >
-      <Icon icon={icon} className="w-4 h-4 md:w-5 md:h-5 xl:w-5 xl:h-5" />
-    </Button>
+    <Link href={href}>
+      <button
+        className={`flex flex-col items-center justify-center px-6 py-4 md:w-auto xl:w-auto text-white text-xs font-medium rounded transition-all md:flex-row md:text-sm ${baseColor} focus:ring focus:ring-opacity-50 active:scale-95`}
+        aria-label={label}
+      >
+        <Icon icon={icon} className="w-5 h-5 md:w-6 md:h-6" />
+        <span className="hidden md:inline ml-2">{label}</span>
+      </button>
+    </Link>
   );
 };

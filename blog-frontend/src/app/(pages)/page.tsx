@@ -1,11 +1,17 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { fetchPosts } from "@/actions/posts";
+import { fetchUserData } from "@/actions/user";
+import { getSession } from "@/actions/auth";
 import Posts from "@/components/posts/Posts";
-import { APIError, PaginationProps } from "@/lib/interfaces";
+import {
+  APIError,
+  PaginationProps,
+  SessionPayload,
+  User,
+} from "@/lib/interfaces";
 import { Skeleton } from "@/components/ui/skeleton";
 
 function HomeContent() {
@@ -17,14 +23,48 @@ function HomeContent() {
   const [posts, setPosts] = useState([]);
   const [pagination, setPagination] = useState<PaginationProps | null>(null);
   const [error, setError] = useState<APIError | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [userError, setUserError] = useState<APIError | null>(null);
+
+  const [session, setSession] = useState<SessionPayload | null>(null); // 🔹 Tipado correctamente
+  const [sessionError, setSessionError] = useState<APIError | null>(null);
 
   useEffect(() => {
+    async function loadUserData() {
+      const { data, error } = await fetchUserData();
+      if (error) {
+        setUserError(error);
+      } else {
+        setUser(data);
+      }
+    }
+
+    async function loadSession() {
+      const sessionData = await getSession();
+
+      if (
+        sessionData &&
+        "userToken" in sessionData &&
+        "expiresAt" in sessionData
+      ) {
+        setSession({
+          userToken: sessionData.userToken as string,
+          expiresAt: new Date(sessionData.expiresAt as string),
+        });
+      } else {
+        setSession(null);
+      }
+    }
+
     async function loadPosts() {
       const { data, pagination, error } = await fetchPosts(currentPage);
       setPosts(data || []);
       setPagination(pagination);
       setError(error);
     }
+
+    loadUserData();
+    loadSession();
     loadPosts();
   }, [currentPage]);
 
@@ -34,11 +74,13 @@ function HomeContent() {
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 max-w-7xl w-full">
           {Array.from({ length: 6 }).map((_, index) => (
             <div key={index} className="flex flex-col">
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 h-64">
-                <Skeleton className="mb-2 h-10" />{" "}
-                <Skeleton className="mb-2 w-3/4 h-4 mt-8" />{" "}
-                <Skeleton className="mb-2 w-1/2 h-4 mt-8" />{" "}
-                <Skeleton className="w-1/3 h-4 mt-8" />{" "}
+              <div className="bg-gray-900 text-white dark:bg-gray-800 rounded-lg shadow-xl p-6 h-40 flex flex-col justify-between">
+                <Skeleton className="w-2/3 h-6 mb-2" />
+                <Skeleton className="w-1/2 h-4 mb-4" />
+                <div>
+                  <Skeleton className="w-1/4 h-4 mb-2" />
+                  <Skeleton className="w-1/3 h-4" />
+                </div>
               </div>
             </div>
           ))}
@@ -72,6 +114,8 @@ function HomeContent() {
       pagination={
         pagination || { current_page: 1, next_page_url: "", prev_page_url: "" }
       }
+      user={user!}
+      isLoggedIn={!!session?.userToken}
     />
   );
 }

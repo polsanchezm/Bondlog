@@ -42,17 +42,14 @@ const SignupFormSchema = z
 
 const PostSchema = z.object({
   title: z
-    .string()
+    .string({ required_error: "Title is required." })
     .min(5, { message: "Title must be at least 5 characters long." })
     .trim(),
   subtitle: z
-    .string()
+    .string({ required_error: "Subtitle is required." })
     .min(5, { message: "Subitle must be at least 5 characters long." })
     .trim(),
-  body: z
-    .string()
-    .min(5, { message: "Body must be at least 5 characters long." })
-    .trim(),
+  body: z.string({ required_error: "Body is required." }).trim(),
 });
 
 export { LoginFormSchema, SignupFormSchema, PostSchema };

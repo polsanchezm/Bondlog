@@ -16,9 +16,8 @@ interface User {
 
 interface PostDetailProps {
   post: Post;
-  userRole: string;
+  user: User | null;
   isLoggedIn: boolean;
-  userId: string;
 }
 
 interface PostActionsProps {
@@ -38,6 +37,7 @@ interface Post {
   date: string;
   created_at: string;
   updated_at: string;
+  is_pinned: boolean;
 }
 
 interface Register {
@@ -55,10 +55,12 @@ interface FormState {
 interface APIError {
   message?: string;
   response?: {
+    data?: {
+      message?: string;
+    };
     status?: number;
   };
 }
-
 
 interface PaginationProps {
   current_page: number;
