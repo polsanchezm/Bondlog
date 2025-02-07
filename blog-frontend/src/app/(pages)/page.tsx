@@ -30,8 +30,7 @@ function HomeContent() {
   useEffect(() => {
     async function loadUserData() {
       const { data, error } = await fetchUserData();
-      console.log(data);
-      
+
       if (error) {
         setUserError(error);
       } else {
@@ -89,7 +88,7 @@ function HomeContent() {
     );
   }
 
-  if (error || userError) {
+  if (error) {
     return (
       <article className="flex justify-center items-center min-h-screen">
         <div className="w-full max-w-md rounded-lg shadow-lg p-8 bg-white dark:bg-gray-800">
@@ -105,14 +104,28 @@ function HomeContent() {
   }
 
   return (
-    <Posts
-      posts={posts}
-      pagination={
-        pagination || { current_page: 1, next_page_url: "", prev_page_url: "" }
-      }
-      user={user!}
-      isLoggedIn={!!session?.userToken}
-    />
+    <div>
+      {userError && (
+        <div
+          className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200"
+          aria-live="polite"
+        >
+          {userError.message}
+        </div>
+      )}
+      <Posts
+        posts={posts}
+        pagination={
+          pagination || {
+            current_page: 1,
+            next_page_url: "",
+            prev_page_url: "",
+          }
+        }
+        user={user!}
+        isLoggedIn={!!session?.userToken}
+      />
+    </div>
   );
 }
 
