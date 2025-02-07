@@ -2,8 +2,9 @@ import EditPostForm from "@components/posts/EditPostForm";
 import { fetchPostDetail } from "@actions/posts";
 import { isAuthenticated } from "@actions/auth";
 import { redirect } from "next/navigation";
+import { fetchUserData } from "@/actions/user";
 
-async function getData(id: string) {
+async function getPostData(id: string) {
   const { data: post, error } = await fetchPostDetail(id);
   if (error) {
     return { post: null, userData: null, error };
@@ -11,16 +12,27 @@ async function getData(id: string) {
   return { post, error: null };
 }
 
+async function getUserData() {
+  const { data: userData, error } = await fetchUserData();
+  if (error) {
+    return { userData: null, error };
+  }
+  return { userData, error: null };
+}
+
 type Params = Promise<{ id: string }>;
 
 export default async function EditPost({ params }: { params: Params }) {
   const authCheck = await isAuthenticated();
+  const { id } = await params;
+  const user = await getUserData();
+  const { post, error } = await getPostData(id);
+
   if (!authCheck) {
     redirect("/login");
+  } else if (user.userData?.id !== post.author_id) {
+    redirect("/");
   } else {
-    const { id } = await params;
-    const { post, error } = await getData(id);
-
     if (error || !post) {
       const isServerError = error?.status === 500;
       return (
