@@ -31,4 +31,9 @@ class PostPolicy
     {
         return $user->id === $post->author_id || $user->role === 'admin';
     }
+
+    public function pin(User $user): bool
+    {
+        return $user->role === 'admin';
+    }
 }

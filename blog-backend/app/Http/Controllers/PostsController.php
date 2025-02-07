@@ -6,13 +6,11 @@ use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostsResource;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
-
-
-
     function index()
     {
         $posts = Post::orderBy('created_at', 'desc')->simplePaginate(9);
@@ -96,5 +94,15 @@ class PostsController extends Controller
         $post->delete();
 
         return response()->json(['message' => 'Post deleted successfully'], 200);
+    }
+
+    public function togglePin(string $id)
+    {
+        $post = Post::find($id);
+        $user = Auth::user();
+        $post->is_pinned = !$post->is_pinned;
+        $this->authorize('pin', $post);
+        $post->save();
+        return response()->json(['message' => 'Post updated', 'is_pinned' => $post->is_pinned]);
     }
 }

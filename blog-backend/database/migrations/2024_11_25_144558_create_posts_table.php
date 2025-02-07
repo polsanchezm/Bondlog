@@ -16,7 +16,8 @@ return new class extends Migration {
             $table->string('subtitle');
             $table->text('body');
             $table->foreignUuid('author_id')->references('id')->on('users');
-            $table->string('author_username');
+            $table->string('author_username')->references('username')->on('users');
+            $table->boolean('is_pinned')->default(false);
             $table->timestamps();
         });
     }

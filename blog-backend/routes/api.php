@@ -42,6 +42,7 @@ Route::prefix('app')->name('app.')->group(function () {
             Route::post('create', [PostsController::class, 'store'])->name('store');
             Route::put('update/{id}', [PostsController::class, 'update'])->name('update');
             Route::delete('delete/{id}', [PostsController::class, 'destroy'])->name('destroy');
+            Route::patch('pin/{post}', [PostsController::class, 'togglePin'])->name('pin');
         });
     });
 
