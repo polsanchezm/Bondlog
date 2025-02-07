@@ -105,14 +105,7 @@ function HomeContent() {
 
   return (
     <div>
-      {userError && (
-        <div
-          className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200"
-          aria-live="polite"
-        >
-          {userError.message}
-        </div>
-      )}
+      {userError && <div className="hidden">{userError.message}</div>}
       <Posts
         posts={posts}
         pagination={

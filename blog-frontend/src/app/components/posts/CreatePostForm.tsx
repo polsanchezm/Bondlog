@@ -77,7 +77,6 @@ export default function CreatePostForm() {
       } catch (error) {
         setErrorMessage((error as Error)?.message);
         showToast("genericError", toast);
-        // console.error("Error:", error);
       } finally {
         setLoading(false);
       }
