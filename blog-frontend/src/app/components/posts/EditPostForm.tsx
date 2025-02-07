@@ -69,11 +69,9 @@ export default function EditPostForm({ post }: { post: Post }) {
         showToast("successPostEdit", toast);
         router.replace(`/blog/${data.post.id}`);
       } catch (error) {
-        setErrorMessage(
-          "An error occurred while updating the post. Please try again later."
-        );
+        setErrorMessage((error as Error)?.message);
         showToast("genericError", toast);
-        console.error("Error:", error);
+        // console.error("Error:", error);
       } finally {
         setLoading(false);
       }
