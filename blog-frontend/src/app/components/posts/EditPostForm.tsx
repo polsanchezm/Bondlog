@@ -132,16 +132,6 @@ export default function EditPostForm({ post }: { post: Post }) {
           />
 
           {/* Body */}
-          {/* <FormField
-            label="Post Body"
-            id="body"
-            label_type="textarea"
-            value={formData.body}
-            setValue={(val) => handleInputChange("body", val)}
-            error={errors.body}
-            rows={6}
-          /> */}
-
           <FormField
             label="Post Body"
             id="body"

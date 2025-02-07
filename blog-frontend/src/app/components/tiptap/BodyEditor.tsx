@@ -148,8 +148,7 @@ export default function BodyEditor({ value, onChange }: BodyEditorProps) {
       </div>
       <EditorContent
         editor={editor}
-        className="w-full p-3 mt-1 text-sm rounded-lg border transition
-                   whitespace-pre-wrap break-all"
+        className="w-full p-3 mt-1 text-sm rounded-lg border transition whitespace-pre-wrap break-all"
       />
     </div>
   );
