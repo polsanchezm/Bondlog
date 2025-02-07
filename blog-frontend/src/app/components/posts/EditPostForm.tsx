@@ -10,7 +10,6 @@ import { showToast } from "@/utils/utils";
 import { PostSchema } from "@/lib/form-schema";
 import { Icon } from "@iconify/react";
 import { FormField } from "@/components/ui/field";
-import { redirect } from "next/navigation";
 
 const BodyEditor = dynamic(() => import("@/components/tiptap/BodyEditor"), {
   ssr: false,
