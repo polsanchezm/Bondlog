@@ -30,6 +30,8 @@ function HomeContent() {
   useEffect(() => {
     async function loadUserData() {
       const { data, error } = await fetchUserData();
+      console.log(data);
+      
       if (error) {
         setUserError(error);
       } else {
@@ -92,14 +94,10 @@ function HomeContent() {
       <article className="flex justify-center items-center min-h-screen">
         <div className="w-full max-w-md rounded-lg shadow-lg p-8 bg-white dark:bg-gray-800">
           <h5 className="mb-4 text-3xl font-semibold text-center text-gray-900 dark:text-white">
-            {error?.response?.status === 500
-              ? "Server Error"
-              : "No posts found"}
+            Server Error
           </h5>
           <p className="text-lg text-center text-gray-600 dark:text-gray-300">
-            {error?.response?.status === 500
-              ? "There was an issue fetching the posts. Please try again later."
-              : "No posts available at the moment."}
+            There was an issue fetching the posts. Please try again later.
           </p>
         </div>
       </article>
