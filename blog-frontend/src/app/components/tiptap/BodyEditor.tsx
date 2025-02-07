@@ -1,7 +1,6 @@
 "use client";
 
 import { useEditor, EditorContent } from "@tiptap/react";
-import { InlineDocument } from "@lib/InlineDocument";
 import Document from "@tiptap/extension-document";
 import Text from "@tiptap/extension-text";
 import HardBreak from "@tiptap/extension-hard-break";
