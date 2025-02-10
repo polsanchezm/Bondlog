@@ -26,8 +26,8 @@ export async function middleware(req: NextRequest) {
     const expiresAt = new Date(payload!.expiresAt as string);
     const remainingTime = expiresAt.getTime() - Date.now();
 
-    // Si queda menos de 30 minutos, actualizamos la sesión
-    if (remainingTime < 30 * 60 * 1000) {
+    // Si queda menos de 10 minutos, actualizamos la sesión
+    if (remainingTime < 10 * 60 * 1000) {
       console.log("[Middleware] Renovando sesión para usuario activo.");
       const updated = await updateSessionToken(sessionCookie!);
       if (updated) {

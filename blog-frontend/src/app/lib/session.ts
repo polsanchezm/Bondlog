@@ -32,8 +32,8 @@ export async function decrypt(session: string | undefined = "") {
 }
 
 export async function createSession(userToken: string) {
-  // Establecemos la nueva expiración (2 horas a partir de ahora)
-  const expiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000);
+  // Establecemos la nueva expiración (1 hora a partir de ahora)
+  const expiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000);
 
   const token = await encrypt({ userToken, expiresAt });
   (await cookies()).set("session", token, {
@@ -51,8 +51,8 @@ export async function updateSessionToken(token: string) {
   const payload = (await decrypt(token)) as SessionPayload;
   if (!payload) return null;
 
-  // Establecemos la nueva expiración para 2 horas a partir de ahora
-  const newExpiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000);
+  // Establecemos la nueva expiración para 1 hora a partir de ahora
+  const newExpiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000);
 
   payload.expiresAt = newExpiresAt;
 
