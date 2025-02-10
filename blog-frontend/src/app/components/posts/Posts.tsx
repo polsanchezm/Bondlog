@@ -55,7 +55,7 @@ export default function Posts({
   );
 
   return (
-    <section className="flex flex-col items-center my-10 px-6 w-full min-h-screen">
+    <section className="flex flex-col items-center my-10 px-6 w-full min-h-screen whitespace-pre-wrap break-all">
       <div className="max-w-7xl w-full">
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
           {posts.map(renderPostCard)}

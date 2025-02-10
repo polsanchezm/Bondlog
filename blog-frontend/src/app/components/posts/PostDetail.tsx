@@ -12,7 +12,7 @@ export default function PostDetail({
   isLoggedIn: boolean;
 }) {
   return (
-    <article className="p-6 flex justify-center mb-20 overflow-x-auto break-words">
+    <article className="p-6 flex justify-center mb-20 overflow-x-auto whitespace-pre-wrap break-all">
       <div className="p-6 max-w-3xl w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg">
         <div className="flex flex-row justify-between items-center mb-6">
           <h1 className="prose dark:prose-dark text-3xl sm:text-4xl text-gray-800 dark:text-white font-bold">
