@@ -6,11 +6,34 @@ import { formatDate, checkUpdatedAt } from "@utils/utils";
 import Link from "next/link";
 import { useMemo } from "react";
 
-export default function AccountDetails({ userData }: { userData: User }) {
+export default function AccountDetails({
+  userData,
+  userError,
+}: {
+  userData: User;
+  userError: string;
+}) {
   const initialLetter = useMemo(
     () => userData?.username?.charAt(0).toUpperCase(),
     [userData.username]
   );
+
+  if (userError) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="w-full max-w-md rounded-lg shadow-lg p-8 bg-white dark:bg-gray-800">
+          <h5 className="mb-4 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white text-center">
+            Error
+          </h5>
+          <p className="text-lg text-gray-600 dark:text-gray-300 text-center">
+            {
+              "There was an issue fetching your account details. Please try again later."
+            }
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section className="flex flex-col items-center justify-center p-6">

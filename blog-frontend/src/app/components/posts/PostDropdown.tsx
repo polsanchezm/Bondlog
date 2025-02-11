@@ -11,7 +11,7 @@ import {
 import { Icon } from "@iconify/react";
 import { PinPost } from "@components/posts/PinPost";
 import { Post, User } from "@/lib/interfaces";
-import { togglePin } from "@/actions/posts";
+import { togglePin } from "@/services/post";
 import { useState } from "react";
 import Link from "next/link";
 import { DeletePost } from "./DeletePost";
@@ -70,7 +70,7 @@ export function PostDropdown({
         {userId === post.author_id && (
           <DropdownMenuItem>
             <Link
-              href={`/blog/${post.id}/edit`}
+              href={`/post/${post.id}/edit`}
               className="flex justify-center items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all"
             >
               <Icon icon="mynaui:pencil" className="w-5 h-5" />

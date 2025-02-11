@@ -1,8 +1,8 @@
-import { PaginationProps } from "@/lib/interfaces";
+import { Pagination } from "@/lib/interfaces";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 
-export const Pagination = ({ pagination }: { pagination: PaginationProps }) => {
+export const PaginationComponent = ({ pagination }: { pagination: Pagination }) => {
   const router = useRouter();
 
   const handlePageChange = (newPage: number) => {

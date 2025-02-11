@@ -2,7 +2,7 @@
 
 import { FormEvent, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { userLogin } from "@/actions/auth";
+import { userLogin } from "@/services/auth";
 import { createSession } from "@lib/session";
 import { LoginFormSchema } from "@/lib/form-schema";
 import { useToast } from "@/components/hooks/use-toast";
@@ -50,8 +50,9 @@ export default function LoginForm() {
       try {
         const response = await userLogin(formData);
         if (!response.token) throw new Error("Invalid credentials");
+        console.log("Login response:", response);
 
-        await createSession(response.token);
+        await createSession(response.token, response.user.role);
         showToast("successSignup", toast);
         router.replace("/");
       } catch (error: unknown) {

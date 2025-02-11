@@ -1,174 +1,41 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useState, useCallback, useEffect } from "react";
-import { updatePost } from "@actions/posts";
-import { useRouter } from "next/navigation";
-import { Post } from "@lib/interfaces";
-import { useToast } from "@/components/hooks/use-toast";
-import { showToast } from "@/utils/utils";
-import { PostSchema } from "@/lib/form-schema";
-import { Icon } from "@iconify/react";
-import { FormField } from "@/components/ui/field";
+import { useEffect } from "react";
+import EditPostFormContent from "@/components/posts/EditPostFormContent";
+import { usePostStore } from "@/stores/post";
 
-const BodyEditor = dynamic(() => import("@/components/tiptap/BodyEditor"), {
-  ssr: false,
-});
+interface EditPostFormProps {
+  id: string;
+}
 
-export default function EditPostForm({
-  post,
-  authCheck,
-}: {
-  post: Post;
-  authCheck: boolean;
-}) {
-  const router = useRouter();
-  const { toast } = useToast();
+export default function EditPostForm({ id }: EditPostFormProps) {
+  const { postDetail, loadPostDetail, error: postError } = usePostStore();
 
   useEffect(() => {
-    if (!authCheck) {
-      router.push("/login");
+    if (id) {
+      loadPostDetail(id);
     }
-  }, [authCheck, router]);
+  }, [id, loadPostDetail]);
 
-  const [formData, setFormData] = useState({
-    title: post.title,
-    subtitle: post.subtitle,
-    body: post.body,
-  });
-
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const handleInputChange = useCallback(
-    (field: keyof typeof formData, value: string) => {
-      setFormData((prev) => ({ ...prev, [field]: value }));
-    },
-    []
-  );
-
-  const handlePostUpdate = useCallback(
-    async (event: React.FormEvent) => {
-      event.preventDefault();
-      setErrorMessage(null);
-      setLoading(true);
-
-      const result = PostSchema.safeParse(formData);
-      if (!result.success) {
-        setErrors(
-          Object.fromEntries(
-            Object.entries(result.error.flatten().fieldErrors).map(
-              ([key, value]) => [key, value[0]]
-            )
-          )
-        );
-        showToast("validationError", toast);
-        setLoading(false);
-        return;
-      }
-
-      setErrors({});
-
-      try {
-        const { data, error } = await updatePost(
-          { ...post, ...formData },
-          post.id
-        );
-        if (error) throw new Error(error.message || "Error updating post");
-
-        showToast("successPostEdit", toast);
-        router.replace(`/blog/${data.post.id}`);
-      } catch (error) {
-        setErrorMessage((error as Error)?.message);
-        showToast("genericError", toast);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [formData, post, router, toast]
-  );
-
-  return (
-    <section className="p-6 max-w-3xl mx-auto">
-      <div
-        className="p-3 mb-8 text-lg text-yellow-800 bg-yellow-100 rounded-lg dark:bg-yellow-800 dark:text-yellow-200"
-        role="alert"
-      >
-        <strong className="font-semibold">Beta Notice: </strong>
-        The <em>body</em> field is in BETA and may behave unexpectedly. Please
-        back up your content elsewhere to avoid any data loss.
-      </div>
-      <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white text-center">
-        Edit Post
-      </h2>
-
-      {errorMessage && (
-        <div
-          className="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200"
-          aria-live="polite"
-        >
-          {errorMessage}
+  if (postError || !postDetail) {
+    const isServerError = postError?.response?.status === 500;
+    return (
+      <article className="flex justify-center items-center min-h-screen">
+        <div className="flex justify-center items-center w-full px-4 sm:px-6 lg:px-8">
+          <div className="w-full max-w-md rounded-lg shadow-lg p-8 bg-white dark:bg-gray-800">
+            <h5 className="mb-4 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white text-center">
+              {isServerError ? "Server Error" : "Post not found"}
+            </h5>
+            <p className="text-lg text-gray-600 dark:text-gray-300 text-center">
+              {isServerError
+                ? "There was an issue fetching the post. Please try again later."
+                : "It looks like this post is not available at the moment. Please check back later or create new content."}
+            </p>
+          </div>
         </div>
-      )}
+      </article>
+    );
+  }
 
-      <form
-        onSubmit={handlePostUpdate}
-        className="max-w-3xl mx-auto bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-md space-y-6"
-      >
-        <fieldset className="space-y-4">
-          <legend className="sr-only">Edit Post Form</legend>
-
-          {/* Title */}
-          <FormField
-            label="Post Title"
-            id="title"
-            label_type="text"
-            value={formData.title}
-            setValue={(val) => handleInputChange("title", val)}
-            error={errors.title}
-          />
-
-          {/* Subtitle */}
-          <FormField
-            label="Post Subtitle"
-            id="subtitle"
-            label_type="text"
-            value={formData.subtitle}
-            setValue={(val) => handleInputChange("subtitle", val)}
-            error={errors.subtitle}
-          />
-
-          {/* Body */}
-          <FormField
-            label="Post Body"
-            id="body"
-            label_type="textarea"
-            error={errors.body}
-          >
-            <BodyEditor
-              value={formData.body}
-              onChange={(content) => handleInputChange("body", content)}
-            />
-          </FormField>
-        </fieldset>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full flex justify-center items-center gap-2 h-14 px-5 py-3 text-white font-medium text-sm rounded-lg bg-green-600 hover:bg-green-700 focus:ring focus:ring-green-300 dark:focus:ring-green-700 transition transform active:scale-95 disabled:bg-gray-400 dark:disabled:bg-gray-600"
-        >
-          {loading ? (
-            <span>Updating Post...</span>
-          ) : (
-            <>
-              <Icon icon="material-symbols:check-rounded" className="w-6 h-6" />
-              <span className="hidden md:inline ml-2">Update Post</span>
-            </>
-          )}
-        </button>
-      </form>
-    </section>
-  );
+  return <EditPostFormContent post={postDetail} />;
 }

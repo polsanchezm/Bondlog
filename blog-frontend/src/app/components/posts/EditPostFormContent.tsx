@@ -1,28 +1,28 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { updatePost } from "@/services/post";
 import { useRouter } from "next/navigation";
-import { createPost } from "@/services/post";
+import { Post } from "@lib/interfaces";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/utils/utils";
 import { PostSchema } from "@/lib/form-schema";
 import { Icon } from "@iconify/react";
 import { FormField } from "@/components/ui/field";
 
-// Importa BodyEditor de forma dinámica para evitar problemas de SSR y recreaciones
 const BodyEditor = dynamic(() => import("@/components/tiptap/BodyEditor"), {
   ssr: false,
 });
 
-export default function CreatePostForm() {
+export default function EditPostFormContent({ post }: { post: Post }) {
   const router = useRouter();
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
-    title: "",
-    subtitle: "",
-    body: "",
+    title: post.title,
+    subtitle: post.subtitle,
+    body: post.body,
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -36,7 +36,7 @@ export default function CreatePostForm() {
     []
   );
 
-  const handlePostCreation = useCallback(
+  const handlePostUpdate = useCallback(
     async (event: React.FormEvent) => {
       event.preventDefault();
       setErrorMessage(null);
@@ -59,20 +59,13 @@ export default function CreatePostForm() {
       setErrors({});
 
       try {
-        const { data, error } = await createPost({
-          ...formData,
-          id: "",
-          author_username: "",
-          author_id: "",
-          date: "",
-          created_at: "",
-          updated_at: "",
-          is_pinned: false,
-        });
+        const { data, error } = await updatePost(
+          { ...post, ...formData },
+          post.id
+        );
+        if (error) throw new Error(error.message || "Error updating post");
 
-        if (error) throw new Error(error?.data);
-
-        showToast("successPost", toast);
+        showToast("successPostEdit", toast);
         router.replace(`/post/${data.post.id}`);
       } catch (error) {
         setErrorMessage((error as Error)?.message);
@@ -81,7 +74,7 @@ export default function CreatePostForm() {
         setLoading(false);
       }
     },
-    [formData, router, toast]
+    [formData, post, router, toast]
   );
 
   return (
@@ -95,7 +88,7 @@ export default function CreatePostForm() {
         back up your content elsewhere to avoid any data loss.
       </div>
       <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white text-center">
-        Create a New Post
+        Edit Post
       </h2>
 
       {errorMessage && (
@@ -108,11 +101,11 @@ export default function CreatePostForm() {
       )}
 
       <form
-        onSubmit={handlePostCreation}
-        className="max-w-3xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md space-y-6"
+        onSubmit={handlePostUpdate}
+        className="max-w-3xl mx-auto bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-md space-y-6"
       >
         <fieldset className="space-y-4">
-          <legend className="sr-only">Create Post Form</legend>
+          <legend className="sr-only">Edit Post Form</legend>
 
           {/* Title */}
           <FormField
@@ -134,7 +127,7 @@ export default function CreatePostForm() {
             error={errors.subtitle}
           />
 
-          {/* Body usando BodyEditor */}
+          {/* Body */}
           <FormField
             label="Post Body"
             id="body"
@@ -155,11 +148,11 @@ export default function CreatePostForm() {
           className="w-full flex justify-center items-center gap-2 h-14 px-5 py-3 text-white font-medium text-sm rounded-lg bg-green-600 hover:bg-green-700 focus:ring focus:ring-green-300 dark:focus:ring-green-700 transition transform active:scale-95 disabled:bg-gray-400 dark:disabled:bg-gray-600"
         >
           {loading ? (
-            <span>Creating Post...</span>
+            <span>Updating Post...</span>
           ) : (
             <>
               <Icon icon="material-symbols:check-rounded" className="w-6 h-6" />
-              <span className="hidden md:inline ml-2">Create Post</span>
+              <span className="hidden md:inline ml-2">Update Post</span>
             </>
           )}
         </button>

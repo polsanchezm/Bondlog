@@ -1,4 +1,4 @@
-import { getSession } from "@/actions/auth";
+import { getSession } from "@/services/auth";
 import { Navbar, NavbarBrand, DarkThemeToggle } from "flowbite-react";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
@@ -49,7 +49,7 @@ const renderAuthButtons = () => (
 
 const renderUserButtons = () => (
   <div className="flex items-center gap-3">
-    <NavButton href="/blog/create" icon="lucide:plus" label="Create a Post" />
+    <NavButton href="/post/create" icon="lucide:plus" label="Create a Post" />
     <NavButton href="/account" icon="lucide:user" label="Account" />
     <LogoutAction />
   </div>

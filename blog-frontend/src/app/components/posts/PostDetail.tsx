@@ -1,56 +1,65 @@
-import { checkUpdatedAt, formatDate } from "@utils/utils";
-import { Post, User } from "@lib/interfaces";
-import { PostDropdown } from "@components/posts/PostDropdown";
+"use client";
 
-export default function PostDetail({
-  post,
-  user,
-  isLoggedIn,
-}: {
-  post: Post;
-  user: User;
-  isLoggedIn: boolean;
-}) {
-  return (
-    <article className="p-6 flex justify-center mb-20 overflow-x-auto whitespace-pre-wrap break-all">
-      <div className="p-6 max-w-3xl w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg">
-        <div className="flex flex-row justify-between items-center mb-6">
-          <h1 className="prose dark:prose-dark text-3xl sm:text-4xl text-gray-800 dark:text-white font-bold">
-            {post?.title}
-          </h1>
-          {isLoggedIn && (
-            <PostDropdown
-              post={post}
-              initialIsPinned={post.is_pinned}
-              user={user}
-              isLoggedIn={isLoggedIn}
-            />
-          )}
+import { useEffect } from "react";
+import PostData from "@/components/posts/PostData";
+import { usePostStore } from "@/stores/post";
+import { useAuthStore } from "@/stores/auth";
+import { useUserStore } from "@/stores/user";
+import { useParams } from "next/navigation";
+import PostSkeleton from "@/components/ui/skeletons/post-detail";
+
+export default function PostDetail() {
+  const params = useParams();
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
+
+  const {
+    postDetail,
+    loadPostDetail,
+    error: postError,
+    loading: postLoading,
+  } = usePostStore();
+  const { session } = useAuthStore();
+  const { user: userData, loadUser, loading: userLoading } = useUserStore();
+
+  useEffect(() => {
+    if (id) {
+      // Solo carga el post si aún no se ha cargado o si el post cargado no coincide con el id actual.
+      if (!postDetail || postDetail.id !== id) {
+        loadPostDetail(id);
+      }
+      // Solo carga los datos del usuario si aún no están cargados.
+      if (!userData) {
+        loadUser();
+      }
+    }
+  }, [id, postDetail, userData, loadPostDetail, loadUser]);
+
+  const isLoggedIn = !!session?.userToken;
+  const isLoading = postLoading || userLoading;
+
+  if (postError) {
+    return (
+      <article className="flex justify-center items-center min-h-screen">
+        <div className="flex justify-center items-center w-full px-4 sm:px-6 lg:px-8">
+          <div className="w-full max-w-md rounded-lg shadow-lg p-8 bg-white dark:bg-gray-800">
+            <h5 className="mb-4 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white text-center">
+              Server Error
+            </h5>
+            <p className="text-lg text-gray-600 dark:text-gray-300 text-center">
+              There was an issue fetching the post. Please try again later.
+            </p>
+          </div>
         </div>
-
-        <p className="prose dark:prose-dark text-sm text-gray-500 dark:text-gray-400 mb-4">
-          <span className="font-bold">Last updated:</span>{" "}
-          {checkUpdatedAt(post)}
-        </p>
-
-        <p className="prose dark:prose-dark text-xl text-gray-800 dark:text-white mb-6">
-          {post?.subtitle}
-        </p>
-
-        <div
-          className="prose prose-neutral dark:prose-invert mb-6 overflow-x-auto break-words"
-          dangerouslySetInnerHTML={{ __html: post?.body }}
-        ></div>
-
-        <div className="flex flex-col sm:flex-row justify-between text-sm mb-6">
-          <p className="prose dark:prose-dark sm:text-left text-gray-500 dark:text-gray-400">
-            {post?.author_username}
-          </p>
-          <p className="prose dark:prose-dark sm:text-right text-gray-500 dark:text-gray-400">
-            {formatDate(post?.created_at || "")}
-          </p>
-        </div>
-      </div>
-    </article>
-  );
+      </article>
+    );
+  }
+  if (!id || isLoading || !postDetail) {
+    return <PostSkeleton />;
+  } else {
+    return (
+      <>
+        <PostData post={postDetail} user={userData!} isLoggedIn={isLoggedIn} />
+      </>
+    );
+  }
 }

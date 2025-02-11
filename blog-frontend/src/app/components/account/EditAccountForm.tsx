@@ -1,7 +1,6 @@
 "use client";
 
-import { updateUserData } from "@/actions/user";
-import { Register } from "@lib/interfaces";
+import { User } from "@lib/interfaces";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState, useCallback } from "react";
 import { SignupFormSchema } from "@/lib/form-schema";
@@ -9,8 +8,11 @@ import { showToast } from "@/utils/utils";
 import { useToast } from "../hooks/use-toast";
 import { FormField } from "@/components/ui/field";
 import { Icon } from "@iconify/react";
+import { useUserStore } from "@/stores/user";
 
-export default function EditAccountForm({ userData }: { userData: Register }) {
+export default function EditAccountForm({ userData }: { userData: User }) {
+  const { updateUser, error } = useUserStore();
+
   const [formData, setFormData] = useState(() => ({
     username: userData.username,
     email: userData.email,
@@ -18,7 +20,6 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
     password_confirmation: "",
   }));
 
-  const [error, setError] = useState<string | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const router = useRouter();
@@ -34,7 +35,6 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
   const handleUserUpdate = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      setError(null);
 
       const result = SignupFormSchema.safeParse(formData);
       if (!result.success) {
@@ -54,15 +54,12 @@ export default function EditAccountForm({ userData }: { userData: Register }) {
       setErrors({});
 
       try {
-        const { error } = await updateUserData(formData);
-        if (error) throw new Error(error.message || "Error updating account");
+        const response = await updateUser(formData);
+        if (!response) throw new Error(error || "Error updating account");
 
         showToast("success", toast);
         router.replace("/account");
       } catch (err: unknown) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Unknown error occurred";
-        setError(errorMessage);
         showToast("genericError", toast);
         console.error("Update Error:", err);
       }

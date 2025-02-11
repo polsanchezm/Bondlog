@@ -1,4 +1,4 @@
-import { deletePost } from "@actions/posts";
+import { deletePost } from "@/services/post";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/utils/utils";
 import { useRouter } from "next/navigation";

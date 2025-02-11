@@ -1,28 +1,24 @@
 "use client";
 
-import { userLogout } from "@/actions/auth";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/utils/utils";
 import { useState, useCallback } from "react";
+import { useAuthStore } from "@/stores/auth";
 
 export default function LogoutAction() {
   const { toast } = useToast();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-
+  const { logout, loading } = useAuthStore();
   const handleLogout = useCallback(async () => {
-    setLoading(true);
     try {
-      await userLogout();
+      await logout();
       showToast("successLogout", toast);
       router.replace("/");
     } catch (error) {
       showToast("genericError", toast);
       console.error("Logout error:", error);
-    } finally {
-      setLoading(false);
     }
   }, [router, toast]);
 
