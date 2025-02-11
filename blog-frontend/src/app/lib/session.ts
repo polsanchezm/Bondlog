@@ -17,10 +17,8 @@ export async function encrypt(payload: SessionPayload) {
 
 export async function decrypt(session: string | undefined = "") {
   try {
-    if (!session) {
-      console.error("No session token provided.");
-      return null;
-    }
+    if (!session) return null;
+
     const { payload } = await jwtVerify(session, encodedKey, {
       algorithms: ["HS256"],
     });
@@ -31,11 +29,12 @@ export async function decrypt(session: string | undefined = "") {
   }
 }
 
-export async function createSession(userToken: string) {
-  // Establecemos la nueva expiración (1 hora a partir de ahora)
-  const expiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000);
+export async function createSession(userToken: string, userRole: string) {
+  // Establecemos la nueva expiración (12 horas a partir de ahora)
+  const expiresAt = new Date(Date.now() + 12 * 60 * 60 * 1000);
 
-  const token = await encrypt({ userToken, expiresAt });
+  const token = await encrypt({ userToken, userRole, expiresAt });
+
   (await cookies()).set("session", token, {
     httpOnly: true,
     secure: true,
@@ -43,7 +42,6 @@ export async function createSession(userToken: string) {
     sameSite: "lax",
     path: "/",
   });
-
   return token;
 }
 
@@ -51,14 +49,15 @@ export async function updateSessionToken(token: string) {
   const payload = (await decrypt(token)) as SessionPayload;
   if (!payload) return null;
 
-  // Establecemos la nueva expiración para 1 hora a partir de ahora
-  const newExpiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000);
+  // Establecemos la nueva expiración para 12 horas a partir de ahora
+  const newExpiresAt = new Date(Date.now() + 12 * 60 * 60 * 1000);
 
   payload.expiresAt = newExpiresAt;
 
   // Generamos un nuevo token con la nueva fecha de expiración
   const newToken = await encrypt({
     userToken: payload.userToken,
+    userRole: payload.userRole,
     expiresAt: payload.expiresAt,
   });
 
