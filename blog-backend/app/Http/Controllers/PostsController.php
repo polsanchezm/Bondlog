@@ -6,14 +6,13 @@ use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostsResource;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
     function index()
     {
-        $posts = Post::orderBy('created_at', 'desc')->simplePaginate(9);
+        $posts = Post::orderBy('is_pinned', 'desc')->orderBy('created_at', 'desc')->simplePaginate(9);
 
         return response()->json([
             'data' => PostsResource::collection($posts),
