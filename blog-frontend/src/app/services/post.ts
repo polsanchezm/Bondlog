@@ -125,9 +125,17 @@ const togglePin = async (postId: string) => {
       }
     );
 
-    return response;
+    return { data: response.data, error: null };
   } catch (error) {
     console.error("Error al fijar/desfijar el post:", error);
+    return {
+      data: null,
+      error: {
+        message: (error as APIError).message || "Something went wrong",
+        data: (error as APIError).response?.data?.message,
+        status: (error as APIError).response?.status || 500,
+      },
+    };
   }
 };
 
