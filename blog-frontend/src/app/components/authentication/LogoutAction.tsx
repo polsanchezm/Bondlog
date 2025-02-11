@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/utils/utils";
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import { useAuthStore } from "@/stores/auth";
 
 export default function LogoutAction() {

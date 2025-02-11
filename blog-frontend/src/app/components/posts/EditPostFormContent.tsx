@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useState, useCallback, useEffect } from "react";
-import { updatePost } from "@/services/post";
+import { updatePost } from "@services/post";
 import { useRouter } from "next/navigation";
 import { Post } from "@lib/interfaces";
 import { useToast } from "@/components/hooks/use-toast";

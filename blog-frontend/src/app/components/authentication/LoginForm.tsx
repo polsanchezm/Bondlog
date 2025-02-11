@@ -2,7 +2,6 @@
 
 import { FormEvent, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { userLogin } from "@/services/auth";
 import { createSession, createUser } from "@lib/session";
 import { LoginFormSchema } from "@/lib/form-schema";
 import { useToast } from "@/components/hooks/use-toast";
@@ -10,12 +9,15 @@ import { showToast } from "@/utils/utils";
 import { FormField } from "@/components/ui/field";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
+import { useAuthStore } from "@/stores/auth";
 
 export default function LoginForm() {
-  const [formData, setFormData] = useState(() => ({
+  const { login } = useAuthStore();
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
-  }));
+  });
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -45,24 +47,34 @@ export default function LoginForm() {
         );
         return;
       }
-
       setErrors({});
-      try {
-        const response = await userLogin(formData);
-        if (!response.token) throw new Error("Invalid credentials");
-        console.log("Login response:", response);
 
-        await createSession(response.token, response.user.role);
-        await createUser(response.user);
-        showToast("successSignup", toast);
-        router.replace("/");
-      } catch (error: unknown) {
+      // Usamos la función login de la store (se debe await, ya que es async)
+      const loginSuccess = await login(formData);
+      if (!loginSuccess) {
         setErrorMessage("Invalid email or password. Please try again.");
         showToast("genericError", toast);
-        console.error("Login Error:", error);
+        return;
       }
+
+      // Una vez que login() se ha completado, obtenemos la sesión actualizada desde la store
+      const { session, user } = useAuthStore.getState();
+      const userToken = session?.token;
+      const userRole = session?.user!.role;
+      if (!session || !session.token || !session.user!.role) {
+        setErrorMessage("Invalid session data");
+        showToast("genericError", toast);
+        return;
+      }
+
+      // Creamos la sesión (cookie) usando el token y rol obtenidos
+      await createSession(userToken!, userRole!);
+      // Si además dispones de la información del usuario, la almacenamos
+      await createUser(user!);
+      showToast("successLogin", toast);
+      router.replace("/");
     },
-    [formData, router, toast]
+    [formData, login, router, toast]
   );
 
   return (

@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { userSignup } from "@/services/auth";
 import { SignupFormSchema } from "@/lib/form-schema";
 import { createSession, createUser } from "@lib/session";
 import { useToast } from "@/components/hooks/use-toast";
@@ -10,8 +9,10 @@ import { showToast } from "@/utils/utils";
 import { FormField } from "@/components/ui/field";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
+import { useAuthStore } from "@/stores/auth";
 
 export default function SignupForm() {
+  const { signup } = useAuthStore();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -52,19 +53,27 @@ export default function SignupForm() {
 
       setErrors({});
 
-      try {
-        const response = await userSignup(formData);
-        if (!response.token) throw new Error("User already exists");
-
-        await createSession(response.token, response.user.role);
-        await createUser(response.user);
-        showToast("successSignup", toast);
-        router.replace("/");
-      } catch (error: unknown) {
-        setErrorMessage("User already exists or an error occurred. Try again.");
-        showToast("userExists", toast);
-        console.error("Signup Error:", error);
+      const signupSuccess = await signup(formData);
+      if (!signupSuccess) {
+        setErrorMessage("Invalid email or password. Please try again.");
+        showToast("genericError", toast);
+        return;
       }
+
+      const { session, user } = useAuthStore.getState();
+      const userToken = session?.token;
+      const userRole = session?.user!.role;
+      if (!session || !session.token || !session.user!.role) {
+        setErrorMessage("Invalid session data");
+        showToast("genericError", toast);
+        return;
+      }
+
+      await createSession(userToken!, userRole!);
+      // Si además dispones de la información del usuario, la almacenamos
+      await createUser(user!);
+      showToast("successSignup", toast);
+      router.replace("/");
     },
     [formData, router, toast]
   );

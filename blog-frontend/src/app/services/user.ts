@@ -2,7 +2,7 @@
 
 import axios from "@utils/axios";
 import { APIError, Register } from "@/lib/interfaces";
-import { getSession } from "@/services/auth";
+import { getSession } from "@services/auth";
 
 const fetchUserData = async () => {
   try {

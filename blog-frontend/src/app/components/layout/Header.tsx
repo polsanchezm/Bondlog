@@ -1,8 +1,8 @@
-import { getSession } from "@/services/auth";
+import { getSession } from "@services/auth";
 import { Navbar, NavbarBrand, DarkThemeToggle } from "flowbite-react";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import LogoutAction from "../authentication/LogoutAction";
+import LogoutAction from "@components/authentication/LogoutAction";
 import Link from "next/link";
 
 export default async function Header() {

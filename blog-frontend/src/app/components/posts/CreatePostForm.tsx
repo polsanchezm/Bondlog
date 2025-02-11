@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { createPost } from "@/services/post";
+import { createPost } from "@services/post";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/utils/utils";
 import { PostSchema } from "@/lib/form-schema";

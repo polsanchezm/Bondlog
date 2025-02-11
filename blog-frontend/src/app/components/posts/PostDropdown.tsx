@@ -11,7 +11,7 @@ import {
 import { Icon } from "@iconify/react";
 import { PinPost } from "@components/posts/PinPost";
 import { Post, User } from "@/lib/interfaces";
-import { togglePin } from "@/services/post";
+import { togglePin } from "@services/post";
 import { useState } from "react";
 import Link from "next/link";
 import { DeletePost } from "./DeletePost";

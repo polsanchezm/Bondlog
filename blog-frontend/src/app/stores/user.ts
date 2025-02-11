@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { fetchUserData, updateUserData, deleteUserData } from "@services/user";
 import type { User, Register, APIError } from "@lib/interfaces";
 
