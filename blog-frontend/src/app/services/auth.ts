@@ -1,7 +1,7 @@
 "use server";
 import axios from "@utils/axios";
 import { cookies } from "next/headers";
-import { decrypt, deleteSession } from "@/lib/session";
+import { decrypt, deleteSession, deleteUserCookie } from "@/lib/session";
 import { FormState, Register } from "@/lib/interfaces";
 
 const getSession = async () => {
@@ -27,13 +27,16 @@ const userLogout = async () => {
       Authorization: `Bearer ${session?.userToken}`,
     },
   });
-  if (response.status === 200) deleteSession();
+  if (response.status === 200) {
+    deleteSession();
+    deleteUserCookie();
+  }
   return response.data;
 };
 
 const isAuthenticated = async () => {
   const session = await getSession();
   return !!session;
-}
+};
 
 export { getSession, userLogin, userSignup, userLogout, isAuthenticated };

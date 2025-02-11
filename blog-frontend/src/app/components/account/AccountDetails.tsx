@@ -13,6 +13,7 @@ export default function AccountDetails({
   userData: User;
   userError: string;
 }) {
+
   const initialLetter = useMemo(
     () => userData?.username?.charAt(0).toUpperCase(),
     [userData.username]

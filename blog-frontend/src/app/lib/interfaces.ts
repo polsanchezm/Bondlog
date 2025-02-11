@@ -1,9 +1,10 @@
 import { JWTPayload } from "jose";
 
 interface SessionPayload extends JWTPayload {
-  userToken: string;
+  userToken?: string;
   expiresAt: Date;
-  userRole: string;
+  userRole?: string;
+  user?: User;
 }
 
 interface User {

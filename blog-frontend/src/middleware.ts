@@ -1,7 +1,11 @@
 // middleware.ts
 import { NextResponse, NextRequest } from "next/server";
 import { validateSession } from "@lib/validate-session";
-import { deleteSession, updateSessionToken } from "@/lib/session";
+import {
+  deleteSession,
+  deleteUserCookie,
+  updateSessionToken,
+} from "@/lib/session";
 
 export const config = {
   // Define las rutas que requieren autenticación.
@@ -15,11 +19,8 @@ export async function middleware(req: NextRequest) {
 
   // Si no hay sesión válida, elimina la sesión (si existe) y redirige al login.
   if (!payload) {
-    deleteSession();
     return NextResponse.redirect(new URL("/", req.url));
   }
-
-  console.log("Payload", payload);
 
   if (
     req.nextUrl.pathname.startsWith("/account/edit") &&

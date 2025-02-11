@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { userSignup } from "@/services/auth";
 import { SignupFormSchema } from "@/lib/form-schema";
-import { createSession } from "@lib/session";
+import { createSession, createUser } from "@lib/session";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/utils/utils";
 import { FormField } from "@/components/ui/field";
@@ -57,6 +57,7 @@ export default function SignupForm() {
         if (!response.token) throw new Error("User already exists");
 
         await createSession(response.token, response.user.role);
+        await createUser(response.user);
         showToast("successSignup", toast);
         router.replace("/");
       } catch (error: unknown) {

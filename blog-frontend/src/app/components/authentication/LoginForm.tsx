@@ -3,7 +3,7 @@
 import { FormEvent, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { userLogin } from "@/services/auth";
-import { createSession } from "@lib/session";
+import { createSession, createUser } from "@lib/session";
 import { LoginFormSchema } from "@/lib/form-schema";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/utils/utils";
@@ -53,6 +53,7 @@ export default function LoginForm() {
         console.log("Login response:", response);
 
         await createSession(response.token, response.user.role);
+        await createUser(response.user);
         showToast("successSignup", toast);
         router.replace("/");
       } catch (error: unknown) {

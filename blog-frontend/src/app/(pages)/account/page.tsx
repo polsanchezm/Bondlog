@@ -6,7 +6,7 @@ import { useUserStore } from "@/stores/user";
 
 export default function Account() {
   const { user, error, loadUser } = useUserStore();
-
+  
   useEffect(() => {
     if (!user && !error) {
       loadUser();
