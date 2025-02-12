@@ -19,7 +19,12 @@ export async function middleware(req: NextRequest) {
 
   // Si no hay sesión válida, elimina la sesión (si existe) y redirige al login.
   if (!payload) {
-    return NextResponse.redirect(new URL("/", req.url));
+    console.warn(
+      "[Middleware] Sesión inválida o expirada. Eliminando cookie y redirigiendo a /login."
+    );
+    const response = NextResponse.redirect(new URL("/login", req.url));
+    // Es importante usar las mismas opciones que usaste al establecer la cookie (p.ej., path)
+    deleteSession();
   }
 
   if (
