@@ -31,16 +31,7 @@ export function SignupForm({
 }: SignupFormProps) {
   return (
     <Card className="overflow-hidden">
-      <CardContent className="grid p-0 md:grid-cols-2">
-        <div className="relative hidden md:block">
-          <Image
-            src="/images/logo.png"
-            alt="Bondlog logo"
-            width={100}
-            height={100}
-            className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-          />
-        </div>
+      <CardContent className="grid p-0">
         <form className="p-6 md:p-8" onSubmit={onSubmit}>
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center text-center">
@@ -134,7 +125,7 @@ export function SignupForm({
             <Button type="submit" className="w-full">
               Sign Up
             </Button>
-            <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+            {/* <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
               <span className="relative z-10 bg-background px-2 text-muted-foreground">
                 Or continue with
               </span>
@@ -167,7 +158,7 @@ export function SignupForm({
                 </svg>
                 <span className="sr-only">Sign Up with Meta</span>
               </Button>
-            </div>
+            </div> */}
             <div className="text-center text-sm">
               Already have an account?{" "}
               <Link href="/login" className="underline underline-offset-4">

@@ -23,8 +23,6 @@ export default function PostsComponent({
     <PostsData
       posts={posts}
       pagination={pagination}
-      user={user}
-      isLoggedIn={isLoggedIn}
     />
   );
 }

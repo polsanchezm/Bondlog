@@ -27,7 +27,7 @@ export default async function Header() {
                 className={(navigationMenuTriggerStyle(), "bg-transparent")}
               >
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo.webp"
                   priority
                   alt="logo"
                   width={32}

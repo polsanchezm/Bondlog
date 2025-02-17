@@ -27,30 +27,19 @@ export default function PostsData({
               key={post.id}
               className="transition-shadow duration-300 hover:shadow-xl border border-border bg-gray-100 border-gray-300 dark:border-gray-600 dark:bg-gray-800"
             >
-              {/* Cabecera del Post */}
               <CardHeader className="flex justify-between items-start">
                 <CardTitle className="text-2xl font-bold line-clamp-2">
                   {post.title}
                 </CardTitle>
-                {/* {isLoggedIn && user && (
-                  <PostDropdown
-                    post={post}
-                    initialIsPinned={post.is_pinned}
-                    user={user}
-                    isLoggedIn={isLoggedIn}
-                  />
-                )} */}
               </CardHeader>
 
               <CardContent className="space-y-4">
-                {/* Subtítulo */}
                 <p className="text-lg text-gray-700 dark:text-gray-400 line-clamp-2">
                   {post.subtitle}
                 </p>
 
                 <Separator className="border-t border-gray-300 dark:border-gray-600" />
 
-                {/* Información del post */}
                 <div className="text-sm text-gray-600 dark:text-gray-300">
                   <p>
                     <span className="font-bold">Written by:</span>{" "}
@@ -61,6 +50,7 @@ export default function PostsData({
                     {checkUpdatedAt(post)}
                   </p>
                 </div>
+                <Separator className="border-t border-gray-300 dark:border-gray-600" />
               </CardContent>
 
               <CardFooter>
@@ -75,7 +65,6 @@ export default function PostsData({
           ))}
         </div>
 
-        {/* Paginación */}
         <footer className="mt-10">
           <PaginationComponent pagination={pagination} />
         </footer>
