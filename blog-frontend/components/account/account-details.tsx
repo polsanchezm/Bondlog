@@ -16,7 +16,7 @@ export default function AccountDetails({ userData }: { userData: User }) {
 
       <article className="max-w-lg w-full p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
         <div className="flex items-center space-x-4">
-          <div className="h-16 w-16 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold text-2xl">
+          <div className="h-16 w-16 rounded-lg bg-blue-500 text-white flex items-center justify-center font-semibold text-2xl">
             {initialLetter}
           </div>
           <div>

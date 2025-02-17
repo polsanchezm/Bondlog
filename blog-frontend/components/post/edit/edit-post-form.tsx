@@ -11,7 +11,7 @@ import { useEditPost } from "@/components/hooks/use-edit-post";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/lib/helpers";
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useState } from "react";
 import { PostSchema } from "@/lib/form-schema";
 
 interface EditPostFormProps {
@@ -34,38 +34,34 @@ export default function EditPostForm({ postData }: EditPostFormProps) {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const { toast } = useToast();
-  const { edit, loading, error } = useEditPost();
+  const { edit } = useEditPost();
   const router = useRouter();
 
-  const handleEditPost = useCallback(
-    async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const result = PostSchema.safeParse(formData);
-      if (!result.success) {
-        setErrors(
-          Object.fromEntries(
-            Object.entries(result.error.flatten().fieldErrors).map(
-              ([key, value]) => [key, value[0]]
-            )
+  const handleEditPost = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const result = PostSchema.safeParse(formData);
+    if (!result.success) {
+      setErrors(
+        Object.fromEntries(
+          Object.entries(result.error.flatten().fieldErrors).map(
+            ([key, value]) => [key, value[0]]
           )
-        );
-        return;
-      }
+        )
+      );
+      return;
+    }
 
-      setErrors({});
-      try {
-        const { data, error } = await edit(formData, formData.id);
-        console.log(data);
-        if (error) throw new Error(error!.message);
-        showToast("successEditAccount", toast);
-        router.push(`/post/${formData.id}`);
-      } catch (error: any) {
-        showToast("genericError", toast);
-        console.error("Edit account Error:", error);
-      }
-    },
-    [formData, edit, toast, router]
-  );
+    setErrors({});
+    try {
+      const { error } = await edit(formData, formData.id);
+      if (error) throw new Error(error!.message);
+      showToast("successEditAccount", toast);
+      router.push(`/post/${formData.id}`);
+    } catch (error: unknown) {
+      showToast("genericError", toast);
+      console.error("Edit account Error:", error);
+    }
+  };
 
   return (
     <Card className="overflow-hidden bg-gray-100 border-gray-300 dark:border-gray-600 dark:bg-gray-800">

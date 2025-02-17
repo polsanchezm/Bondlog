@@ -1,6 +1,6 @@
 import { checkUpdatedAt, formatDate } from "@/lib/helpers";
 import { Post, User } from "@/lib/interfaces";
-import { PostDropdown } from "@/components/post/PostDropdown";
+import { PostDropdown } from "@/components/post/dropdown/post-dropdown";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 

@@ -1,8 +1,7 @@
-import { PaginationType, Post, User } from "@/lib/interfaces";
+import { PaginationType, Post } from "@/lib/interfaces";
 import { checkUpdatedAt } from "@/lib/helpers";
 import Link from "next/link";
 import { PaginationComponent } from "@/components/ui/custom-pagination";
-import { PostDropdown } from "@/components/post/PostDropdown";
 import {
   Card,
   CardHeader,
@@ -15,13 +14,9 @@ import { Separator } from "@/components/ui/separator";
 export default function PostsData({
   posts,
   pagination,
-  user,
-  isLoggedIn,
 }: {
   posts: Post[];
   pagination: PaginationType;
-  user?: User;
-  isLoggedIn: boolean;
 }) {
   return (
     <section className="flex flex-col items-center my-10 px-6 w-full min-h-screen">

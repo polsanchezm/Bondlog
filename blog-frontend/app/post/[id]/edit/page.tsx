@@ -1,4 +1,4 @@
-import EditPostForm from "@/components/post/forms/edit-post-form";
+import EditPostForm from "@/components/post/edit/edit-post-form";
 import { fetchPostDetail } from "@/services/post";
 
 export default async function EditPostPage(props: {

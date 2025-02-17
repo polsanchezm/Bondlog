@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,8 +17,6 @@ export default function ErrorPage({
   error: Error;
   reset: () => void;
 }) {
-  const router = useRouter();
-
   useEffect(() => {
     console.error("Account page error:", error);
   }, [error]);
@@ -38,13 +35,6 @@ export default function ErrorPage({
         <CardContent className="flex flex-col gap-4">
           <Button onClick={() => reset()} className="w-full">
             Retry
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => router.push("/")}
-            className="w-full"
-          >
-            Go Home
           </Button>
         </CardContent>
       </Card>

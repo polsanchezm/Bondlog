@@ -25,8 +25,8 @@ export default function TipTap({
         class: "rounded-lg border min-h-[150px] border-input bg-back",
       },
     },
-    onUpdate({ editor }: { editor: any }) {
-      onChange(editor.getHTML());
+    onUpdate({ editor }: { editor: unknown }) {
+      onChange((editor as any).getHTML());
     },
   });
   return (

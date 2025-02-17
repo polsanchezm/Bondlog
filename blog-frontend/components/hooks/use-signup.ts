@@ -13,8 +13,8 @@ export function useSignup() {
             const { data, error } = await userSignup(formData);
             setLoading(false);
             return { data, error };
-        } catch (error: any) {
-            setError(error.message);
+        } catch (error: unknown) {
+            setError((error as Error).message);
             setLoading(false);
             throw error;
         }

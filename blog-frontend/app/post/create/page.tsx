@@ -1,11 +1,11 @@
 "use client";
 
-import CreatePostForm from "@/components/post/forms/create-post-form";
+import CreatePostForm from "@/components/post/create/create-post-form";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/hooks/use-toast";
 import { PostSchema } from "@/lib/form-schema";
 import { showToast } from "@/lib/helpers";
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Post } from "@/lib/interfaces";
 import { useCreatePost } from "@/components/hooks/use-create-post";
 
@@ -25,38 +25,34 @@ export default function CreatePostPage() {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const { toast } = useToast();
-  const { create, loading, error } = useCreatePost();
+  const { create } = useCreatePost();
   const router = useRouter();
 
-  const handleLogin = useCallback(
-    async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const result = PostSchema.safeParse(formData);
-      if (!result.success) {
-        setErrors(
-          Object.fromEntries(
-            Object.entries(result.error.flatten().fieldErrors).map(
-              ([key, value]) => [key, value[0]]
-            )
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const result = PostSchema.safeParse(formData);
+    if (!result.success) {
+      setErrors(
+        Object.fromEntries(
+          Object.entries(result.error.flatten().fieldErrors).map(
+            ([key, value]) => [key, value[0]]
           )
-        );
-        return;
-      }
+        )
+      );
+      return;
+    }
 
-      setErrors({});
-      try {
-        const { data, error } = await create(formData);
-        console.log(data);
-        if (error) throw new Error(error!.message);
-        showToast("successPostCreate", toast);
-        router.push("/");
-      } catch (error: any) {
-        showToast("genericError", toast);
-        console.error("Create Post Error:", error);
-      }
-    },
-    [formData, create, toast, router]
-  );
+    setErrors({});
+    try {
+      const { error } = await create(formData);
+      if (error) throw new Error(error!.message);
+      showToast("successPostCreate", toast);
+      router.push("/");
+    } catch (error: unknown) {
+      showToast("genericError", toast);
+      console.error("Create Post Error:", error);
+    }
+  };
 
   return (
     <div className="flex min-h-svh flex-col items-center justify-center p-6 md:p-10">

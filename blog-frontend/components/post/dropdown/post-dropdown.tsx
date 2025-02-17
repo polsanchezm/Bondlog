@@ -8,34 +8,31 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { PinPost } from "@/components/post/PinPost";
+import { PinPost } from "@/components/post/pin/pin-post";
 import { Post, User } from "@/lib/interfaces";
 import { togglePin } from "@/services/post";
-import { useState } from "react";
 import Link from "next/link";
-import { DeletePost } from "./DeletePost";
+import { DeletePost } from "@/components/post/delete/delete-post";
 import { EllipsisVertical, SquarePen } from "lucide-react";
+import { useState } from "react";
 
 export function PostDropdown({
   post,
-  initialIsPinned,
-  user,
   isLoggedIn,
+  user,
+  initialIsPinned,
 }: {
   post: Post;
-  initialIsPinned: boolean;
-  user: User | null;
   isLoggedIn: boolean;
+  user: User | null;
+  initialIsPinned: boolean;
 }) {
   const [isPinned, setIsPinned] = useState(initialIsPinned);
-  const postId = post.id;
 
-  if (!user || !isLoggedIn) {
-    return null;
-  }
+  if (!user || !isLoggedIn) return null;
 
-  const userId = user.id;
-  const userRole = user.role;
+  const isAdmin = user.role === "admin";
+  const isAuthor = user.id === post.author_id;
 
   const handleTogglePin = async (postId: string) => {
     try {
@@ -55,21 +52,21 @@ export function PostDropdown({
         <DropdownMenuLabel>Post Options</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
-        {userRole === "admin" && (
-          <DropdownMenuItem>
+        {isAdmin && (
+          <DropdownMenuItem className="flex justify-center items-center text-base md:text-sm md:px-4 py-2 rounded-lg transition-all cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700">
             <PinPost
-              postId={postId}
+              postId={post.id}
               isPinned={isPinned}
               onTogglePin={handleTogglePin}
             />
           </DropdownMenuItem>
         )}
 
-        {userId === post.author_id && (
-          <DropdownMenuItem>
+        {isAuthor && (
+          <DropdownMenuItem className="flex justify-center items-center text-base md:text-sm py-2 rounded-lg transition-all cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700">
             <Link
               href={`/post/${post.id}/edit`}
-              className="flex justify-center items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all"
+              className="flex justify-center gap-4 items-center md:px-11 py-2 text-sm font-medium rounded-lg transition-all"
             >
               <SquarePen />
               <span className="hidden md:block">Edit Post</span>
@@ -77,11 +74,11 @@ export function PostDropdown({
           </DropdownMenuItem>
         )}
 
-        {/* {(userRole === "admin" || userId === post.author_id) && (
-          <DropdownMenuItem>
+        {(isAdmin || isAuthor) && (
+          <DropdownMenuItem className="flex justify-center items-center text-base md:text-sm md:px-4 py-2 rounded-lg transition-all cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700">
             <DeletePost postId={post.id} />
           </DropdownMenuItem>
-        )} */}
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

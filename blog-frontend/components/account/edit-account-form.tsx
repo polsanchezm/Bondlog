@@ -7,10 +7,11 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/hooks/use-toast";
 import { LoginFormSchema } from "@/lib/form-schema";
 import { showToast } from "@/lib/helpers";
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Register } from "@/lib/interfaces";
 import { useUpdateUser } from "@/components/hooks/use-edit-user";
 import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
 
 interface EditAccountFormProps {
   userData: Register;
@@ -26,38 +27,34 @@ export default function EditAccountForm({ userData }: EditAccountFormProps) {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const { toast } = useToast();
-  const { updateUser, loading, error } = useUpdateUser();
+  const { updateUser } = useUpdateUser();
   const router = useRouter();
 
-  const handleEditAccount = useCallback(
-    async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const result = LoginFormSchema.safeParse(formData);
-      if (!result.success) {
-        setErrors(
-          Object.fromEntries(
-            Object.entries(result.error.flatten().fieldErrors).map(
-              ([key, value]) => [key, value[0]]
-            )
+  const handleEditAccount = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const result = LoginFormSchema.safeParse(formData);
+    if (!result.success) {
+      setErrors(
+        Object.fromEntries(
+          Object.entries(result.error.flatten().fieldErrors).map(
+            ([key, value]) => [key, value[0]]
           )
-        );
-        return;
-      }
+        )
+      );
+      return;
+    }
 
-      setErrors({});
-      try {
-        const { data, error } = await updateUser(formData);
-        console.log(data);
-        if (error) throw new Error(error!.message);
-        showToast("successEditAccount", toast);
-        router.push("/");
-      } catch (error: any) {
-        showToast("genericError", toast);
-        console.error("Edit account Error:", error);
-      }
-    },
-    [formData, updateUser, toast, router]
-  );
+    setErrors({});
+    try {
+      const { error } = await updateUser(formData);
+      if (error) throw new Error(error!.message);
+      showToast("successEditAccount", toast);
+      router.push("/");
+    } catch (error: unknown) {
+      showToast("genericError", toast);
+      console.error("Edit account Error:", error);
+    }
+  };
 
   return (
     <Card className="overflow-hidden">
@@ -159,7 +156,7 @@ export default function EditAccountForm({ userData }: EditAccountFormProps) {
           </div>
         </form>
         <div className="relative hidden md:block">
-          <img
+          <Image
             src="/placeholder.svg"
             alt="Image"
             className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"

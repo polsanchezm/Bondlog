@@ -65,7 +65,7 @@ const toastMessages: Record<
     title: "Success",
     description: "Post updated successfully!",
   },
-  successPostDetele: {
+  successPostDelete: {
     title: "Success",
     description: "Post deleted successfully!",
   },
