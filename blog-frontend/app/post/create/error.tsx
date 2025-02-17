@@ -11,13 +11,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 
-export default function ErrorPage({
-  error,
-  reset,
-}: {
-  error: Error;
-  reset: () => void;
-}) {
+export default function ErrorPage({ error }: { error: Error }) {
   const router = useRouter();
 
   useEffect(() => {
@@ -36,7 +30,7 @@ export default function ErrorPage({
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
-          <Button onClick={() => reset()} className="w-full">
+          <Button onClick={() => window.location.reload()} className="w-full">
             Retry
           </Button>
           <Button

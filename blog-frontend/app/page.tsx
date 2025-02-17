@@ -8,6 +8,5 @@ export default async function Home(props: {
   const currentPage = searchParams.page ? parseInt(searchParams.page, 10) : 1;
 
   const { data: posts, pagination } = await fetchPosts(currentPage);
-
   return <Posts posts={posts} pagination={pagination} />;
 }

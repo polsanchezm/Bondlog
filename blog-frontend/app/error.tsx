@@ -10,13 +10,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 
-export default function ErrorPage({
-  error,
-  reset,
-}: {
-  error: Error;
-  reset: () => void;
-}) {
+export default function ErrorPage({ error }: { error: Error }) {
   useEffect(() => {
     console.error("Account page error:", error);
   }, [error]);
@@ -33,7 +27,7 @@ export default function ErrorPage({
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
-          <Button onClick={() => reset()} className="w-full">
+          <Button onClick={() => window.location.reload()} className="w-full">
             Retry
           </Button>
         </CardContent>
