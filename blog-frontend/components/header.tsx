@@ -1,99 +1,107 @@
-// import { getSession } from "@services/auth";
 import {
   NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
+  NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { ModeToggle } from "@/components/ui/theme-toggle";
-// import { Icon } from "@iconify/react";
 import Image from "next/image";
-// import LogoutAction from "@components/authentication/LogoutAction";
+import LogoutAction from "@/components/auth/logout-action";
 import Link from "next/link";
+import { getSession } from "@/services/auth";
+import { LogIn, UserPlus, SquarePen, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default async function Header() {
-  // const session = await getSession();
-  // const isLoggedIn = !!session?.userToken;
+  const session = await getSession();
+  const isLoggedIn = !!session?.userToken;
 
   return (
-    <NavigationMenu className="z-50 fixed bottom-0 left-0 w-full bg-gray-100 shadow-md dark:bg-gray-700 transition-all md:relative md:top-0 md:shadow-none">
-      <NavigationMenuList className="flex w-full justify-around md:justify-between items-center px-4 py-2">
-        <NavigationMenuItem>
-          {/* {isLoggedIn ? renderUserButtons() : renderAuthButtons()} */}
-          <ModeToggle />
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              <Image
-                src="/images/logo.png"
-                priority
-                alt="logo"
-                width={32}
-                height={32}
-                className="dark:invert"
-              />
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+    <nav className="px-2 py-2.5 dark:border-gray-700 sm:px-4 z-50 fixed bottom-0 left-0 w-full bg-gray-300 shadow-md dark:bg-gray-800 transition-all md:relative md:top-0 md:shadow-none">
+      <NavigationMenu className="mx-auto flex flex-wrap items-center justify-between">
+        <NavigationMenuList className="flex w-full justify-around md:justify-between items-center px-4 py-2 gap-6">
+          <NavigationMenuItem className="mr-6">
+            <Link href="/" legacyBehavior passHref>
+              <NavigationMenuLink
+                className={(navigationMenuTriggerStyle(), "bg-transparent")}
+              >
+                <Image
+                  src="/images/logo.png"
+                  priority
+                  alt="logo"
+                  width={32}
+                  height={32}
+                  className="dark:invert"
+                />
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            {isLoggedIn ? <UserButtons /> : <AuthButtons />}
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <ModeToggle />
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </nav>
   );
 }
 
-const renderAuthButtons = () => (
+const AuthButtons = () => (
   <div className="flex items-center gap-3">
-    <NavButton href="/login" icon="lucide:log-in" label="Log In" color="blue" />
-    <NavButton
-      href="/signup"
-      icon="ion:person-add-outline"
-      label="Sign Up"
-      color="green"
-    />
-  </div>
-);
-
-const renderUserButtons = () => (
-  <div className="flex items-center gap-3">
-    <NavButton href="/post/create" icon="lucide:plus" label="Create a Post" />
-    <NavButton href="/account" icon="lucide:user" label="Account" />
-    {/* <LogoutAction /> */}
-  </div>
-);
-
-const NavButton = ({
-  href,
-  icon,
-  label,
-  color = "black",
-}: {
-  href: string;
-  icon: string;
-  label: string;
-  color?: string;
-}) => {
-  const baseColor =
-    color === "blue"
-      ? "bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
-      : color === "green"
-      ? "bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800"
-      : "bg-gray-900 hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-600";
-
-  return (
-    <Link href={href}>
-      <button
-        className={`flex flex-col items-center justify-center px-6 py-4 md:w-auto xl:w-auto text-white text-xs font-medium rounded transition-all md:flex-row md:text-sm ${baseColor} focus:ring focus:ring-opacity-50 active:scale-95`}
-        aria-label={label}
+    <Link href="/login">
+      <Button
+        className="flex items-center px-6 py-4 gap-2 text-white text-sm font-medium rounded transition-all 
+                 bg-gray-600 hover:bg-gray-500 dark:bg-gray-700 dark:hover:bg-gray-500 
+                 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed 
+                 focus:ring focus:ring-gray-300 dark:focus:ring-gray-600 active:scale-95"
       >
-        {/* <Icon icon={icon} className="w-5 h-5 md:w-6 md:h-6" /> */}
-        <span className="hidden md:inline ml-2">{label}</span>
-      </button>
+        <LogIn />
+        <span className="hidden md:inline ml-2">Log In</span>
+      </Button>
     </Link>
-  );
-};
+
+    <Link href="/signup">
+      <Button
+        className="flex items-center px-6 py-4 gap-2 text-white text-sm font-medium rounded transition-all 
+        bg-blue-600 hover:bg-blue-500 dark:bg-blue-700 dark:hover:bg-blue-500 
+        disabled:bg-blue-400 dark:disabled:bg-blue-600 disabled:cursor-not-allowed 
+        focus:ring focus:ring-blue-300 dark:focus:ring-blue-600 active:scale-95"
+      >
+        <UserPlus />
+        <span className="hidden md:inline ml-2">Sign Up</span>
+      </Button>
+    </Link>
+  </div>
+);
+
+const UserButtons = () => (
+  <div className="flex items-center gap-3">
+    <Link href="/post/create">
+      <Button
+        className="flex items-center px-6 py-4 gap-2 text-white text-sm font-medium rounded transition-all 
+                 bg-green-600 hover:bg-green-500 dark:bg-green-700 dark:hover:bg-green-500 
+                 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed 
+                 focus:ring focus:ring-green-300 dark:focus:ring-green-600 active:scale-95"
+      >
+        <SquarePen />
+        <span className="hidden md:inline ml-2">Create Post</span>
+      </Button>
+    </Link>
+
+    <Link href="/account">
+      <Button
+        className="flex items-center px-6 py-4 gap-2 text-white text-sm font-medium rounded transition-all 
+                 bg-gray-600 hover:bg-gray-500 dark:bg-gray-500 dark:hover:bg-gray-400 
+                 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed 
+                 focus:ring focus:ring-gray-300 dark:focus:ring-gray-600 active:scale-95"
+      >
+        <User />
+        <span className="hidden md:inline ml-2">Account</span>
+      </Button>
+    </Link>
+    <LogoutAction />
+  </div>
+);

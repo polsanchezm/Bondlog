@@ -1,7 +1,7 @@
-import { Pagination, Post, User } from "@/lib/interfaces";
+import { PaginationType, Post, User } from "@/lib/interfaces";
 import { checkUpdatedAt } from "@/lib/helpers";
 import Link from "next/link";
-import { PaginationComponent } from "@/components/ui/pagination";
+import { PaginationComponent } from "@/components/ui/custom-pagination";
 import { PostDropdown } from "@/components/post/PostDropdown";
 import {
   Card,
@@ -19,7 +19,7 @@ export default function PostsData({
   isLoggedIn,
 }: {
   posts: Post[];
-  pagination: Pagination;
+  pagination: PaginationType;
   user?: User;
   isLoggedIn: boolean;
 }) {
@@ -30,21 +30,21 @@ export default function PostsData({
           {posts.map((post) => (
             <Card
               key={post.id}
-              className="transition-shadow duration-300 hover:shadow-xl border border-border dark:border-gray-700"
+              className="transition-shadow duration-300 hover:shadow-xl border border-border bg-gray-100 border-gray-300 dark:border-gray-600 dark:bg-gray-800"
             >
               {/* Cabecera del Post */}
               <CardHeader className="flex justify-between items-start">
                 <CardTitle className="text-2xl font-bold line-clamp-2">
                   {post.title}
                 </CardTitle>
-                {isLoggedIn && user && (
+                {/* {isLoggedIn && user && (
                   <PostDropdown
                     post={post}
                     initialIsPinned={post.is_pinned}
                     user={user}
                     isLoggedIn={isLoggedIn}
                   />
-                )}
+                )} */}
               </CardHeader>
 
               <CardContent className="space-y-4">
@@ -53,7 +53,7 @@ export default function PostsData({
                   {post.subtitle}
                 </p>
 
-                <Separator />
+                <Separator className="border-t border-gray-300 dark:border-gray-600" />
 
                 {/* Información del post */}
                 <div className="text-sm text-gray-600 dark:text-gray-300">

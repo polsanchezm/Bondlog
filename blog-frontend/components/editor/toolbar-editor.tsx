@@ -21,7 +21,7 @@ export function Toolbar({ editor }: Props) {
     return null;
   }
   return (
-    <div className="border border-input bg-transparent rounded-lg mb-2">
+    <div className="border border-input bg-transparent rounded-lg mb-2 bg-gray-200 border-gray-400 dark:border-gray-600 dark:bg-gray-700">
       <Toggle
         size={"lg"}
         pressed={editor.isActive("bold")}

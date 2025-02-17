@@ -15,7 +15,7 @@ export default function PostData({
 }) {
   return (
     <section className="flex justify-center px-6 mt-8 mb-20 overflow-x-auto whitespace-pre-wrap break-all">
-      <Card className="max-w-3xl w-full shadow-lg border border-border dark:border-gray-700">
+      <Card className="max-w-3xl w-full shadow-lg border border-border bg-gray-100 border-gray-300 dark:border-gray-600 dark:bg-gray-800">
         <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle className="text-3xl sm:text-4xl font-bold">
             {post.title}
@@ -42,7 +42,7 @@ export default function PostData({
             {post.subtitle}
           </p>
 
-          <Separator />
+          <Separator className="border-t border-gray-300 dark:border-gray-600" />
 
           {post.body && (
             <div
@@ -51,7 +51,8 @@ export default function PostData({
             />
           )}
 
-          <Separator />
+          <Separator className="border-t border-gray-300 dark:border-gray-600" />
+
           <div className="flex flex-col sm:flex-row justify-between text-sm text-gray-500 dark:text-gray-400">
             <p className="font-medium">{post.author_username}</p>
             <p>{formatDate(post.created_at)}</p>

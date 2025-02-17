@@ -14,6 +14,7 @@ import { togglePin } from "@/services/post";
 import { useState } from "react";
 import Link from "next/link";
 import { DeletePost } from "./DeletePost";
+import { EllipsisVertical, SquarePen } from "lucide-react";
 
 export function PostDropdown({
   post,
@@ -30,7 +31,7 @@ export function PostDropdown({
   const postId = post.id;
 
   if (!user || !isLoggedIn) {
-    return null; // Si no hay usuario o no está logueado, no se renderiza nada
+    return null;
   }
 
   const userId = user.id;
@@ -48,13 +49,12 @@ export function PostDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        {/* <Icon icon="tabler:dots" width="24" height="24" /> */}
+        <EllipsisVertical />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Post Options</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
-        {/* Pin Post (solo para admin) */}
         {userRole === "admin" && (
           <DropdownMenuItem>
             <PinPost
@@ -65,25 +65,23 @@ export function PostDropdown({
           </DropdownMenuItem>
         )}
 
-        {/* Edit Post */}
         {userId === post.author_id && (
           <DropdownMenuItem>
             <Link
               href={`/post/${post.id}/edit`}
               className="flex justify-center items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all"
             >
-              {/* <Icon icon="mynaui:pencil" className="w-5 h-5" /> */}
-              Edit Post
+              <SquarePen />
+              <span className="hidden md:block">Edit Post</span>
             </Link>
           </DropdownMenuItem>
         )}
 
-        {/* Delete Post */}
-        {(userRole === "admin" || userId === post.author_id) && (
+        {/* {(userRole === "admin" || userId === post.author_id) && (
           <DropdownMenuItem>
             <DeletePost postId={post.id} />
           </DropdownMenuItem>
-        )}
+        )} */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

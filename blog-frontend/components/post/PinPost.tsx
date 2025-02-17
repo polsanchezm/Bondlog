@@ -1,3 +1,4 @@
+import { Pin, PinOff } from "lucide-react";
 import { useCallback } from "react";
 
 export function PinPost({
@@ -21,18 +22,13 @@ export function PinPost({
     >
       {isPinned ? (
         <>
-          {/* <Icon
-            icon="iconoir:pin-solid"
-            width="24"
-            height="24"
-            className="mr-2"
-          /> */}
-          Unpin
+          <PinOff />
+          <span className="hidden md:block">Unpin</span>
         </>
       ) : (
         <>
-          {/* <Icon icon="iconoir:pin" width="24" height="24" className="mr-2" /> */}
-          Pin
+          <Pin />
+          <span className="hidden md:block">Pin</span>
         </>
       )}
     </button>

@@ -2,7 +2,7 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { Toolbar } from "@/components/editor/Toolbar";
+import { Toolbar } from "@/components/editor/toolbar-editor";
 import Heading from "@tiptap/extension-heading";
 export default function TipTap({
   description,
@@ -34,7 +34,7 @@ export default function TipTap({
       <Toolbar editor={editor} />
       <EditorContent
         editor={editor}
-        className="prose prose-neutral dark:prose-invert"
+        className="prose prose-neutral dark:prose-invert rounded-lg bg-gray-200 border-gray-400 dark:border-gray-600 dark:bg-gray-700"
       />
     </div>
   );

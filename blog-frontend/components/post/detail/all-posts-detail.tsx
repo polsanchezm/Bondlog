@@ -2,7 +2,7 @@
 
 import PostsData from "@/components/post/data/all-posts-data";
 import PostsSkeleton from "@/components/ui/skeletons/posts";
-import { Pagination, Post, User } from "@/lib/interfaces";
+import { PaginationType, Post, User } from "@/lib/interfaces";
 
 export default function PostsComponent({
   posts,
@@ -11,7 +11,7 @@ export default function PostsComponent({
   isLoggedIn,
 }: {
   posts: Post[];
-  pagination: Pagination;
+  pagination: PaginationType;
   user: User;
   isLoggedIn: boolean;
 }) {

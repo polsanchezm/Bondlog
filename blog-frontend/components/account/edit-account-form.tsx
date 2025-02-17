@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -157,7 +158,7 @@ export default function EditAccountForm({ userData }: EditAccountFormProps) {
             </Button>
           </div>
         </form>
-        <div className="relative hidden bg-muted md:block">
+        <div className="relative hidden md:block">
           <img
             src="/placeholder.svg"
             alt="Image"
