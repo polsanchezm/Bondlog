@@ -4,7 +4,6 @@ import { Label } from "@/components/ui/label";
 import { FormEvent } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import Image from "next/image";
 
 interface SignupFormProps {
   errors: { [key: string]: string };

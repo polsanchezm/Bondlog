@@ -1,6 +1,6 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Toolbar } from "@/components/editor/toolbar-editor";
 import Heading from "@tiptap/extension-heading";
@@ -25,8 +25,8 @@ export default function TipTap({
         class: "rounded-lg border min-h-[150px] border-input bg-back",
       },
     },
-    onUpdate({ editor }: { editor: unknown }) {
-      onChange((editor as any).getHTML());
+    onUpdate({ editor }: { editor: Editor }) {
+      onChange(editor.getHTML());
     },
   });
   return (
