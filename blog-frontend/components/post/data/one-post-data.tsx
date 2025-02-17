@@ -14,7 +14,7 @@ export default function PostData({
   isLoggedIn: boolean;
 }) {
   return (
-    <section className="flex justify-center px-6 mt-8 mb-20 overflow-x-auto whitespace-pre-wrap break-all">
+    <section className="flex justify-center px-6 mt-8 mb-28 overflow-x-auto whitespace-pre-wrap break-words">
       <Card className="max-w-3xl w-full shadow-lg border border-border bg-gray-100 border-gray-300 dark:border-gray-600 dark:bg-gray-800">
         <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle className="text-3xl sm:text-4xl font-bold">
