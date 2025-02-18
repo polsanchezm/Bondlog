@@ -72,7 +72,7 @@ class PostsController extends Controller
             return response()->json(['message' => 'Post not found'], 404);
         }
 
-        $post->update($request->all());
+        $post->update($request->validated());
 
         return response()->json([
             'message' => 'Post updated successfully',
