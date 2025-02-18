@@ -22,7 +22,7 @@ export default function TipTap({
     content: description,
     editorProps: {
       attributes: {
-        class: "rounded-lg border min-h-[150px] border-input bg-back",
+        class: "rounded-lg min-h-[150px] border border-border bg-back",
       },
     },
     onUpdate({ editor }: { editor: Editor }) {
@@ -34,7 +34,7 @@ export default function TipTap({
       <Toolbar editor={editor} />
       <EditorContent
         editor={editor}
-        className="prose prose-neutral dark:prose-invert rounded-lg bg-gray-200 border-gray-400 dark:border-gray-600 dark:bg-gray-700"
+        className="prose prose-neutral dark:prose-invert rounded-lg bg-gray-200 dark:bg-gray-700"
       />
     </div>
   );

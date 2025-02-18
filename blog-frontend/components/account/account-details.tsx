@@ -37,7 +37,7 @@ export default function AccountDetails({ userData }: { userData: User }) {
 
         {userData.role !== "admin" && (
           <Link href="/account/edit">
-            <button className="mt-6 w-full flex items-center justify-center gap-2 py-3 text-white bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 rounded-lg transition duration-300">
+            <button className="mt-6 w-full flex items-center justify-center gap-2 py-3 text-white rounded-lg transition duration-300">
               <Pencil />
               <span className="hidden md:inline ml-2">Edit Profile</span>
             </button>

@@ -29,7 +29,7 @@ export function SignupForm({
   onSubmit,
 }: SignupFormProps) {
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden border border-border mb-20">
       <CardContent className="grid p-0">
         <form className="p-6 md:p-8" onSubmit={onSubmit}>
           <div className="flex flex-col gap-6">
