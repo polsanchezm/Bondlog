@@ -8,36 +8,42 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { PinPost } from "@/components/post/pin/pin-post";
-import { Post, User } from "@/lib/interfaces";
-import { togglePin } from "@/services/post";
-import Link from "next/link";
-import { DeletePost } from "@/components/post/delete/delete-post";
-import { EllipsisVertical, SquarePen } from "lucide-react";
+import { PinComment } from "@/components/comment/pin/pin-comment";
+import { Comment, User } from "@/lib/interfaces";
+import { togglePin } from "@/services/comment";
 import { useState } from "react";
+import { DeleteComment } from "@/components/comment/delete/delete-comment";
+import { EllipsisVertical, SquarePen } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-export function PostDropdown({
-  post,
+interface CommentDropdownProps {
+  comment: Comment;
+  isLoggedIn: boolean;
+  user?: User;
+  initialIsPinned: boolean;
+  onEdit: (commentId: string) => void;
+}
+
+export function CommentDropdown({
+  comment,
   isLoggedIn,
   user,
   initialIsPinned,
-}: {
-  post: Post;
-  isLoggedIn: boolean;
-  user: User | null;
-  initialIsPinned: boolean;
-}) {
+  onEdit,
+}: CommentDropdownProps) {
   const [isPinned, setIsPinned] = useState(initialIsPinned);
+  const router = useRouter();
 
   if (!user || !isLoggedIn) return null;
 
   const isAdmin = user.role === "admin";
-  const isAuthor = user.id === post.author_id;
+  const isAuthor = user.id === comment.author_id;
 
-  const handleTogglePin = async (postId: string) => {
+  const handleTogglePin = async (commentId: string) => {
     try {
-      const response = await togglePin(postId);
+      const response = await togglePin(commentId);
       setIsPinned(response?.data.is_pinned);
+      router.refresh();
     } catch (error) {
       console.error("Error toggling pin:", error);
     }
@@ -49,13 +55,13 @@ export function PostDropdown({
         <EllipsisVertical />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>Post Options</DropdownMenuLabel>
+        <DropdownMenuLabel>Comment Options</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
         {isAdmin && (
           <DropdownMenuItem className="flex justify-center items-center text-base md:text-sm md:px-4 py-2 rounded-lg transition-all cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700">
-            <PinPost
-              postId={post.id}
+            <PinComment
+              commentId={comment.id}
               isPinned={isPinned}
               onTogglePin={handleTogglePin}
             />
@@ -64,19 +70,19 @@ export function PostDropdown({
 
         {isAuthor && (
           <DropdownMenuItem className="flex justify-center items-center text-base md:text-sm py-2 rounded-lg transition-all cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700">
-            <Link
-              href={`/post/${post.id}/edit`}
+            <button
+              onClick={() => onEdit(comment.id)}
               className="flex justify-center gap-4 items-center px-11 py-2 text-sm font-medium rounded-lg transition-all"
             >
               <SquarePen />
               <span className="hidden md:block">Edit</span>
-            </Link>
+            </button>
           </DropdownMenuItem>
         )}
 
         {(isAdmin || isAuthor) && (
           <DropdownMenuItem className="flex justify-center items-center text-base md:text-sm md:px-4 py-2 rounded-lg transition-all cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700">
-            <DeletePost postId={post.id} />
+            <DeleteComment commentId={comment.id} />
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>

@@ -1,17 +1,17 @@
 import axios from "@/lib/axios";
-import { APIError, Post } from "@/lib/interfaces";
+import { APIError, Comment } from "@/lib/interfaces";
 import { getSession } from "@/services/auth";
 
-const fetchPosts = async (page = 1) => {
+const fetchComments = async (page = 1, postId: string) => {
   try {
-    const response = await axios.get(`/posts?page=${page}`);
+    const response = await axios.get(`/posts/comment/${postId}?page=${page}`);
     return {
       data: response.data.data,
       pagination: response.data.pagination,
       error: null,
     };
   } catch (error: unknown) {
-    console.error("Error fetching posts:", error);
+    console.error("Error fetching comments:", error);
 
     return {
       data: null,
@@ -25,12 +25,12 @@ const fetchPosts = async (page = 1) => {
   }
 };
 
-const fetchPostDetail = async (id: string) => {
+const fetchCommentDetail = async (id: string) => {
   try {
-    const response = await axios.get(`/posts/detail/${id}`);
+    const response = await axios.get(`/posts/comment/detail/${id}`);
     return { data: response.data, error: null };
   } catch (error: unknown) {
-    console.error("Error fetching post detail:", error);
+    console.error("Error fetching comment detail:", error);
 
     return {
       data: null,
@@ -43,17 +43,44 @@ const fetchPostDetail = async (id: string) => {
   }
 };
 
-const createPost = async (formData: Post) => {
+const createComment = async (formData: Comment, postId: string) => {
   try {
     const session = await getSession();
-    const response = await axios.post("/posts/create", formData, {
+    const response = await axios.post(
+      `/posts/comment/create/${postId}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.userToken}`,
+        },
+      }
+    );
+    return { data: response.data, error: null };
+  } catch (error: unknown) {
+    console.error("Error creating the comment:", error);
+
+    return {
+      data: null,
+      error: {
+        message: (error as APIError).message || "Something went wrong",
+        data: (error as APIError).response?.data?.message,
+        status: (error as APIError).response?.status || 500,
+      },
+    };
+  }
+};
+
+const updateComment = async (formData: Comment, id: string) => {
+  try {
+    const session = await getSession();
+    const response = await axios.put(`/posts/comment/update/${id}`, formData, {
       headers: {
         Authorization: `Bearer ${session?.userToken}`,
       },
     });
     return { data: response.data, error: null };
   } catch (error: unknown) {
-    console.error("Error creating the post:", error);
+    console.error("Error updating the comment:", error);
 
     return {
       data: null,
@@ -66,17 +93,17 @@ const createPost = async (formData: Post) => {
   }
 };
 
-const updatePost = async (formData: Post, id: string) => {
+const deleteComment = async (id: string) => {
   try {
     const session = await getSession();
-    const response = await axios.put(`/posts/update/${id}`, formData, {
+    const response = await axios.delete(`/posts/comment/delete/${id}`, {
       headers: {
         Authorization: `Bearer ${session?.userToken}`,
       },
     });
     return { data: response.data, error: null };
   } catch (error: unknown) {
-    console.error("Error updating the post:", error);
+    console.error("Error deleting the comment:", error);
 
     return {
       data: null,
@@ -89,34 +116,11 @@ const updatePost = async (formData: Post, id: string) => {
   }
 };
 
-const deletePost = async (id: string) => {
-  try {
-    const session = await getSession();
-    const response = await axios.delete(`/posts/delete/${id}`, {
-      headers: {
-        Authorization: `Bearer ${session?.userToken}`,
-      },
-    });
-    return { data: response.data, error: null };
-  } catch (error: unknown) {
-    console.error("Error deleting the post:", error);
-
-    return {
-      data: null,
-      error: {
-        message: (error as APIError).message || "Something went wrong",
-        data: (error as APIError).response?.data?.message,
-        status: (error as APIError).response?.status || 500,
-      },
-    };
-  }
-};
-
-const togglePin = async (postId: string) => {
+const togglePin = async (commentId: string) => {
   try {
     const session = await getSession();
     const response = await axios.patch(
-      `/posts/pin/${postId}`,
+      `/posts/comment/pin/${commentId}`,
       {},
       {
         headers: {
@@ -127,7 +131,7 @@ const togglePin = async (postId: string) => {
 
     return { data: response.data, error: null };
   } catch (error) {
-    console.error("Error pinning/unpinning post:", error);
+    console.error("Error pinning/unpinning comment:", error);
     return {
       data: null,
       error: {
@@ -140,10 +144,10 @@ const togglePin = async (postId: string) => {
 };
 
 export {
-  fetchPosts,
-  fetchPostDetail,
-  createPost,
-  updatePost,
-  deletePost,
+  fetchComments,
+  fetchCommentDetail,
+  createComment,
+  updateComment,
+  deleteComment,
   togglePin,
 };

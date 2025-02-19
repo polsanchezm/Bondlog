@@ -1,6 +1,6 @@
 "use client";
 
-import PostData from "@/components/post/data/one-post-data";
+import PostData from "@/components/post/view/one-post-data";
 import PostSkeleton from "@/components/ui/skeletons/post-detail";
 import { Post, User } from "@/lib/interfaces";
 

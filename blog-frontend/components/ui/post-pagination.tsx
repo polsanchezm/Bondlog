@@ -11,7 +11,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-export const PaginationComponent = ({
+export const PostPaginationComponent = ({
   pagination,
 }: {
   pagination: PaginationType;

@@ -1,7 +1,7 @@
 import { PaginationType, Post } from "@/lib/interfaces";
 import { checkUpdatedAt } from "@/lib/helpers";
 import Link from "next/link";
-import { PaginationComponent } from "@/components/ui/custom-pagination";
+import { PostPaginationComponent } from "@/components/ui/post-pagination";
 import {
   Card,
   CardHeader,
@@ -25,16 +25,14 @@ export default function PostsData({
           {posts.map((post) => (
             <Card
               key={post.id}
-              className="flex flex-col transition-shadow duration-300 p-2 hover:shadow-xl border border-border bg-gray-100 border-gray-300 dark:border-gray-600 dark:bg-gray-800"
+              className="flex flex-col transition-shadow duration-300 p-2 hover:shadow-xl border border-border bg-gray-100 dark:bg-gray-800"
             >
-              {/* Header: se fija una altura mínima para mantener consistencia */}
               <CardHeader className="min-h-[60px] flex justify-between items-start">
                 <CardTitle className="text-2xl font-bold line-clamp-2">
                   {post.title}
                 </CardTitle>
               </CardHeader>
 
-              {/* Contenido: se usa flex-grow para ocupar el espacio disponible */}
               <CardContent className="flex-grow space-y-4 min-h-[150px]">
                 <p className="text-lg text-gray-700 dark:text-gray-400 line-clamp-2">
                   {post.subtitle}
@@ -55,7 +53,6 @@ export default function PostsData({
                 <Separator className="border-t border-gray-300 dark:border-gray-600" />
               </CardContent>
 
-              {/* Footer: se empuja al fondo con mt-auto */}
               <CardFooter className="mt-auto">
                 <Link
                   href={`/post/${post.id}`}
@@ -69,7 +66,7 @@ export default function PostsData({
         </div>
 
         <footer className="mt-10">
-          <PaginationComponent pagination={pagination} />
+          <PostPaginationComponent pagination={pagination} />
         </footer>
       </div>
     </section>

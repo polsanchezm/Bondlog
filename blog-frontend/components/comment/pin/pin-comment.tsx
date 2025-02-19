@@ -1,18 +1,18 @@
 import { Pin, PinOff } from "lucide-react";
 import { useCallback } from "react";
 
-export function PinPost({
-  postId,
+export function PinComment({
+  commentId,
   isPinned,
   onTogglePin,
 }: {
-  postId: string;
+  commentId: string;
   isPinned: boolean;
-  onTogglePin: (postId: string, isPinned: boolean) => void;
+  onTogglePin: (commentId: string, isPinned: boolean) => void;
 }) {
   const handlePinToggle = useCallback(() => {
-    onTogglePin(postId, !isPinned);
-  }, [postId, isPinned, onTogglePin]);
+    onTogglePin(commentId, !isPinned);
+  }, [commentId, isPinned, onTogglePin]);
 
   return (
     <button

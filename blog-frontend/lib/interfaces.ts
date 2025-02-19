@@ -40,6 +40,18 @@ interface Post {
   created_at: string;
   updated_at: string;
   is_pinned: boolean;
+  comments: Comment[];
+}
+
+interface Comment {
+  id: string;
+  content: string;
+  post_id: string;
+  author_id: string;
+  author_username: string;
+  created_at: string;
+  updated_at: string;
+  is_pinned: boolean;
 }
 
 interface Register {
@@ -80,4 +92,5 @@ export type {
   PostActionsProps,
   APIError,
   PaginationType,
+  Comment,
 };

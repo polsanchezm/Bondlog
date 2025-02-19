@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Post;
+use App\Models\Comment;
 use App\Models\User;
 
-class PostPolicy
+class CommentPolicy
 {
     /**
      * Determine whether the user can create models.
@@ -18,17 +18,17 @@ class PostPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Post $post): bool
+    public function update(User $user, Comment $comment): bool
     {
-        return $user->id == $post->author_id;
+        return $user->id == $comment->author_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Post $post): bool
+    public function delete(User $user, Comment $comment): bool
     {
-        return $user->id === $post->author_id || $user->role === 'admin';
+        return $user->id === $comment->author_id || $user->role === 'admin';
     }
 
     public function pin(User $user): bool

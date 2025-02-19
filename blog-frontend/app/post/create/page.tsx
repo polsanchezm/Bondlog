@@ -21,6 +21,7 @@ export default function CreatePostPage() {
     created_at: "",
     updated_at: "",
     is_pinned: false,
+    comments: [],
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -28,7 +29,7 @@ export default function CreatePostPage() {
   const { create } = useCreatePost();
   const router = useRouter();
 
-  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+  const handleCreatePost = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const result = PostSchema.safeParse(formData);
     if (!result.success) {
@@ -44,10 +45,10 @@ export default function CreatePostPage() {
 
     setErrors({});
     try {
-      const { error } = await create(formData);
+      const { data, error } = await create(formData);
       if (error) throw new Error(error!.message);
       showToast("successPostCreate", toast);
-      router.push("/");
+      router.push(`/post/${data.post.id}`);
     } catch (error: unknown) {
       showToast("genericError", toast);
       console.error("Create Post Error:", error);
@@ -61,7 +62,7 @@ export default function CreatePostPage() {
           errors={errors}
           formData={formData}
           setFormData={setFormData}
-          onSubmit={handleLogin}
+          onSubmit={handleCreatePost}
         />
       </div>
     </div>

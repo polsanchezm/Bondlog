@@ -1,6 +1,6 @@
 "use client";
 
-import PostsData from "@/components/post/data/all-posts-data";
+import PostsData from "@/components/post/view/all-posts-data";
 import PostsSkeleton from "@/components/ui/skeletons/posts";
 import { PaginationType, Post } from "@/lib/interfaces";
 

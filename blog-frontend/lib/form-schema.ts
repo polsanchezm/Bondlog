@@ -52,4 +52,8 @@ const PostSchema = z.object({
   body: z.string({ required_error: "Body is required." }).trim(),
 });
 
-export { LoginFormSchema, SignupFormSchema, PostSchema };
+const CommentSchema = z.object({
+  content: z.string({ required_error: "Content is required." }).trim(),
+});
+
+export { LoginFormSchema, SignupFormSchema, PostSchema, CommentSchema };

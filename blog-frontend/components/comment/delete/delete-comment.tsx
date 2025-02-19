@@ -4,22 +4,22 @@ import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/lib/helpers";
 import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
-import { useDeletePost } from "@/components/hooks/use-delete-post";
 import { useTransition } from "react";
+import { useDeleteComment } from "@/components/hooks/use-delete-comment";
 
-export function DeletePost({ postId }: { postId: string }) {
-  const { postDelete } = useDeletePost();
+export function DeleteComment({ commentId }: { commentId: string }) {
+  const { commentDelete } = useDeleteComment();
   const { toast } = useToast();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const handleDeletePost = () => {
+  const handleDeleteComment = () => {
     startTransition(async () => {
       try {
-        const { error } = await postDelete(postId);
+        const { error } = await commentDelete(commentId);
         if (error) throw new Error(error.message);
-        showToast("successPostDelete", toast);
-        router.replace("/");
+        showToast("successCommentDelete", toast);
+        router.refresh();
       } catch (error: unknown) {
         showToast("genericError", toast);
         console.error("Delete Post Error:", error);
@@ -29,7 +29,7 @@ export function DeletePost({ postId }: { postId: string }) {
 
   return (
     <button
-      onClick={handleDeletePost}
+      onClick={handleDeleteComment}
       disabled={isPending}
       aria-label="Delete Post"
       aria-busy={isPending}
