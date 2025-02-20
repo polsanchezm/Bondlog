@@ -11,7 +11,7 @@ export default function PostsComponent({
   posts: Post[];
   pagination: PaginationType;
 }) {
-  if (posts.length === 0) {
+  if (!posts || posts.length === 0) {
     return <PostsSkeleton />;
   }
 

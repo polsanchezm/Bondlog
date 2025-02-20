@@ -72,7 +72,7 @@ interface APIError {
     data?: {
       message?: string;
     };
-    status?: number;
+    status?: string;
   };
 }
 

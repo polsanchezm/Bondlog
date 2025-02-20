@@ -50,7 +50,11 @@ export default function CreatePostPage() {
       showToast("successPostCreate", toast);
       router.push(`/post/${data.post.id}`);
     } catch (error: unknown) {
-      showToast("genericError", toast);
+      if (String(error).includes("422")) {
+        showToast("validationError", toast);
+      } else {
+        showToast("genericError", toast);
+      }
       console.error("Create Post Error:", error);
     }
   };

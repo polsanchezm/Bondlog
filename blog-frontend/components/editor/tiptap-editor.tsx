@@ -4,6 +4,7 @@ import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Toolbar } from "@/components/editor/toolbar-editor";
 import Heading from "@tiptap/extension-heading";
+
 export default function TipTap({
   description,
   onChange,
@@ -13,20 +14,21 @@ export default function TipTap({
 }) {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({}),
       Heading.configure({
         levels: [1, 2, 3],
-        HTMLAttributes: {},
       }),
+      StarterKit.configure({}),
     ],
     content: description,
+    immediatelyRender: false,
     editorProps: {
       attributes: {
         class: "rounded-lg min-h-[150px] border border-border bg-back",
       },
     },
     onUpdate({ editor }: { editor: Editor }) {
-      onChange(editor.getHTML());
+      const plainText = editor.getText().trim();
+      onChange(plainText.length > 0 ? editor.getHTML() : "");
     },
   });
   return (

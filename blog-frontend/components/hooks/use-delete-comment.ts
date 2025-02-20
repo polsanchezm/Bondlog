@@ -3,7 +3,8 @@ import { deleteComment } from "@/services/comment";
 export function useDeleteComment() {
   const commentDelete = async (id: string) => {
     try {
-      return await deleteComment(id);
+      const { data, error } = await deleteComment(id);
+      return { data, error };
     } catch (error: unknown) {
       throw new Error((error as Error).message);
     }

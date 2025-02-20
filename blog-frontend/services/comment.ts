@@ -62,9 +62,9 @@ const createComment = async (formData: Comment, postId: string) => {
     return {
       data: null,
       error: {
-        message: (error as APIError).message || "Something went wrong",
+        message: (error as APIError).message,
         data: (error as APIError).response?.data?.message,
-        status: (error as APIError).response?.status || 500,
+        status: (error as APIError).response?.status,
       },
     };
   }
