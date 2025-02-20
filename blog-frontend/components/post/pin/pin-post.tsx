@@ -18,7 +18,7 @@ export function PinPost({
     <button
       onClick={handlePinToggle}
       aria-pressed={isPinned}
-      className="flex justify-center gap-4 items-center md:px-11 py-2 text-sm font-medium rounded-lg transition-all"
+      className="flex justify-center gap-4 items-center px-11 py-2 text-sm font-medium rounded-lg transition-all"
     >
       {isPinned ? (
         <>

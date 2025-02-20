@@ -1,6 +1,7 @@
 "use client";
 
 import { type Editor } from "@tiptap/core";
+import { Toggle } from "@/components/ui/toggle";
 import {
   Bold,
   Strikethrough,
@@ -8,9 +9,9 @@ import {
   Heading2,
   Heading1,
   Heading3,
+  List,
+  ListOrdered,
 } from "lucide-react";
-
-import { Toggle } from "@/components/ui/toggle";
 
 type Props = {
   editor: Editor | null;
@@ -21,7 +22,7 @@ export function Toolbar({ editor }: Props) {
     return null;
   }
   return (
-    <div className="border border-input bg-transparent rounded-lg mb-2 bg-gray-200 border-gray-400 dark:border-gray-600 dark:bg-gray-700">
+    <div className="border border-border bg-transparent rounded-lg mb-2 bg-gray-200 dark:bg-gray-700">
       <Toggle
         size={"lg"}
         pressed={editor.isActive("bold")}
@@ -69,6 +70,20 @@ export function Toolbar({ editor }: Props) {
         }
       >
         <Heading3 />
+      </Toggle>
+      <Toggle
+        size={"lg"}
+        pressed={editor.isActive("bulletList")}
+        onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
+      >
+        <List />
+      </Toggle>
+      <Toggle
+        size={"lg"}
+        pressed={editor.isActive("orderedList")}
+        onPressedChange={() => editor.chain().focus().toggleOrderedList().run()}
+      >
+        <ListOrdered />
       </Toggle>
     </div>
   );

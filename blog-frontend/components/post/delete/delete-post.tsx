@@ -33,7 +33,7 @@ export function DeletePost({ postId }: { postId: string }) {
       disabled={isPending}
       aria-label="Delete Post"
       aria-busy={isPending}
-      className="flex justify-center gap-4 items-center md:px-11 py-2 text-sm font-medium rounded-lg transition-all"
+      className="flex justify-center gap-4 items-center px-11 py-2 text-sm font-medium rounded-lg transition-all"
     >
       <Trash2 />
       {isPending ? (

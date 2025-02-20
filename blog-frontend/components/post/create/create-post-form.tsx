@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { SquarePen } from "lucide-react";
 import TipTap from "@/components/editor/tiptap-editor";
+import { Comment } from "@/lib/interfaces";
 
 interface CreatePostFormProps {
   errors: { [key: string]: string };
@@ -21,6 +22,7 @@ interface CreatePostFormProps {
     created_at: string;
     updated_at: string;
     is_pinned: boolean;
+    comments: Comment[];
   };
   setFormData: (data: {
     title: string;
@@ -33,6 +35,7 @@ interface CreatePostFormProps {
     created_at: string;
     updated_at: string;
     is_pinned: boolean;
+    comments: Comment[];
   }) => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
@@ -44,7 +47,7 @@ export default function CreatePostForm({
   onSubmit,
 }: CreatePostFormProps) {
   return (
-    <Card className="overflow-hidden bg-gray-100 border-gray-300 dark:border-gray-600 dark:bg-gray-800">
+    <Card className="border border-border overflow-hidden mb-20 bg-gray-100 dark:bg-gray-800">
       <CardContent className="grid p-0">
         <form
           className="p-6 md:p-8 rounded-lg text-gray-700 dark:text-white"
@@ -60,7 +63,7 @@ export default function CreatePostForm({
                 Title
               </Label>
               <Input
-                className="rounded-lg bg-gray-200 border-gray-400 dark:border-gray-600 dark:bg-gray-700"
+                className="rounded-lg bg-gray-200 dark:bg-gray-700"
                 id="title"
                 type="text"
                 placeholder="Post title"
@@ -84,7 +87,7 @@ export default function CreatePostForm({
               </Label>
               <Input
                 id="subtitle"
-                className="rounded-lg bg-gray-200 border-gray-400 dark:border-gray-600 dark:bg-gray-700"
+                className="rounded-lg bg-gray-200 dark:bg-gray-700"
                 type="text"
                 placeholder="Post subtitle"
                 value={formData.subtitle}

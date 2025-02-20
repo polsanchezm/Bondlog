@@ -29,7 +29,7 @@ export function SignupForm({
   onSubmit,
 }: SignupFormProps) {
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden border border-border mb-28">
       <CardContent className="grid p-0">
         <form className="p-6 md:p-8" onSubmit={onSubmit}>
           <div className="flex flex-col gap-6">
@@ -44,7 +44,7 @@ export function SignupForm({
               <Input
                 id="username"
                 type="text"
-                placeholder="JhonDoe96"
+                placeholder="JohnDoe96"
                 value={formData.username}
                 onChange={(e) =>
                   setFormData({ ...formData, username: e.target.value })
@@ -62,7 +62,7 @@ export function SignupForm({
               <Input
                 id="email"
                 type="email"
-                placeholder="jhondoe@example.com"
+                placeholder="johndoe@example.com"
                 value={formData.email}
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })

@@ -66,10 +66,10 @@ export function PostDropdown({
           <DropdownMenuItem className="flex justify-center items-center text-base md:text-sm py-2 rounded-lg transition-all cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700">
             <Link
               href={`/post/${post.id}/edit`}
-              className="flex justify-center gap-4 items-center md:px-11 py-2 text-sm font-medium rounded-lg transition-all"
+              className="flex justify-center gap-4 items-center px-11 py-2 text-sm font-medium rounded-lg transition-all"
             >
               <SquarePen />
-              <span className="hidden md:block">Edit Post</span>
+              <span className="hidden md:block">Edit</span>
             </Link>
           </DropdownMenuItem>
         )}

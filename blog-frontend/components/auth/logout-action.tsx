@@ -36,7 +36,7 @@ export default function LogoutAction() {
       onClick={handleLogout}
       disabled={isPending}
       aria-busy={isPending}
-      className="flex items-center px-6 py-4 gap-2 text-white text-sm font-medium rounded-lg transition-all bg-red-600 hover:bg-red-500 dark:bg-red-700 dark:hover:bg-red-500 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed focus:ring focus:ring-red-300 dark:focus:ring-red-600 active:scale-95"
+      className="flex items-center px-6 py-4 gap-2 text-white text-sm font-medium rounded-lg transition-all bg-red-600 hover:bg-red-500 dark:bg-red-700 dark:hover:bg-red-500 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed active:scale-95"
       aria-label="Log Out"
     >
       <LogOut />

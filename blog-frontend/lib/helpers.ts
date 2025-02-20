@@ -61,6 +61,10 @@ const toastMessages: Record<
     title: "Success",
     description: "Post created successfully!",
   },
+  successCommentCreate: {
+    title: "Success",
+    description: "Comment created successfully!",
+  },
   successPostEdit: {
     title: "Success",
     description: "Post updated successfully!",
@@ -68,6 +72,10 @@ const toastMessages: Record<
   successPostDelete: {
     title: "Success",
     description: "Post deleted successfully!",
+  },
+  successCommentDelete: {
+    title: "Success",
+    description: "Comment deleted successfully!",
   },
   userExists: {
     variant: "destructive",

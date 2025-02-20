@@ -1,6 +1,6 @@
 import axios from "@/lib/axios";
 import { APIError, Post } from "@/lib/interfaces";
-import { getSession } from "./auth";
+import { getSession } from "@/services/auth";
 
 const fetchPosts = async (page = 1) => {
   try {
@@ -127,7 +127,7 @@ const togglePin = async (postId: string) => {
 
     return { data: response.data, error: null };
   } catch (error) {
-    console.error("Error al fijar/desfijar el post:", error);
+    console.error("Error pinning/unpinning post:", error);
     return {
       data: null,
       error: {

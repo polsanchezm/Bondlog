@@ -22,6 +22,7 @@ class PostsResource extends JsonResource
             'author_id' => $this->author_id,
             'author_username' => $this->author_username,
             'is_pinned' => $this->is_pinned,
+            'comments' => $this->comments,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

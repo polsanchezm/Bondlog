@@ -30,6 +30,7 @@ export default function EditPostForm({ postData }: EditPostFormProps) {
     created_at: postData.created_at,
     updated_at: postData.updated_at,
     is_pinned: postData.is_pinned,
+    comments: postData.comments,
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -64,7 +65,7 @@ export default function EditPostForm({ postData }: EditPostFormProps) {
   };
 
   return (
-    <Card className="overflow-hidden bg-gray-100 border-gray-300 dark:border-gray-600 dark:bg-gray-800">
+    <Card className="overflow-hidden border border-border mb-20 bg-gray-100 dark:bg-gray-800">
       <CardContent className="grid p-0">
         <form className="p-6 md:p-8 rounded-lg" onSubmit={handleEditPost}>
           <div className="flex flex-col gap-6">
@@ -77,7 +78,7 @@ export default function EditPostForm({ postData }: EditPostFormProps) {
                 Title
               </Label>
               <Input
-                className="rounded-lg bg-gray-200 border-gray-400 dark:border-gray-600 dark:bg-gray-700"
+                className="rounded-lg bg-gray-200 dark:bg-gray-700"
                 id="title"
                 type="text"
                 placeholder="Post title"
@@ -101,7 +102,7 @@ export default function EditPostForm({ postData }: EditPostFormProps) {
               </Label>
               <Input
                 id="subtitle"
-                className="rounded-lg bg-gray-200 border-gray-400 dark:border-gray-600 dark:bg-gray-700"
+                className="rounded-lg bg-gray-200 dark:bg-gray-700"
                 type="text"
                 placeholder="Post subtitle"
                 value={formData.subtitle}

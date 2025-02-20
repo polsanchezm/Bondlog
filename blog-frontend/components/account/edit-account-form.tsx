@@ -72,7 +72,7 @@ export default function EditAccountForm({ userData }: EditAccountFormProps) {
               <Input
                 id="username"
                 type="text"
-                placeholder="JhonDoe96"
+                placeholder="JohnDoe96"
                 value={formData.username}
                 onChange={(e) =>
                   setFormData({ ...formData, username: e.target.value })
@@ -90,7 +90,7 @@ export default function EditAccountForm({ userData }: EditAccountFormProps) {
               <Input
                 id="email"
                 type="email"
-                placeholder="jhondoe@example.com"
+                placeholder="johndoe@example.com"
                 value={formData.email}
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })

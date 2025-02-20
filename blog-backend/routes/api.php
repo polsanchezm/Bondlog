@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -42,12 +43,24 @@ Route::prefix('app')->name('app.')->group(function () {
             Route::post('create', [PostsController::class, 'store'])->name('store');
             Route::put('update/{id}', [PostsController::class, 'update'])->name('update');
             Route::delete('delete/{id}', [PostsController::class, 'destroy'])->name('destroy');
-            Route::patch('pin/{post}', [PostsController::class, 'togglePin'])->name('pin');
+            Route::patch('pin/{id}', [PostsController::class, 'togglePin'])->name('pin');
+
+            Route::prefix('comment')->name('comment.')->group(function () {
+                Route::post('create/{post_id}', [CommentController::class, 'store'])->name('store');
+                Route::put('update/{id}', [CommentController::class, 'update'])->name('update');
+                Route::delete('delete/{id}', [CommentController::class, 'destroy'])->name('destroy');
+                Route::patch('pin/{id}', [CommentController::class, 'togglePin'])->name('pin');
+            });
         });
     });
 
     Route::prefix('posts')->name('posts.')->group(function () {
         Route::get('/', [PostsController::class, 'index'])->name('index');
         Route::get('detail/{id}', [PostsController::class, 'show'])->name('show');
+
+        Route::prefix('comment')->name('comment.')->group(function () {
+            Route::get('/{post_id}', [CommentController::class, 'index'])->name('index');
+            Route::get('detail/{id}', [CommentController::class, 'show'])->name('show');
+        });
     });
 });

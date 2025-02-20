@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostsResource;
-use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Post;
 
 class PostsController extends Controller
 {
@@ -27,6 +27,11 @@ class PostsController extends Controller
     public function show(string $id)
     {
         $post = Post::find($id);
+
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+
         return response()->json(new PostsResource($post));
     }
 
@@ -98,7 +103,11 @@ class PostsController extends Controller
     public function togglePin(string $id)
     {
         $post = Post::find($id);
-        $user = Auth::user();
+
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+
         $post->is_pinned = !$post->is_pinned;
         $this->authorize('pin', $post);
         $post->save();
