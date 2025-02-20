@@ -32,6 +32,8 @@ export default function CreatePostPage() {
 
 
   const handleCreatePost = async (e: FormEvent<HTMLFormElement>) => {
+    console.log(formData);
+    
     e.preventDefault();
     const result = PostSchema.safeParse(formData);
     if (!result.success) {
