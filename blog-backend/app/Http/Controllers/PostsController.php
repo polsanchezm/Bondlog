@@ -42,11 +42,13 @@ class PostsController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             try {
+                $clean_title = Purifier::clean($request->input('title'));
+                $clean_subtitle = Purifier::clean($request->input('subtitle'));
                 $clean_body = Purifier::clean($request->input('body'));
 
                 $post = Post::create([
-                    'title' => $request->title,
-                    'subtitle' => $request->subtitle,
+                    'title' => $clean_title,
+                    'subtitle' => $clean_subtitle,
                     'body' => $clean_body,
                     'author_id' => $user->id,
                     'author_username' => $user->username,
@@ -80,11 +82,13 @@ class PostsController extends Controller
 
         $this->authorize('update', $post);
 
+        $clean_title = Purifier::clean($request->input('title'));
+        $clean_subtitle = Purifier::clean($request->input('subtitle'));
         $clean_body = Purifier::clean($request->input('body'));
 
         $post->update([
-            'title' => $request->title,
-            'subtitle' => $request->subtitle,
+            'title' => $clean_title,
+            'subtitle' => $clean_subtitle,
             'body' => $clean_body,
         ]);
 

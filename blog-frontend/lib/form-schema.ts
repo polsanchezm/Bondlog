@@ -63,10 +63,8 @@ const PostSchema = z.object({
 });
 
 const CommentSchema = z.object({
-  content: z.string({ required_error: "Content is required." })
-    .regex(/^(?:[\p{L}0-9\s]|[\u{1F600}-\u{1F64F}])+$/u, {
-      message: "Comment can contain only letters, numbers, spaces, and emojis.",
-    })
+  content: z
+    .string({ required_error: "Content is required." })
     .trim(),
 });
 
