@@ -20,7 +20,7 @@ const SignupFormSchema = z
     username: z
       .string()
       .min(2, { message: "Username must be at least 2 characters long." })
-      .regex(/^[a-zA-Z0-9]+$/, {
+      .regex(/^[\p{L}0-9]+$/u, {
         message: "Username can contain only letters and numbers.",
       })
       .trim(),
@@ -47,29 +47,23 @@ const PostSchema = z.object({
   title: z
     .string({ required_error: "Title is required." })
     .min(5, { message: "Title must be at least 5 characters long." })
-    .regex(/^[a-zA-Z0-9]+$/, {
+    .regex(/^[\p{L}0-9]+$/u, {
       message: "Title can contain only letters and numbers.",
     })
     .trim(),
   subtitle: z
     .string({ required_error: "Subtitle is required." })
-    .regex(/^[a-zA-Z0-9]+$/, {
+    .regex(/^[\p{L}0-9]+$/u, {
       message: "Subtitle can contain only letters and numbers.",
     })
     .min(5, { message: "Subitle must be at least 5 characters long." })
     .trim(),
   body: z.string({ required_error: "Body is required." })
-    .regex(/^[a-zA-Z0-9]+$/, {
-      message: "Body can contain only letters and numbers.",
-    })
     .trim(),
 });
 
 const CommentSchema = z.object({
   content: z.string({ required_error: "Content is required." })
-    .regex(/^[a-zA-Z0-9]+$/, {
-      message: "Coment can contain only letters and numbers.",
-    })
     .trim(),
 });
 
