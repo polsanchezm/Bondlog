@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, useCallback, FormEvent } from "react";
 import { showToast } from "@/lib/helpers";
 import { Comment, PaginationType, User } from "@/lib/interfaces";
 import CreateCommentForm from "@/components/comment/create/create-comment-form";
@@ -52,24 +52,27 @@ export default function PostComments({
   const { toast } = useToast();
   const { create } = useCreateComment();
 
-  const loadComments = async (showSkeleton: boolean = false) => {
-    if (showSkeleton) setLoading(true);
-    const result = await fetchComments(page, post_id);
-    if (!result.error) {
-      setCommentsData({
-        comments: result.data,
-        pagination: result.pagination,
-      });
-    } else {
-      console.error(result.error);
-    }
-    if (showSkeleton) setLoading(false);
-    setInitialLoad(false);
-  };
+  const loadComments = useCallback(
+    async (showSkeleton: boolean = false) => {
+      if (showSkeleton) setLoading(true);
+      const result = await fetchComments(page, post_id);
+      if (!result.error) {
+        setCommentsData({
+          comments: result.data,
+          pagination: result.pagination,
+        });
+      } else {
+        console.error(result.error);
+      }
+      if (showSkeleton) setLoading(false);
+      setInitialLoad(false);
+    },
+    [page, post_id]
+  );
 
   useEffect(() => {
     loadComments(true);
-  }, [page, post_id]);
+  }, [loadComments]);
 
   const handleCreateComment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -121,7 +124,7 @@ export default function PostComments({
           disabled={isSubmitting}
         />
       )}
-      {initialLoad ? (
+      {initialLoad || loading ? (
         <CommentSkeleton />
       ) : commentsData.comments.length === 0 ? (
         <p className="text-center text-sm text-gray-500 mt-8">

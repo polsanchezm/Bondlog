@@ -5,10 +5,11 @@ import EditCommentForm from "@/components/comment/edit/edit-comment-form";
 import { useRouter } from "next/navigation";
 import { updateComment } from "@/services/comment";
 import { Comment, User } from "@/lib/interfaces";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useTransition } from "react";
 import { useToast } from "@/components/hooks/use-toast";
 import { CommentSchema } from "@/lib/form-schema";
 import { formatDate, showToast } from "@/lib/helpers";
+import { useDeleteComment } from "@/components/hooks/use-delete-comment";
 
 interface CommentItemProps {
   comment: Comment;
@@ -27,6 +28,8 @@ export function CommentItem({
   const [editFormData, setEditFormData] = useState<Comment>(comment);
   const [editErrors, setEditErrors] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const { commentDelete } = useDeleteComment();
   const { toast } = useToast();
   const router = useRouter();
 
@@ -64,6 +67,24 @@ export function CommentItem({
     }
   };
 
+  const handleDeleteComment = (commentId: string) => {
+    startTransition(async () => {
+      try {
+        const { error } = await commentDelete(commentId);
+        if (error) throw new Error(error.message);
+        showToast("successCommentDelete", toast);
+        if (reloadComments) {
+          reloadComments();
+        } else {
+          router.refresh();
+        }
+      } catch (error: unknown) {
+        showToast("genericError", toast);
+        console.error("Delete Comment Error:", error);
+      }
+    });
+  };
+
   return (
     <div className="max-w-3xl w-full mx-auto">
       {isEditing ? (
@@ -84,6 +105,8 @@ export function CommentItem({
                 isLoggedIn={isLoggedIn}
                 initialIsPinned={comment.is_pinned}
                 onEdit={() => setIsEditing(true)}
+                handleDeleteComment={() => handleDeleteComment(comment.id)}
+                isPending={isPending}
               />
             </div>
           </CardHeader>

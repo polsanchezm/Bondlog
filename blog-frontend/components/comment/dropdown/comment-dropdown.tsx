@@ -21,7 +21,9 @@ interface CommentDropdownProps {
   isLoggedIn: boolean;
   user?: User;
   initialIsPinned: boolean;
+  isPending: boolean;
   onEdit: (commentId: string) => void;
+  handleDeleteComment: (commentId: string) => void;
 }
 
 export function CommentDropdown({
@@ -29,7 +31,9 @@ export function CommentDropdown({
   isLoggedIn,
   user,
   initialIsPinned,
+  isPending,
   onEdit,
+  handleDeleteComment,
 }: CommentDropdownProps) {
   const [isPinned, setIsPinned] = useState(initialIsPinned);
   const router = useRouter();
@@ -82,7 +86,10 @@ export function CommentDropdown({
 
         {(isAdmin || isAuthor) && (
           <DropdownMenuItem className="flex justify-center items-center text-base md:text-sm md:px-4 py-2 rounded-lg transition-all cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700">
-            <DeleteComment commentId={comment.id} />
+            <DeleteComment
+              handleDeleteComment={() => handleDeleteComment(comment.id)}
+              disabled={isPending}
+            />
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>
