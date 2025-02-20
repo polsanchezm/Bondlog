@@ -8,6 +8,7 @@ use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use Purifier;
 
 class CommentController extends Controller
 {
@@ -52,8 +53,11 @@ class CommentController extends Controller
         if (Auth::check() && $post) {
             $user = Auth::user();
             try {
+
+                $clean_content = Purifier::clean($request->input('content'));
+
                 $comment = Comment::create([
-                    'content' => $request->content,
+                    'content' => $clean_content,
                     'author_id' => $user->id,
                     'post_id' => $post->id,
                     'author_username' => $user->username,
@@ -84,13 +88,18 @@ class CommentController extends Controller
     public function update(UpdateCommentRequest $request, string $id)
     {
         $comment = Comment::find($id);
-        $this->authorize('update', $comment);
 
         if (!$comment) {
             return response()->json(['message' => 'Comment not found'], 404);
         }
 
-        $comment->update($request->validated());
+        $this->authorize('update', $comment);
+
+        $clean_content = Purifier::clean($request->input('content'));
+
+        $comment->update([
+            'content' => $clean_content,
+        ]);
 
         return response()->json([
             'message' => 'Comment updated successfully',

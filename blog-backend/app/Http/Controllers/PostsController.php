@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostsResource;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
+use Purifier;
 
 class PostsController extends Controller
 {
@@ -41,10 +42,12 @@ class PostsController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             try {
+                $clean_body = Purifier::clean($request->input('body'));
+
                 $post = Post::create([
                     'title' => $request->title,
                     'subtitle' => $request->subtitle,
-                    'body' => $request->body,
+                    'body' => $clean_body,
                     'author_id' => $user->id,
                     'author_username' => $user->username,
                 ]);
@@ -71,13 +74,19 @@ class PostsController extends Controller
     {
         $post = Post::find($id);
 
-        $this->authorize('update', $post);
-
         if (!$post) {
             return response()->json(['message' => 'Post not found'], 404);
         }
 
-        $post->update($request->validated());
+        $this->authorize('update', $post);
+
+        $clean_body = Purifier::clean($request->input('body'));
+
+        $post->update([
+            'title' => $request->title,
+            'subtitle' => $request->subtitle,
+            'body' => $clean_body,
+        ]);
 
         return response()->json([
             'message' => 'Post updated successfully',
