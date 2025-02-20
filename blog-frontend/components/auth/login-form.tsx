@@ -19,7 +19,7 @@ export function LoginForm({
   onSubmit,
 }: LoginFormProps) {
   return (
-    <Card className="overflow-hidden border border-border mb-10">
+    <Card className="overflow-hidden border border-border mb-14">
       <CardContent className="grid p-0">
         <form className="p-6 md:p-8" onSubmit={onSubmit}>
           <div className="flex flex-col gap-6">
