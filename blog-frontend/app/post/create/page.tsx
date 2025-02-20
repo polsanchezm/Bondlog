@@ -30,10 +30,7 @@ export default function CreatePostPage() {
   const { create } = useCreatePost();
   const router = useRouter();
 
-
   const handleCreatePost = async (e: FormEvent<HTMLFormElement>) => {
-    console.log(formData);
-    
     e.preventDefault();
     const result = PostSchema.safeParse(formData);
     if (!result.success) {
