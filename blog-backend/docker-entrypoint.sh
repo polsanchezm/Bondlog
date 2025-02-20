@@ -12,8 +12,8 @@ php artisan config:clear
 php artisan cache:clear
 php artisan key:generate
 # Ejecutar migraciones
-php artisan migrate --force
-# php artisan migrate:refresh --seed --force
+# php artisan migrate --force
+php artisan migrate:refresh --seed --force
 
 # Iniciar Apache
 apache2-foreground
