@@ -10,6 +10,7 @@ import TipTap from "@/components/editor/tiptap-editor";
 import { Comment } from "@/lib/interfaces";
 
 interface CreatePostFormProps {
+  disabled: boolean;
   errors: { [key: string]: string };
   formData: {
     title: string;
@@ -41,6 +42,7 @@ interface CreatePostFormProps {
 }
 
 export default function CreatePostForm({
+  disabled,
   errors,
   formData,
   setFormData,
@@ -117,7 +119,11 @@ export default function CreatePostForm({
             </div>
           </div>
 
-          <Button type="submit" className="w-full rounded-lg mt-6">
+          <Button
+            disabled={disabled}
+            type="submit"
+            className="w-full rounded-lg mt-6"
+          >
             <SquarePen size={48} />
             <span className="hidden md:block">Create post</span>
           </Button>

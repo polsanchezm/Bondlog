@@ -11,7 +11,7 @@ import { useEditPost } from "@/components/hooks/use-edit-post";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/hooks/use-toast";
 import { showToast } from "@/lib/helpers";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useTransition } from "react";
 import { PostSchema } from "@/lib/form-schema";
 
 interface EditPostFormProps {
@@ -36,6 +36,7 @@ export default function EditPostForm({ postData }: EditPostFormProps) {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const { toast } = useToast();
   const { edit } = useEditPost();
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const handleEditPost = async (e: FormEvent<HTMLFormElement>) => {
@@ -53,15 +54,17 @@ export default function EditPostForm({ postData }: EditPostFormProps) {
     }
 
     setErrors({});
-    try {
-      const { error } = await edit(formData, formData.id);
-      if (error) throw new Error(error!.message);
-      showToast("successEditAccount", toast);
-      router.push(`/post/${formData.id}`);
-    } catch (error: unknown) {
-      showToast("genericError", toast);
-      console.error("Edit account Error:", error);
-    }
+    startTransition(async () => {
+      try {
+        const { error } = await edit(formData, formData.id);
+        if (error) throw new Error(error!.message);
+        showToast("successEditAccount", toast);
+        router.push(`/post/${formData.id}`);
+      } catch (error: unknown) {
+        showToast("genericError", toast);
+        console.error("Edit account Error:", error);
+      }
+    });
   };
 
   return (
@@ -132,7 +135,11 @@ export default function EditPostForm({ postData }: EditPostFormProps) {
             </div>
           </div>
 
-          <Button type="submit" className="w-full rounded-lg mt-6">
+          <Button
+            disabled={isPending}
+            type="submit"
+            className="w-full rounded-lg mt-6"
+          >
             <SquarePen size={48} />
             <span className="hidden md:block">Update Post</span>
           </Button>
