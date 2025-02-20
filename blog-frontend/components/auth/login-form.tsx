@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { FormEvent } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+import { LogIn } from "lucide-react";
 
 interface LoginFormProps {
   errors: { [key: string]: string };
@@ -70,7 +71,8 @@ export function LoginForm({
             )}
 
             <Button type="submit" className="w-full">
-              Log In
+              <LogIn />
+              <span className="hidden md:inline ml-2">Log In</span>
             </Button>
             {/* <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
               <span className="relative z-10 bg-background px-2 text-muted-foreground">

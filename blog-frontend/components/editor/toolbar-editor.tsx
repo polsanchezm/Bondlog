@@ -9,8 +9,8 @@ import {
   Heading2,
   Heading1,
   Heading3,
-  List,
-  ListOrdered,
+  // List,
+  // ListOrdered,
 } from "lucide-react";
 
 type Props = {
@@ -71,7 +71,7 @@ export function Toolbar({ editor }: Props) {
       >
         <Heading3 />
       </Toggle>
-      <Toggle
+      {/* <Toggle
         size={"lg"}
         pressed={editor.isActive("bulletList")}
         onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
@@ -84,7 +84,7 @@ export function Toolbar({ editor }: Props) {
         onPressedChange={() => editor.chain().focus().toggleOrderedList().run()}
       >
         <ListOrdered />
-      </Toggle>
+      </Toggle> */}
     </div>
   );
 }

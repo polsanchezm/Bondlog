@@ -133,7 +133,7 @@ export default function EditPostForm({ postData }: EditPostFormProps) {
           </div>
 
           <Button type="submit" className="w-full rounded-lg mt-6">
-            <SquarePen className="block md:hidden" size={48} />
+            <SquarePen size={48} />
             <span className="hidden md:block">Update Post</span>
           </Button>
         </form>

@@ -63,7 +63,7 @@ export default function CreateCommentForm({
             className="w-full rounded-lg mt-6"
             disabled={disabled}
           >
-            <SquarePen className="block md:hidden" size={48} />
+            <SquarePen size={48} />
             <span className="hidden md:block">Comment</span>
           </Button>
         </form>

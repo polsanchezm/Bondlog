@@ -11,7 +11,7 @@ import { FormEvent, useState } from "react";
 import { Register } from "@/lib/interfaces";
 import { useUpdateUser } from "@/components/hooks/use-edit-user";
 import { Card, CardContent } from "@/components/ui/card";
-import Image from "next/image";
+import { SquarePen } from "lucide-react";
 
 interface EditAccountFormProps {
   userData: Register;
@@ -49,7 +49,7 @@ export default function EditAccountForm({ userData }: EditAccountFormProps) {
       const { error } = await updateUser(formData);
       if (error) throw new Error(error!.message);
       showToast("successEditAccount", toast);
-      router.push("/");
+      router.push("/account");
     } catch (error: unknown) {
       showToast("genericError", toast);
       console.error("Edit account Error:", error);
@@ -57,15 +57,12 @@ export default function EditAccountForm({ userData }: EditAccountFormProps) {
   };
 
   return (
-    <Card className="overflow-hidden">
-      <CardContent className="grid p-0 md:grid-cols-2">
+    <Card className="overflow-hidden border border-border mb-28">
+      <CardContent className="grid p-0">
         <form className="p-6 md:p-8" onSubmit={handleEditAccount}>
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center text-center">
               <h1 className="text-2xl font-bold">Edit account</h1>
-              <p className="text-balance text-muted-foreground">
-                Edit your account details
-              </p>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="username">Username</Label>
@@ -149,19 +146,12 @@ export default function EditAccountForm({ userData }: EditAccountFormProps) {
                 {errors.password_confirmation}
               </p>
             )}
-
             <Button type="submit" className="w-full">
-              Edit account
+              <SquarePen size={48} />
+              <span className="hidden md:block">Edit account</span>
             </Button>
           </div>
         </form>
-        <div className="relative hidden md:block">
-          <Image
-            src="/placeholder.svg"
-            alt="Image"
-            className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-          />
-        </div>
       </CardContent>
     </Card>
   );

@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { FormEvent } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
+import { UserPlus } from "lucide-react";
 
 interface SignupFormProps {
   errors: { [key: string]: string };
@@ -122,7 +123,8 @@ export function SignupForm({
               </p>
             )}
             <Button type="submit" className="w-full">
-              Sign Up
+              <UserPlus />
+              <span className="hidden md:inline ml-2">Sign Up</span>
             </Button>
             {/* <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
               <span className="relative z-10 bg-background px-2 text-muted-foreground">
