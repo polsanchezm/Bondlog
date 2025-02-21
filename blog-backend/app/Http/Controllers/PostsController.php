@@ -80,13 +80,11 @@ class PostsController extends Controller
 
         $this->authorize('update', $post);
 
-        $clean_title = Purifier::clean($request->input('title'));
-        $clean_subtitle = Purifier::clean($request->input('subtitle'));
         $clean_body = Purifier::clean($request->input('body'));
 
         $post->update([
-            'title' => $clean_title,
-            'subtitle' => $clean_subtitle,
+            'title' => $request->title,
+            'subtitle' => $request->subtitle,
             'body' => $clean_body,
         ]);
 
