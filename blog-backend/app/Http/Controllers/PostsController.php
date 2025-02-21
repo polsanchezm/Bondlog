@@ -42,13 +42,11 @@ class PostsController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             try {
-                $clean_title = Purifier::clean($request->input('title'));
-                $clean_subtitle = Purifier::clean($request->input('subtitle'));
                 $clean_body = Purifier::clean($request->input('body'));
 
                 $post = Post::create([
-                    'title' => $clean_title,
-                    'subtitle' => $clean_subtitle,
+                    'title' => $request->title,
+                    'subtitle' => $request->subtitle,
                     'body' => $clean_body,
                     'author_id' => $user->id,
                     'author_username' => $user->username,
