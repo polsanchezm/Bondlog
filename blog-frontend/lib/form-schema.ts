@@ -47,15 +47,9 @@ const PostSchema = z.object({
   title: z
     .string({ required_error: "Title is required." })
     .min(5, { message: "Title must be at least 5 characters long." })
-    .regex(/^(?:[\p{L}0-9\s.,-]|[\u{1F600}-\u{1F64F}])+$/u, {
-      message: "Title can contain only letters, numbers, spaces, and emojis.",
-    })
     .trim(),
   subtitle: z
     .string({ required_error: "Subtitle is required." })
-    .regex(/^(?:[\p{L}0-9\s.,-]|[\u{1F600}-\u{1F64F}])+$/u, {
-      message: "Subtitle can contain only letters, numbers, spaces, and emojis.",
-    })
     .min(5, { message: "Subitle must be at least 5 characters long." })
     .trim(),
   body: z.string({ required_error: "Body is required." })
