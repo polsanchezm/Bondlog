@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -31,6 +32,7 @@ Route::prefix('app')->name('app.')->group(function () {
         Route::post('/login', [AuthController::class, 'login'])->name('login');
         Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
     });
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('user')->name('user.')->group(function () {
             Route::get('/', [UserController::class, 'index'])->name('index');
@@ -39,7 +41,7 @@ Route::prefix('app')->name('app.')->group(function () {
             Route::delete('/delete', [UserController::class, 'destroy'])->name('delete');
         });
 
-        Route::prefix('posts')->name('posts.')->group(function () {
+        Route::prefix('post')->name('post.')->group(function () {
             Route::post('create', [PostsController::class, 'store'])->name('store');
             Route::put('update/{id}', [PostsController::class, 'update'])->name('update');
             Route::delete('delete/{id}', [PostsController::class, 'destroy'])->name('destroy');
@@ -52,9 +54,16 @@ Route::prefix('app')->name('app.')->group(function () {
                 Route::patch('pin/{id}', [CommentController::class, 'togglePin'])->name('pin');
             });
         });
+
+        Route::prefix('message')->name('message.')->group(function () {
+            Route::get('/user/{user}', [MessageController::class, 'byUser'])->name('chats');
+            Route::get('/message/older/{message}', [MessageController::class, 'loadOlder'])->name('loadOlder');
+            Route::post('/message', [MessageController::class, 'store'])->name('store');
+            Route::delete('/message/{message}', [MessageController::class, 'destroy'])->name('destroy');
+        });
     });
 
-    Route::prefix('posts')->name('posts.')->group(function () {
+    Route::prefix('post')->name('post.')->group(function () {
         Route::get('/', [PostsController::class, 'index'])->name('index');
         Route::get('detail/{id}', [PostsController::class, 'show'])->name('show');
 
