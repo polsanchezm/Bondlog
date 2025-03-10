@@ -4,7 +4,7 @@ import { getSession } from "@/services/auth";
 
 const fetchPosts = async (page = 1) => {
   try {
-    const response = await axios.get(`/posts?page=${page}`);
+    const response = await axios.get(`/post?page=${page}`);
     return {
       data: response.data.data,
       pagination: response.data.pagination,
@@ -27,7 +27,7 @@ const fetchPosts = async (page = 1) => {
 
 const fetchPostDetail = async (id: string) => {
   try {
-    const response = await axios.get(`/posts/detail/${id}`);
+    const response = await axios.get(`/post/detail/${id}`);
     return { data: response.data, error: null };
   } catch (error: unknown) {
     console.error("Error fetching post detail:", error);
@@ -46,7 +46,7 @@ const fetchPostDetail = async (id: string) => {
 const createPost = async (formData: Post) => {
   try {
     const session = await getSession();
-    const response = await axios.post("/posts/create", formData, {
+    const response = await axios.post("/post/create", formData, {
       headers: {
         Authorization: `Bearer ${session?.userToken}`,
       },
@@ -69,7 +69,7 @@ const createPost = async (formData: Post) => {
 const updatePost = async (formData: Post, id: string) => {
   try {
     const session = await getSession();
-    const response = await axios.put(`/posts/update/${id}`, formData, {
+    const response = await axios.put(`/post/update/${id}`, formData, {
       headers: {
         Authorization: `Bearer ${session?.userToken}`,
       },
@@ -92,7 +92,7 @@ const updatePost = async (formData: Post, id: string) => {
 const deletePost = async (id: string) => {
   try {
     const session = await getSession();
-    const response = await axios.delete(`/posts/delete/${id}`, {
+    const response = await axios.delete(`/post/delete/${id}`, {
       headers: {
         Authorization: `Bearer ${session?.userToken}`,
       },
@@ -116,7 +116,7 @@ const togglePin = async (postId: string) => {
   try {
     const session = await getSession();
     const response = await axios.patch(
-      `/posts/pin/${postId}`,
+      `/post/pin/${postId}`,
       {},
       {
         headers: {
