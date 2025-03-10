@@ -10,7 +10,7 @@ import { useCreateComment } from "@/components/hooks/use-create-comment";
 import { fetchComments } from "@/services/comment";
 import { CommentPaginationComponent } from "@/components/ui/comment-pagination";
 import CommentSkeleton from "@/components/ui/skeletons/comment";
-import { CommentItem } from "./comment-item";
+import { CommentItem } from "@/components/comment/view/comment-item";
 
 interface PostCommentsProps {
   post_id: string;
