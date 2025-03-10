@@ -14,7 +14,7 @@ class PostSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::where('username', 'Admin')->first();
+        $user = User::where('email', 'pol@bondlog.com')->first();
 
         if (!$user) {
             $this->command->error('No se encontró el usuario Admin. Asegúrate de que UserSeeder se haya ejecutado.');
