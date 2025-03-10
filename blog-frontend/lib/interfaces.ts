@@ -12,6 +12,8 @@ interface User {
   username: string;
   role: string;
   email: string;
+  messages: Message[] | undefined;
+  avatar: string;
   created_at: string;
   updated_at: string;
 }
@@ -54,6 +56,18 @@ interface Comment {
   is_pinned: boolean;
 }
 
+interface Message {
+  id: string;
+  text: string;
+  chat_id: string;
+  author_id: string;
+  author_username: string;
+  author_avatar: string | undefined;
+  isLoading: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 interface Register {
   username: string;
   email: string;
@@ -93,4 +107,5 @@ export type {
   APIError,
   PaginationType,
   Comment,
+  Message,
 };
